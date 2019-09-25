@@ -19,12 +19,18 @@ public class ProgramController {
 
         preferences.setPreference("hello world", "dfgdgddfgdfgdfgdfg");
 
-
+        center.addReciever(this, i -> this.call1(), );
     }
 
     public static void main(String[] args) throws Exception {
         ProgramController program = new ProgramController();
     }
 
+    private void call1() {
+        System.out.println("this is a call1");
+    }
 
+    private void call2() {
+        System.out.println("this is a call2");
+    }
 }

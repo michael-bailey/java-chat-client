@@ -21,7 +21,7 @@ public class NotificationCenter extends Object {
         return defaultCenter;
     }
 
-    public void addReciever(Object reciever, Method callingMethod, String notificationName) {
+    public void addReciever(Object reciever, String notificationName) {
 
         // create the notification definition in the hashmap if it doesn't exist.
         if (this.registeredNotifications.containsKey(notificationName)) {
@@ -32,11 +32,20 @@ public class NotificationCenter extends Object {
         ArrayList<Object> tmpArray = new ArrayList<>();
         tmpArray.add(reciever);
         tmpArray.add(callingMethod);
-        this.registeredNotifications.get(notificationName).add(tmpArray);
+        registeredNotifications.get(notificationName).add(tmpArray);
     }
 
     public void removeReciever(Object reciever, String notificationName) {
-
+        Iterator i = registeredNotifications.get(notificationName).iterator();
+        int j = 0;
+        while (i.hasNext()) {
+            ArrayList<Object> a = (ArrayList<Object>) (i.next());
+            if (a.get(0).equals(reciever)) {
+                a.remove(j);
+                return;
+            }
+            j++;
+        }
     }
 
     public void sendNotification(Object sender, String notificationName, Object data) {
