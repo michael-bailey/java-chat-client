@@ -10,3 +10,4 @@ bin/
 .classpath
 gradlew.bat
 gradlew
+.settings/
