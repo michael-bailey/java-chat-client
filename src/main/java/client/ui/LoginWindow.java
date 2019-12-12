@@ -1,7 +1,6 @@
-//created by mitchel hardie
+//created by Mitchell Hardie
 
 package client.ui;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.Priority;
 
 public class LoginWindow {
@@ -31,28 +31,32 @@ public class LoginWindow {
         grid.setVgap(10);
         grid.setPadding(new Insets(25,25,25,25));
 
+	// create root - vertical box
+
+
         // add contents to grid
         Text title = new Text("Login");
         title.setFont(Font.font("Consolas",FontWeight.NORMAL,20));
         grid.add(title,0,0,2,1);
-	    Label userName = new Label("Username:");
-	    grid.add(userName,0,1);
-	    TextField userTextField = new TextField();
-	    grid.add(userTextField,1,1);
+	Label userName = new Label("Username:");
+	grid.add(userName,0,1);
+	TextField userTextField = new TextField();
+	grid.add(userTextField,1,1);
         Label pw = new Label("Password:");
         grid.add(pw,0,2);
         PasswordField pwBox = new PasswordField();
         grid.add(pwBox,1,2);
-        
+
         // add login button
         Button loginBtn = new Button("Sign in");
         HBox loginHB = new HBox(10);
+	loginHB.getStylesheets().add(getClass().getResource("cssLogin.css").toExternalForm());
         loginHB.setAlignment(Pos.CENTER);
         HBox.setHgrow(loginBtn,Priority.ALWAYS);
         loginBtn.setMaxWidth(Double.MAX_VALUE);
         loginHB.getChildren().add(loginBtn);
         grid.add(loginHB,0,4,2,1);
-        
+
         // add create account button
         Button createAccountBtn = new Button("Create Account");
         HBox createAccountHB = new HBox(10);
@@ -61,10 +65,11 @@ public class LoginWindow {
         createAccountBtn.setMaxWidth(Double.MAX_VALUE);
         createAccountHB.getChildren().add(createAccountBtn);
         grid.add(createAccountHB,0,6,2,1);
-        
+
         // construct scene & display
         Scene scene = new Scene(grid,300,275);
         stage.setScene(scene);
         stage.show();
     }
 }
+
