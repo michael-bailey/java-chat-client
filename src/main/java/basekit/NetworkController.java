@@ -3,7 +3,6 @@ package basekit;
 import basekit.interfaces.*;
 import java.io.IOException;
 import javax.jmdns.JmDNS;
-import j
 
 class NetworkController extends Object implements DataBusClient {
 
@@ -21,8 +20,6 @@ class NetworkController extends Object implements DataBusClient {
         this.mDns = JmDNS.create();
         this.mDns.getClass();
         
-        
-
         // register this object on the data bus.
         this.dataBusInstance = DataBus.getInstance();
         this.dataBusInstance.register(this, "netSendData");
