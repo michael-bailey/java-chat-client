@@ -4,14 +4,18 @@ plugins {
 
 group '?'
 version '1.0'
-
-sourceCompatibility = 1.8
+sourceCompatibility = 57
 
 repositories {
     mavenCentral()
+    flatDir {
+       dirs 'libs'
+    }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation name: 'jmdns-3.5.6'
+    implementation 'org.openjfx:javafx-controls:13'
 }

@@ -1,6 +1,4 @@
-package BaseKit;
-
-import BaseKit.DataTypes.Notification;
+package basekit;
 
 import java.io.*;
 import java.util.HashMap;
@@ -39,7 +37,7 @@ public class Preferences {
         }
     }
 
-    public static Preferences getPreferences() throws Exception {
+    public static Preferences getInstance() {
         if ( instance == null ) {
             instance = new Preferences();
         }
