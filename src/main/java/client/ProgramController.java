@@ -10,7 +10,6 @@ public class ProgramController extends Application {
     }
 
     public void start(Stage stage) throws Exception {
-        LoginWindow login = new LoginWindow();
-        login.createWindow(stage);
+        LoginWindow login = new LoginWindow(stage);
     }
 }

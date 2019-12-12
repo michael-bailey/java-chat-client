@@ -1,6 +1,15 @@
 //created by Mitchell Hardie
 
 package client.ui;
+
+import javafx.application.Application;
+
+import javafx.application.Application;
+
+import javafx.application.Application;
+
+import javafx.application.Application;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,7 +31,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.Priority;
 
 public class LoginWindow {
-    public void createWindow(Stage stage){
+
+    
+    public LoginWindow(Stage stage){
+
+
+
+
+
         stage.setTitle("Login Window");
         // init grid layout
         GridPane grid = new GridPane();
@@ -31,17 +47,17 @@ public class LoginWindow {
         grid.setVgap(10);
         grid.setPadding(new Insets(25,25,25,25));
 
-	// create root - vertical box
+	    // create root - vertical box
 
 
         // add contents to grid
         Text title = new Text("Login");
         title.setFont(Font.font("Consolas",FontWeight.NORMAL,20));
         grid.add(title,0,0,2,1);
-	Label userName = new Label("Username:");
-	grid.add(userName,0,1);
-	TextField userTextField = new TextField();
-	grid.add(userTextField,1,1);
+        Label userName = new Label("Username:");
+        grid.add(userName,0,1);
+        TextField userTextField = new TextField();
+        grid.add(userTextField,1,1);
         Label pw = new Label("Password:");
         grid.add(pw,0,2);
         PasswordField pwBox = new PasswordField();
@@ -50,7 +66,7 @@ public class LoginWindow {
         // add login button
         Button loginBtn = new Button("Sign in");
         HBox loginHB = new HBox(10);
-	loginHB.getStylesheets().add(getClass().getResource("cssLogin.css").toExternalForm());
+	    // loginHB.getStylesheets().add(getClass().getResource("cssLogin.css").toExternalForm());
         loginHB.setAlignment(Pos.CENTER);
         HBox.setHgrow(loginBtn,Priority.ALWAYS);
         loginBtn.setMaxWidth(Double.MAX_VALUE);

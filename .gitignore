@@ -4,10 +4,9 @@
 # Ignore Gradle build output directory
 build
 
-libs/
+
 bin/
-.vscode/
-.classpath
-gradlew.bat
-gradlew
 .settings/
+libs/
+preferences.pref
+.classpath
