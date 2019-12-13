@@ -1,6 +1,6 @@
-#cssLogin{
-	-fx-border-color: red;
-	-fx-border-insets: 5;
-	-fx-border-width: 3;
-	-fx-border-style: dashed;
+#loginBox{
+	-fx-border-style: solid;
+	-fx-border-color: black;
+	-fx-border-width: 2;
+	-fx-border-radius: 5;
 }
