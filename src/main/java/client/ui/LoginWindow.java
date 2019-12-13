@@ -1,6 +1,6 @@
 //created by Mitchell Hardie
+package client.ui;
 
-//package client.ui;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

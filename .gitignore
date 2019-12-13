@@ -10,3 +10,6 @@ bin/
 libs/
 preferences.pref
 .classpath
+.idea/
+gradle
+java-chat-client.iml
