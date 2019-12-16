@@ -28,11 +28,19 @@ public class DataBus extends Object {
     }
 
     public void register(DataBusClient object, String name) {
-        for (int i = 0; i < this.clients.get(name).size() - 1; i++) {
-            if (this.clients.get(name).get(i) == object) {
-                return;
+        if (this.clients.containsKey(name)) {
+            for (int i = 0; i < this.clients.get(name).size() - 1; i++) {
+                if (this.clients.get(name).get(i) == object) {
+                    return;
+                }
+                this.clients.get(name).add(object);
             }
-            this.clients.get(name).add(object);
+        } else {
+            ArrayList<DataBusClient> tmp = new ArrayList<>();
+            tmp.add(object);
+            this.clients.put(name, tmp);
+            tmp = null;
+            
         }
     }
 

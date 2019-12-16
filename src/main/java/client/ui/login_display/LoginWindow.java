@@ -1,10 +1,14 @@
 //created by Mitchell Hardie
-package client.ui;
+package client.ui.login_display;
 
+import basekit.DataBus;
+import basekit.Preferences;
+import basekit.interfaces.DataBusClient;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -21,19 +25,25 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Priority;
 
-public class LoginWindow {
+public class LoginWindow implements DataBusClient {
+
 	private Stage stage;
 	private Scene scene,preScene;
-	public LoginWindow(Stage stage){
-		this.stage=stage;
-		this.preScene=null;
+	private DataBus dataBus = DataBus.getInstance();
+	private Preferences preferences = Preferences.getInstance();
+
+	public LoginWindow() {
+
+		// creating a new stage
+		this.stage = new Stage();
+
+		System.out.println(this);
+
+		// register this object to the data bus.
+		this.dataBus.register(this, "LoginWindowShow");
+		this.dataBus.register(this, "LoginWindowHide");
 	}
-	// Getters
-	public Scene getScene(){return scene;}
-	public Scene getPreScene(){return preScene;}
-	// Setters
-	public void setScene(Scene scene){this.scene=scene;}
-	public void setPreScene(Scene preScene){this.preScene=preScene;}
+
 	// Event Handlers
 	private class LoginHandler implements EventHandler<ActionEvent>{
 		@Override
@@ -41,19 +51,47 @@ public class LoginWindow {
 			System.out.println("<placeholder> logging in...");
 		}
 	}
+
 	private class CreateAccHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
 			System.out.println("Create Account");
-			stage.setScene(preScene);
+			stage.setScene(createAccDisplay());
 		}
 	}
+
 	private class ReturnHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
-			stage.setScene(scene);
+			stage.setScene(loginDisplay());
 		}
 	}
+
+	// implementing the data bus call and responders.
+	@Override
+	public void call(DataBusClient caller, String message, Object params) {
+		System.out.println(this);
+		System.out.println("recieved " + message);
+		switch (message) {
+			case "LoginWindowShow":
+				this.stage.setScene(this.loginDisplay());
+				this.stage.show();
+				break;
+			case "LoginWindowHide":
+				this.stage.hide();
+				break;
+			default:
+				break;
+		}
+
+	}
+
+	@Override
+	public void respond(DataBusClient responder, String result) {
+		responder.respond(this, result);
+
+	}
+
 	// Displays
 	public Scene loginDisplay(){
 		stage.setTitle("Login Window");
@@ -134,9 +172,8 @@ public class LoginWindow {
 		mainGrid.add(loginRoot,0,0);
 		mainGrid.add(createAccRoot,0,1);	
 
-		// construct scene & display{
-		scene = new Scene(mainGrid,300,275);
-		return scene;
+		// return the scene
+		return new Scene(mainGrid,300,275);
 	}
 	public Scene createAccDisplay(){
 		stage.setTitle("Create Account");
@@ -189,7 +226,7 @@ public class LoginWindow {
 		// add roots to main grid
 		mainGrid.add(root,0,0);
 
-		preScene = new Scene(mainGrid,300,275);
-		return preScene;
+		// retrun the new scene
+		return new Scene(mainGrid,300,275); 
 	}
 }

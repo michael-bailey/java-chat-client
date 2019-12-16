@@ -1,4 +1,6 @@
-//Created by Mitchell Hardi
+//Created by Mitchell Hardie
+package client.ui.main_display;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,9 +25,11 @@ import javafx.geometry.Orientation;
 
 public class MainWindow{
 	private Stage stage;
+
 	public MainWindow(Stage stage){
 		this.stage=stage;
 	}
+	
 	public Scene createWindow(){
 		stage.setTitle("Application");
 		// init main grid
