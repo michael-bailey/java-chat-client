@@ -1,17 +1,18 @@
 package client;
 
-import basekit.DataBus;
-import basekit.interfaces.DataBusClient;
 import client.ui.PreferencesWindow.PreferencesWindow;
+import client.ui.interfaces.LoginWindowController;
 import client.ui.login_display.LoginWindow;
-import client.ui.main_display.MainWindow;
+import client.ui.main_window.MainWindow;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 
-public class ProgramController extends Application implements DataBusClient {
+public class ProgramController extends Application implements LoginWindowController {
 
-    private DataBus dataBus = DataBus.getInstance();
+    PreferencesWindow prefrenceWindow;
+    MainWindow mainWindow;
+    LoginWindow loginWindow;
 
     public static void main(String[] args) {
         launch(args);
@@ -20,22 +21,35 @@ public class ProgramController extends Application implements DataBusClient {
     public void start(Stage stage) throws Exception {
 
         // create windows in memory
-        new PreferencesWindow();
-        new MainWindow(stage);
-        new LoginWindow();
+        this.prefrenceWindow = new PreferencesWindow();
+        this.mainWindow = new MainWindow();
+        this.loginWindow = new LoginWindow(this);
 
-        // call up the login window.
-        this.dataBus.call(this, "LoginWindowShow", null);
+        loginWindow.show();
+
     }
 
     @Override
-    public void call(DataBusClient caller, String message, Object params) {
+    public void LoginDidPass() {
+        this.loginWindow.hide();
+        this.mainWindow.show();
+
+    }
+
+    @Override
+    public void LoginDidFail() {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void respond(DataBusClient responder, String result) {
+    public void LoginDidCreateUser() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void LoginDidCreateUserFailed() {
         // TODO Auto-generated method stub
 
     }

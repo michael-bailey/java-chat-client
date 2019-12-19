@@ -1,47 +1,54 @@
 //created by Mitchell Hardie
 package client.ui.login_display;
 
-import basekit.DataBus;
-import basekit.Preferences;
-import basekit.interfaces.DataBusClient;
-import javafx.application.Application;
+import client.ui.interfaces.LoginWindowController;
+import client.ui.interfaces.Window;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.chart.PieChart.Data;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import javafx.scene.layout.GridPane;
 import javafx.geometry.Insets;
-import javafx.scene.text.Text;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.Priority;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
-public class LoginWindow implements DataBusClient {
+public class LoginWindow implements Window {
 
 	private Stage stage;
-	private Scene scene,preScene;
-	private DataBus dataBus = DataBus.getInstance();
-	private Preferences preferences = Preferences.getInstance();
+	private LoginWindowController controller;
 
-	public LoginWindow() {
+	private String CSS = "LoginWindow.css";
+	
+
+	public LoginWindow(LoginWindowController controller) {
+		System.out.println(this);
+
+		this.controller = controller;
 
 		// creating a new stage
 		this.stage = new Stage();
+		
+		// window properties
+		this.stage.setResizable(false);
 
-		System.out.println(this);
+		this.stage.setOnCloseRequest(new EventHandler<WindowEvent>(){
+			@Override
+			public void handle(WindowEvent event) {
+				System.exit(1);
+			}
+		});
 
-		// register this object to the data bus.
-		this.dataBus.register(this, "LoginWindowShow");
-		this.dataBus.register(this, "LoginWindowHide");
+		this.stage.setScene(this.loginDisplay());
 	}
 
 	// Event Handlers
@@ -49,10 +56,15 @@ public class LoginWindow implements DataBusClient {
 		@Override
 		public void handle(ActionEvent event){
 			System.out.println("<placeholder> logging in...");
+
+
+
+
+			controller.LoginDidPass();
 		}
 	}
 
-	private class CreateAccHandler implements EventHandler<ActionEvent>{
+	private class CreateButtonHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
 			System.out.println("Create Account");
@@ -67,33 +79,8 @@ public class LoginWindow implements DataBusClient {
 		}
 	}
 
-	// implementing the data bus call and responders.
-	@Override
-	public void call(DataBusClient caller, String message, Object params) {
-		System.out.println(this);
-		System.out.println("recieved " + message);
-		switch (message) {
-			case "LoginWindowShow":
-				this.stage.setScene(this.loginDisplay());
-				this.stage.show();
-				break;
-			case "LoginWindowHide":
-				this.stage.hide();
-				break;
-			default:
-				break;
-		}
-
-	}
-
-	@Override
-	public void respond(DataBusClient responder, String result) {
-		responder.respond(this, result);
-
-	}
-
 	// Displays
-	public Scene loginDisplay(){
+	private Scene loginDisplay(){
 		stage.setTitle("Login Window");
 		// init main gird
 		GridPane mainGrid = new GridPane();
@@ -116,11 +103,11 @@ public class LoginWindow implements DataBusClient {
 		VBox loginRoot = new VBox();
 		loginRoot.setAlignment(Pos.CENTER);
 		loginRoot.setId("loginBox");
-		loginRoot.getStylesheets().add("../css_style_sheets/cssLogin.css");
+		loginRoot.getStylesheets().add(this.CSS);
 		VBox createAccRoot = new VBox();
 		createAccRoot.setAlignment(Pos.CENTER);
 		createAccRoot.setId("loginBox");
-		createAccRoot.getStylesheets().add("../css_style_sheets/cssLogin.css");
+		createAccRoot.getStylesheets().add(this.CSS);
 
 		// add contents to grid
 		Text title = new Text("Login");
@@ -162,7 +149,7 @@ public class LoginWindow implements DataBusClient {
 		// button actions
 		LoginHandler loginAttempt = new LoginHandler();
 		loginBtn.setOnAction(loginAttempt);
-		CreateAccHandler createAccPress = new CreateAccHandler();	
+		CreateButtonHandler createAccPress = new CreateButtonHandler();	
 		createAccBtn.setOnAction(createAccPress);
 
 		// add to grids to roots
@@ -175,7 +162,8 @@ public class LoginWindow implements DataBusClient {
 		// return the scene
 		return new Scene(mainGrid,300,275);
 	}
-	public Scene createAccDisplay(){
+
+	private Scene createAccDisplay(){
 		stage.setTitle("Create Account");
 		// init main grid
 		GridPane mainGrid = new GridPane();
@@ -192,7 +180,7 @@ public class LoginWindow implements DataBusClient {
 		VBox root = new VBox();
 		root.setAlignment(Pos.CENTER);
 		root.setId("loginBox");
-		root.getStylesheets().add("../css_style_sheets/cssLogin.css");
+		root.getStylesheets().add(this.CSS);
 
 		// add contents to grid
 		Text title = new Text("Create Account");
@@ -229,4 +217,13 @@ public class LoginWindow implements DataBusClient {
 		// retrun the new scene
 		return new Scene(mainGrid,300,275); 
 	}
+
+	public void show() {
+		this.stage.show();
+	}
+
+	public void hide() {
+		this.stage.hide();
+	}
+
 }

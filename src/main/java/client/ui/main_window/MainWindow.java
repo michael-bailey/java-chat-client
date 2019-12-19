@@ -1,37 +1,25 @@
 //Created by Mitchell Hardie
-package client.ui.main_display;
+package client.ui.main_window;
 
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import client.ui.interfaces.Window;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import javafx.scene.layout.GridPane;
-import javafx.geometry.Insets;
-import javafx.scene.text.Text;
-import javafx.geometry.Pos;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.control.ScrollBar;
-import javafx.geometry.Orientation;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-public class MainWindow{
+public class MainWindow implements Window {
 	private Stage stage;
 
-	public MainWindow(Stage stage){
-		this.stage=stage;
+	public MainWindow(){
+		this.stage = new Stage();
 	}
 	
 	public Scene createWindow(){
-		stage.setTitle("Application");
+		this.stage.setTitle("Application");
 		// init main grid
 		GridPane mainGrid = new GridPane();
 		// create vertical boxes for pannels
@@ -97,5 +85,16 @@ public class MainWindow{
 		//sc.prefHeightProperty().bind(root.heightProperty().multiply(1));
 		root.add(sc,0,0);
 		return root;
+	}
+
+	@Override
+	public void show() {
+		this.stage.setScene(this.createWindow());
+		this.stage.show();
+	}
+
+	@Override
+	public void hide() {
+		this.stage.hide();
 	}
 }
