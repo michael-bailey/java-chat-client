@@ -1,61 +1,86 @@
 //created by Mitchell Hardie
-package client.ui;
+package client.ui.login_display;
 
-import javafx.application.Application;
+import client.ui.interfaces.LoginWindowController;
+import client.ui.interfaces.Window;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.geometry.Insets;
-import javafx.scene.text.Text;
-import javafx.geometry.Pos;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.Priority;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
-public class LoginWindow {
+public class LoginWindow implements Window {
+
 	private Stage stage;
-	private Scene scene,preScene;
-	public LoginWindow(Stage stage){
-		this.stage=stage;
-		this.preScene=null;
+	private LoginWindowController controller;
+
+	private String CSS = "LoginWindow.css";
+	
+
+	public LoginWindow(LoginWindowController controller) {
+		System.out.println(this);
+
+		this.controller = controller;
+
+		// creating a new stage
+		this.stage = new Stage();
+		
+		// window properties
+		this.stage.setResizable(false);
+
+		this.stage.setOnCloseRequest(new EventHandler<WindowEvent>(){
+			@Override
+			public void handle(WindowEvent event) {
+				System.exit(1);
+			}
+		});
+
+		this.stage.setScene(this.loginDisplay());
 	}
-	// Getters
-	public Scene getScene(){return scene;}
-	public Scene getPreScene(){return preScene;}
-	// Setters
-	public void setScene(Scene scene){this.scene=scene;}
-	public void setPreScene(Scene preScene){this.preScene=preScene;}
+
 	// Event Handlers
 	private class LoginHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
 			System.out.println("<placeholder> logging in...");
+
+
+
+
+			controller.LoginDidPass();
 		}
 	}
-	private class CreateAccHandler implements EventHandler<ActionEvent>{
+
+	private class CreateButtonHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
 			System.out.println("Create Account");
-			stage.setScene(preScene);
+			stage.setScene(createAccDisplay());
 		}
 	}
+
 	private class ReturnHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
-			stage.setScene(scene);
+			stage.setScene(loginDisplay());
 		}
 	}
+
 	// Displays
-	public Scene loginDisplay(){
+	private Scene loginDisplay(){
 		stage.setTitle("Login Window");
 		// init main gird
 		GridPane mainGrid = new GridPane();
@@ -78,11 +103,11 @@ public class LoginWindow {
 		VBox loginRoot = new VBox();
 		loginRoot.setAlignment(Pos.CENTER);
 		loginRoot.setId("loginBox");
-		loginRoot.getStylesheets().add("cssLogin.css");
+		loginRoot.getStylesheets().add(this.CSS);
 		VBox createAccRoot = new VBox();
 		createAccRoot.setAlignment(Pos.CENTER);
 		createAccRoot.setId("loginBox");
-		createAccRoot.getStylesheets().add("cssLogin.css");
+		createAccRoot.getStylesheets().add(this.CSS);
 
 		// add contents to grid
 		Text title = new Text("Login");
@@ -124,7 +149,7 @@ public class LoginWindow {
 		// button actions
 		LoginHandler loginAttempt = new LoginHandler();
 		loginBtn.setOnAction(loginAttempt);
-		CreateAccHandler createAccPress = new CreateAccHandler();	
+		CreateButtonHandler createAccPress = new CreateButtonHandler();	
 		createAccBtn.setOnAction(createAccPress);
 
 		// add to grids to roots
@@ -134,11 +159,11 @@ public class LoginWindow {
 		mainGrid.add(loginRoot,0,0);
 		mainGrid.add(createAccRoot,0,1);	
 
-		// construct scene & display{
-		scene = new Scene(mainGrid,300,275);
-		return scene;
+		// return the scene
+		return new Scene(mainGrid,300,275);
 	}
-	public Scene createAccDisplay(){
+
+	private Scene createAccDisplay(){
 		stage.setTitle("Create Account");
 		// init main grid
 		GridPane mainGrid = new GridPane();
@@ -155,7 +180,7 @@ public class LoginWindow {
 		VBox root = new VBox();
 		root.setAlignment(Pos.CENTER);
 		root.setId("loginBox");
-		root.getStylesheets().add("cssLogin.css");
+		root.getStylesheets().add(this.CSS);
 
 		// add contents to grid
 		Text title = new Text("Create Account");
@@ -189,7 +214,16 @@ public class LoginWindow {
 		// add roots to main grid
 		mainGrid.add(root,0,0);
 
-		preScene = new Scene(mainGrid,300,275);
-		return preScene;
+		// retrun the new scene
+		return new Scene(mainGrid,300,275); 
 	}
+
+	public void show() {
+		this.stage.show();
+	}
+
+	public void hide() {
+		this.stage.hide();
+	}
+
 }

@@ -28,11 +28,19 @@ public class DataBus extends Object {
     }
 
     public void register(DataBusClient object, String name) {
-        for (int i = 0; i < this.clients.get(name).size() - 1; i++) {
-            if (this.clients.get(name).get(i) == object) {
-                return;
+        if (this.clients.containsKey(name)) {
+            for (int i = 0; i < this.clients.get(name).size() - 1; i++) {
+                if (this.clients.get(name).get(i) == object) {
+                    return;
+                }
+                this.clients.get(name).add(object);
             }
-            this.clients.get(name).add(object);
+        } else {
+            ArrayList<DataBusClient> tmp = new ArrayList<>();
+            tmp.add(object);
+            this.clients.put(name, tmp);
+            tmp = null;
+            
         }
     }
 
@@ -41,16 +49,15 @@ public class DataBus extends Object {
     }
 
 
-    public void call(DataBusClient caller, String name, Object parameters) {
-        try {
-            Iterator<DataBusClient> i = this.clients.get(name).iterator();
-            while (i.hasNext()) {
-                DataBusClient a = i.next();
-                a.call(caller, name, parameters);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println(e.getStackTrace());
+    public HashMap<DataBusClient, String> call(String name, Object parameters) {
+
+        HashMap<DataBusClient, String> results = new HashMap<>();
+
+        Iterator<DataBusClient> i = this.clients.get(name).iterator();
+        while (i.hasNext()) {
+            DataBusClient a = i.next();
+            results.put(a, a.call(name, parameters));
         }
+        return results;
     }
 }

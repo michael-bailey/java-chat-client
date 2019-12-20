@@ -13,3 +13,4 @@ preferences.pref
 .idea/
 gradle
 java-chat-client.iml
+.vscode/

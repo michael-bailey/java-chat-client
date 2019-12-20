@@ -1,23 +1,56 @@
 package client;
 
 import client.ui.PreferencesWindow.PreferencesWindow;
+import client.ui.interfaces.LoginWindowController;
+import client.ui.login_display.LoginWindow;
+import client.ui.main_window.MainWindow;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import client.ui.*;
 
-public class ProgramController extends Application {
+
+public class ProgramController extends Application implements LoginWindowController {
+
+    PreferencesWindow prefrenceWindow;
+    MainWindow mainWindow;
+    LoginWindow loginWindow;
+
     public static void main(String[] args) {
         launch(args);
     }
 
     public void start(Stage stage) throws Exception {
 
-        new PreferencesWindow();
+        // create windows in memory
+        this.prefrenceWindow = new PreferencesWindow();
+        this.mainWindow = new MainWindow();
+        this.loginWindow = new LoginWindow(this);
 
-        LoginWindow login = new LoginWindow(stage);
-        login.setScene(login.loginDisplay());
-        login.setPreScene(login.createAccDisplay());
-        stage.setScene(login.getScene());
-        stage.show();
+        loginWindow.show();
+
+    }
+
+    @Override
+    public void LoginDidPass() {
+        this.loginWindow.hide();
+        this.mainWindow.show();
+
+    }
+
+    @Override
+    public void LoginDidFail() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void LoginDidCreateUser() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void LoginDidCreateUserFailed() {
+        // TODO Auto-generated method stub
+
     }
 }
