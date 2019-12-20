@@ -78,11 +78,11 @@ public class LoginWindow {
 		VBox loginRoot = new VBox();
 		loginRoot.setAlignment(Pos.CENTER);
 		loginRoot.setId("loginBox");
-		loginRoot.getStylesheets().add("../css_style_sheets/cssLogin.css");
+		loginRoot.getStylesheets().add("cssLogin.css");
 		VBox createAccRoot = new VBox();
 		createAccRoot.setAlignment(Pos.CENTER);
 		createAccRoot.setId("loginBox");
-		createAccRoot.getStylesheets().add("../css_style_sheets/cssLogin.css");
+		createAccRoot.getStylesheets().add("cssLogin.css");
 
 		// add contents to grid
 		Text title = new Text("Login");
@@ -109,7 +109,7 @@ public class LoginWindow {
 		// add create account button
 		Button createAccBtn = new Button("Create Account");
 		createAccBtn.setId("createAccount");
-		createAccBtn.getStylesheets().add("../css_style_sheets/buttonStyle.css");
+		createAccBtn.getStylesheets().add("buttonStyle.css");
 		HBox createAccHB = new HBox(10);
 		createAccHB.setAlignment(Pos.CENTER);
 		HBox.setHgrow(createAccBtn,Priority.ALWAYS);
@@ -155,7 +155,7 @@ public class LoginWindow {
 		VBox root = new VBox();
 		root.setAlignment(Pos.CENTER);
 		root.setId("loginBox");
-		root.getStylesheets().add("../css_style_sheets/cssLogin.css");
+		root.getStylesheets().add("cssLogin.css");
 
 		// add contents to grid
 		Text title = new Text("Create Account");
