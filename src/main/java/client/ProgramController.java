@@ -2,7 +2,7 @@ package client;
 
 import java.nio.file.FileSystems;
 
-import client.ui.PreferencesWindow.PreferencesWindow;
+import client.ui.preference_window.PreferencesWindow;
 import client.ui.interfaces.LoginWindowController;
 import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;

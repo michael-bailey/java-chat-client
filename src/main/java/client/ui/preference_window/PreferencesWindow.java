@@ -1,4 +1,4 @@
-package client.ui.PreferencesWindow;
+package client.ui.preference_window;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -6,11 +6,6 @@ import client.ui.interfaces.Window;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-enum pane {
-    account,
-    other,
-}
 
 public class PreferencesWindow implements Window {
 

@@ -1,6 +1,10 @@
 //created by Mitchell Hardie
 package client.ui.login_display;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
 import client.ui.interfaces.LoginWindowController;
 import client.ui.interfaces.Window;
 import javafx.event.ActionEvent;
@@ -27,12 +31,25 @@ public class LoginWindow implements Window {
 	private Stage stage;
 	private LoginWindowController controller;
 
-	private String CSS = "./ui/login_display/LoginWindow.css";
-	
+	private String css = "";
 
-	public LoginWindow(LoginWindowController controller) {
+	public LoginWindow(LoginWindowController controller) throws IOException {
 		System.out.println(this);
+		int i = 0;
 
+		System.out.println(i++);
+		Class a = this.getClass();
+		System.out.println(a);
+
+		System.out.println(i++);
+		URL b = a.getResource("/resource/LoginWindow.css");
+		System.out.println(b);
+
+		System.out.println(i++);
+		String c = b.toExternalForm();
+		System.out.println(c);
+
+		System.out.println(i++);
 		this.controller = controller;
 
 		// creating a new stage
@@ -103,11 +120,11 @@ public class LoginWindow implements Window {
 		VBox loginRoot = new VBox();
 		loginRoot.setAlignment(Pos.CENTER);
 		loginRoot.setId("loginBox");
-		loginRoot.getStylesheets().add(this.CSS);
+		loginRoot.getStylesheets().setAll(this.css);
 		VBox createAccRoot = new VBox();
 		createAccRoot.setAlignment(Pos.CENTER);
 		createAccRoot.setId("loginBox");
-		createAccRoot.getStylesheets().add(this.CSS);
+		createAccRoot.getStylesheets().add(this.css);
 
 		// add contents to grid
 		Text title = new Text("Login");
@@ -134,7 +151,7 @@ public class LoginWindow implements Window {
 		// add create account button
 		Button createAccBtn = new Button("Create Account");
 		createAccBtn.setId("createAccount");
-		createAccBtn.getStylesheets().add("buttonStyle.css");
+		createAccBtn.getStylesheets().add("");
 		HBox createAccHB = new HBox(10);
 		createAccHB.setAlignment(Pos.CENTER);
 		HBox.setHgrow(createAccBtn,Priority.ALWAYS);
@@ -180,7 +197,7 @@ public class LoginWindow implements Window {
 		VBox root = new VBox();
 		root.setAlignment(Pos.CENTER);
 		root.setId("loginBox");
-		root.getStylesheets().add(this.CSS);
+		root.getStylesheets().add("");
 
 		// add contents to grid
 		Text title = new Text("Create Account");
