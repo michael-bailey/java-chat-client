@@ -1,5 +1,7 @@
 package client;
 
+import java.nio.file.FileSystems;
+
 import client.ui.PreferencesWindow.PreferencesWindow;
 import client.ui.interfaces.LoginWindowController;
 import client.ui.login_display.LoginWindow;
@@ -14,8 +16,10 @@ public class ProgramController extends Application implements LoginWindowControl
     MainWindow mainWindow;
     LoginWindow loginWindow;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        System.out.println(FileSystems.getDefault().getPath(".").toAbsolutePath());
         launch(args);
+
     }
 
     public void start(Stage stage) throws Exception {

@@ -27,7 +27,7 @@ public class LoginWindow implements Window {
 	private Stage stage;
 	private LoginWindowController controller;
 
-	private String CSS = "LoginWindow.css";
+	private String CSS = "./ui/login_display/LoginWindow.css";
 	
 
 	public LoginWindow(LoginWindowController controller) {
