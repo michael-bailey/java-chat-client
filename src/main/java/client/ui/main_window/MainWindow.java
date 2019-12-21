@@ -20,6 +20,8 @@ import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 
 public class MainWindow implements Window{
 	private double width = Screen.getPrimary().getBounds().getWidth();
@@ -33,7 +35,7 @@ public class MainWindow implements Window{
 	private VBox msgFrame = new VBox();
 	
 	public MainWindow(){
-		this.stage = new stage();
+		this.stage = new Stage();
 	}
 	private class MsgHandler implements EventHandler<ActionEvent>{
 		@Override
@@ -130,6 +132,10 @@ public class MainWindow implements Window{
 	@Override
 	public void show() {
 		this.stage.setScene(this.createWindow());
+		this.stage.setMaxHeight(1080);
+		this.stage.setMinHeight(250);
+		this.stage.setMaxWidth(1920);
+		this.stage.setMinWidth(500);
 		this.stage.show();
 	}
 
