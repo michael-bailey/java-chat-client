@@ -134,7 +134,7 @@ public class LoginWindow implements Window {
 		// add create account button
 		Button createAccBtn = new Button("Create Account");
 		createAccBtn.setId("createAccount");
-		createAccBtn.getStylesheets().add("../css_style_sheets/buttonStyle.css");
+		createAccBtn.getStylesheets().add("buttonStyle.css");
 		HBox createAccHB = new HBox(10);
 		createAccHB.setAlignment(Pos.CENTER);
 		HBox.setHgrow(createAccBtn,Priority.ALWAYS);

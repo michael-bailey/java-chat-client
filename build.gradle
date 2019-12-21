@@ -61,3 +61,12 @@ sourceSets {
         }
     }
 }
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/java"]
+            includes = ["**/*.css"]
+        }
+    }
+}
