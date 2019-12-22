@@ -31,25 +31,9 @@ public class LoginWindow implements Window {
 	private Stage stage;
 	private LoginWindowController controller;
 
-	private String css = "";
+	private String css = "LoginWindow.css";
 
 	public LoginWindow(LoginWindowController controller) throws IOException {
-		System.out.println(this);
-		int i = 0;
-
-		System.out.println(i++);
-		Class a = this.getClass();
-		System.out.println(a);
-
-		System.out.println(i++);
-		URL b = a.getResource("/resource/LoginWindow.css");
-		System.out.println(b);
-
-		System.out.println(i++);
-		String c = b.toExternalForm();
-		System.out.println(c);
-
-		System.out.println(i++);
 		this.controller = controller;
 
 		// creating a new stage
@@ -151,7 +135,7 @@ public class LoginWindow implements Window {
 		// add create account button
 		Button createAccBtn = new Button("Create Account");
 		createAccBtn.setId("createAccount");
-		createAccBtn.getStylesheets().add("");
+		createAccBtn.getStylesheets().add("buttonStyle.css");
 		HBox createAccHB = new HBox(10);
 		createAccHB.setAlignment(Pos.CENTER);
 		HBox.setHgrow(createAccBtn,Priority.ALWAYS);
@@ -197,7 +181,7 @@ public class LoginWindow implements Window {
 		VBox root = new VBox();
 		root.setAlignment(Pos.CENTER);
 		root.setId("loginBox");
-		root.getStylesheets().add("");
+		root.getStylesheets().add(this.css);
 
 		// add contents to grid
 		Text title = new Text("Create Account");
