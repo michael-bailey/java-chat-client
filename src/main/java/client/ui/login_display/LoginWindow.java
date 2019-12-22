@@ -2,9 +2,9 @@
 package client.ui.login_display;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
+import basekit.Preferences;
+import client.data_types.UserData;
 import client.ui.interfaces.LoginWindowController;
 import client.ui.interfaces.Window;
 import javafx.event.ActionEvent;
@@ -30,26 +30,16 @@ public class LoginWindow implements Window {
 
 	private Stage stage;
 	private LoginWindowController controller;
-
+	private Preferences preferences = Preferences.getInstance();
 	private String css = "";
+
+	private UserData userData = UserData.getInstance();
+
+	private TextField userTextField = new TextField();
+	private PasswordField pwBox = new PasswordField();
 
 	public LoginWindow(LoginWindowController controller) throws IOException {
 		System.out.println(this);
-		int i = 0;
-
-		System.out.println(i++);
-		Class a = this.getClass();
-		System.out.println(a);
-
-		System.out.println(i++);
-		URL b = a.getResource("/resource/LoginWindow.css");
-		System.out.println(b);
-
-		System.out.println(i++);
-		String c = b.toExternalForm();
-		System.out.println(c);
-
-		System.out.println(i++);
 		this.controller = controller;
 
 		// creating a new stage
@@ -65,23 +55,32 @@ public class LoginWindow implements Window {
 			}
 		});
 
-		this.stage.setScene(this.loginDisplay());
+		// find a profile in the preference object.
+		if (this.preferences.hasPreference("UserDataStore")) {
+			// load the user data and start the main window
+			this.stage.setScene(this.loginDisplay());
+		} else {
+			this.stage.setScene(this.createAccDisplay());
+		}
 	}
 
 	// Event Handlers
-	private class LoginHandler implements EventHandler<ActionEvent>{
+	private class LoginHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event){
 			System.out.println("<placeholder> logging in...");
-
-
-
-
 			controller.LoginDidPass();
 		}
 	}
 
-	private class CreateButtonHandler implements EventHandler<ActionEvent>{
+	private class CreateAccountHandler implements EventHandler<ActionEvent> {
+		@Override
+		public void handle(ActionEvent event) {
+			
+		}
+	}
+
+	private class CreateButtonHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event){
 			System.out.println("Create Account");
@@ -89,7 +88,7 @@ public class LoginWindow implements Window {
 		}
 	}
 
-	private class ReturnHandler implements EventHandler<ActionEvent>{
+	private class ReturnHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event){
 			stage.setScene(loginDisplay());
@@ -132,12 +131,10 @@ public class LoginWindow implements Window {
 		loginGrid.add(title,0,0,2,1);
 		Label username = new Label("Username:");
 		loginGrid.add(username,0,1);
-		TextField userTextField = new TextField();
-		loginGrid.add(userTextField,0,2,2,1);
+		loginGrid.add(this.userTextField,0,2,2,1);
 		Label pw = new Label("Password:");
 		loginGrid.add(pw,0,3);
-		PasswordField pwBox = new PasswordField();
-		loginGrid.add(pwBox,0,4,2,1);
+		loginGrid.add(this.pwBox,0,4,2,1);
 
 		// add login button
 		Button loginBtn = new Button("Sign in");
@@ -163,11 +160,13 @@ public class LoginWindow implements Window {
 		accMsg.setFont(Font.font("Consolas",FontWeight.NORMAL,11));
 		createAccGrid.add(accMsg,0,0);
 		
+		
 		// button actions
 		LoginHandler loginAttempt = new LoginHandler();
 		loginBtn.setOnAction(loginAttempt);
 		CreateButtonHandler createAccPress = new CreateButtonHandler();	
 		createAccBtn.setOnAction(createAccPress);
+		
 
 		// add to grids to roots
 		loginRoot.getChildren().add(loginGrid);
@@ -205,12 +204,10 @@ public class LoginWindow implements Window {
 		createAccGrid.add(title,0,0,2,1);
 		Label username = new Label("Username:");
 		createAccGrid.add(username,0,1);
-		TextField userTextField = new TextField();
-		createAccGrid.add(userTextField,0,2,2,1);
+		createAccGrid.add(this.userTextField,0,2,2,1);
 		Label pw = new Label("Password:");
 		createAccGrid.add(pw,0,3);
-		PasswordField pwBox = new PasswordField();
-		createAccGrid.add(pwBox,0,4,2,1);
+		createAccGrid.add(this.pwBox,0,4,2,1);
 
 		// create button box
 		HBox buttonBox = new HBox();
