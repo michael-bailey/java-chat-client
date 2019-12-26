@@ -2,7 +2,7 @@ package client.ui.preference_window;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import client.ui.interfaces.Window;
+import client.interfaces.Window;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

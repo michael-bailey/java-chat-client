@@ -4,9 +4,8 @@ package client.ui.login_display;
 import java.io.IOException;
 
 import basekit.Preferences;
-import client.data_types.UserData;
-import client.ui.interfaces.LoginWindowController;
-import client.ui.interfaces.Window;
+import client.interfaces.LoginWindowController;
+import client.interfaces.Window;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -33,8 +32,6 @@ public class LoginWindow implements Window {
 	private Preferences preferences = Preferences.getInstance();
 	private String css = "";
 
-	private UserData userData = UserData.getInstance();
-
 	private TextField userTextField = new TextField();
 	private PasswordField pwBox = new PasswordField();
 
@@ -54,14 +51,6 @@ public class LoginWindow implements Window {
 				System.exit(1);
 			}
 		});
-
-		// find a profile in the preference object.
-		if (this.preferences.hasPreference("UserDataStore")) {
-			// load the user data and start the main window
-			this.stage.setScene(this.loginDisplay());
-		} else {
-			this.stage.setScene(this.createAccDisplay());
-		}
 	}
 
 	// Event Handlers
@@ -69,21 +58,18 @@ public class LoginWindow implements Window {
 		@Override
 		public void handle(ActionEvent event){
 			System.out.println("<placeholder> logging in...");
-			controller.LoginDidPass();
 		}
 	}
 
 	private class CreateAccountHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event) {
-			
 		}
 	}
 
 	private class CreateButtonHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event){
-			System.out.println("Create Account");
 			stage.setScene(createAccDisplay());
 		}
 	}
@@ -222,6 +208,7 @@ public class LoginWindow implements Window {
 		// create button events
 		ReturnHandler returnFunc = new ReturnHandler();
 		returnBtn.setOnAction(returnFunc);
+		continueBtn.setOnAction(new CreateAccountHandler());
 
 		// add to grids to roots
 		root.getChildren().add(createAccGrid);
@@ -232,12 +219,24 @@ public class LoginWindow implements Window {
 		return new Scene(mainGrid,300,275); 
 	}
 
-	public void show() {
+	// window functions.
+	public void show(boolean userDataExists) {
+		if (userDataExists) {
+			this.stage.setScene(this.loginDisplay());
+		} else {
+			this.stage.setScene(this.createAccDisplay());
+		}
 		this.stage.show();
 	}
 
 	public void hide() {
 		this.stage.hide();
+	}
+
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

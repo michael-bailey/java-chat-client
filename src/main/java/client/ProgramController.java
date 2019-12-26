@@ -2,15 +2,16 @@ package client;
 
 import java.nio.file.FileSystems;
 
+import javafx.stage.Stage;
+import javafx.application.Application;
+
 import client.ui.preference_window.PreferencesWindow;
-import client.ui.interfaces.LoginWindowController;
 import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
-import javafx.application.Application;
-import javafx.stage.Stage;
+import client.interfaces.*;
 
 
-public class ProgramController extends Application implements LoginWindowController {
+public class ProgramController extends Application implements LoginWindowController, MainWindowController, DataManagerController {
 
     PreferencesWindow prefrenceWindow;
     MainWindow mainWindow;
@@ -34,26 +35,25 @@ public class ProgramController extends Application implements LoginWindowControl
     }
 
     @Override
-    public void LoginDidPass() {
-        this.loginWindow.hide();
-        this.mainWindow.show();
-
-    }
-
-    @Override
-    public void LoginDidFail() {
+    public void dataDidLoad() {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void LoginDidCreateUser() {
+    public void dataFailedLoad() {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void LoginDidCreateUserFailed() {
+    public void LoginRequest() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void LoginCreateUser() {
         // TODO Auto-generated method stub
 
     }

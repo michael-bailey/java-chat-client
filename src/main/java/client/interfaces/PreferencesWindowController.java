@@ -1,4 +1,4 @@
-package client.ui.interfaces;
+package client.interfaces;
 
 public interface PreferencesWindowController {
 
