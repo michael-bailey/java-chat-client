@@ -59,17 +59,8 @@ javafx {
 sourceSets {
     main {
         resources {
-            srcDirs = ["src/main/java"]
+            srcDirs = ["src/main/java/client/ui/login_display","src/main/java/client/ui/main_window"]
             includes = ["**/*.css"]
-        }
-    }
-}
-
-sourceSets {
-    main {
-        resources {
-            srcDirs = ["src/main/java"]
-            includes = ["src/resources"]
         }
     }
 }

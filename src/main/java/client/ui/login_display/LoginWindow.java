@@ -30,7 +30,7 @@ public class LoginWindow implements Window {
 	private Stage stage;
 	private LoginWindowController controller;
 	private Preferences preferences = Preferences.getInstance();
-	private String css = "";
+	private String css = "LoginWindow.css";
 
 	private TextField userTextField = new TextField();
 	private PasswordField pwBox = new PasswordField();
@@ -134,7 +134,7 @@ public class LoginWindow implements Window {
 		// add create account button
 		Button createAccBtn = new Button("Create Account");
 		createAccBtn.setId("createAccount");
-		createAccBtn.getStylesheets().add("");
+		createAccBtn.getStylesheets().add("buttonStyle.css");
 		HBox createAccHB = new HBox(10);
 		createAccHB.setAlignment(Pos.CENTER);
 		HBox.setHgrow(createAccBtn,Priority.ALWAYS);
@@ -182,7 +182,7 @@ public class LoginWindow implements Window {
 		VBox root = new VBox();
 		root.setAlignment(Pos.CENTER);
 		root.setId("loginBox");
-		root.getStylesheets().add("");
+		root.getStylesheets().add(this.css);
 
 		// add contents to grid
 		Text title = new Text("Create Account");
