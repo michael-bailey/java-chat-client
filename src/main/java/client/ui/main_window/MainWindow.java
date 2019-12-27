@@ -1,32 +1,26 @@
 //Created by Mitchell Hardie
 package client.ui.main_window;
 
-import javafx.stage.Stage;
-import javafx.application.Application;
+import client.interfaces.Window;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import client.interfaces.Window;
-import javafx.geometry.Orientation;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.Priority;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.stage.Screen;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-
+import javafx.stage.Stage;
 public class MainWindow implements Window{
 	private double width = Screen.getPrimary().getBounds().getWidth();
 	private double height = Screen.getPrimary().getBounds().getHeight();
-	private double currMsgHeight=0;
+	private double currMsgHeight = 0;
 	private boolean msgSent = true;
 	private Stage stage;
 	private TextField msgEntry = new TextField();

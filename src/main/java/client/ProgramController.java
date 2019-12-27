@@ -36,25 +36,21 @@ public class ProgramController extends Application implements LoginWindowControl
 
     @Override
     public void dataDidLoad() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void dataFailedLoad() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void LoginRequest() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void LoginCreateUser() {
-        // TODO Auto-generated method stub
 
     }
 }

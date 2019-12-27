@@ -1,10 +1,9 @@
 package client.managers;
 
-import basekit.interfaces.*;
 import java.io.IOException;
 import javax.jmdns.JmDNS;
 
-class NetworkController extends Object implements DataBusClient {
+class NetworkController extends Object {
 
     // mdns object.
     private JmDNS mDns;
@@ -24,10 +23,6 @@ class NetworkController extends Object implements DataBusClient {
         }
     }
 
-    @Override
-    public String call(String message, Object params) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+
 
 }
