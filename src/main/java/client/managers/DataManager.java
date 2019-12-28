@@ -27,6 +27,7 @@ public class DataManager {
         public byte[] dataString;
         public byte[] checkSum;
     }
+    
     public DataManager() {
 
         this.dataObject = null;
@@ -109,6 +110,7 @@ public class DataManager {
                     e.printStackTrace();
                     return false;
                 }
+                
                 // end of section.
                 this.isLocked = false;
                 return true;
@@ -194,8 +196,55 @@ public class DataManager {
         return false;
     }
 
-    public void forceSave() {
+    public void Save() {
+        try {
+            DataStore dataStore = new DataStore();
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            Cipher cipher = Cipher.getInstance("AES");
+            // initalise the cipher
+            cipher.init(Cipher.ENCRYPT_MODE, this.key);
 
+            // write the object to a byte array
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            new ObjectOutputStream(byteArrayOutputStream).writeObject(this.dataObject);
+
+            // generate the checksum
+            byte[] checksum = messageDigest.digest(byteArrayOutputStream.toByteArray());
+            dataStore.checkSum = messageDigest.digest(checksum);
+
+            // encrypt the data
+            byte[] encryptedByteArray = cipher.doFinal(byteArrayOutputStream.toByteArray());
+            dataStore.dataString = encryptedByteArray;
+            FileOutputStream tmpOut = new FileOutputStream(this.fileHandle);
+            new ObjectOutputStream(tmpOut).writeObject(dataStore);
+            tmpOut.close();
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("class not found occurred");
+            System.out.println("=== Stack Trace ===");
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            System.out.println("class not found occurred");
+            System.out.println("=== Stack Trace ===");
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            System.out.println("class not found occurred");
+            System.out.println("=== Stack Trace ===");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("class not found occurred");
+            System.out.println("=== Stack Trace ===");
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            System.out.println("class not found occurred");
+            System.out.println("=== Stack Trace ===");
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            System.out.println("class not found occurred");
+            System.out.println("=== Stack Trace ===");
+            e.printStackTrace();
+        } finally {
+            
+        }
     }
 
     public Object getObject(String key) {
