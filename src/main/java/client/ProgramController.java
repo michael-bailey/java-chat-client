@@ -9,6 +9,7 @@ import client.ui.preference_window.PreferencesWindow;
 import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
 import client.interfaces.*;
+import client.managers.DataManager;
 
 
 public class ProgramController extends Application implements LoginWindowController, MainWindowController, DataManagerController {
@@ -30,8 +31,10 @@ public class ProgramController extends Application implements LoginWindowControl
         this.mainWindow = new MainWindow();
         this.loginWindow = new LoginWindow(this);
 
-        loginWindow.show();
+        loginWindow.show(true);
 
+        DataManager dm = new DataManager();
+        dm.createNew("test","sdgsggsagdsa");
     }
 
     @Override
@@ -46,7 +49,8 @@ public class ProgramController extends Application implements LoginWindowControl
 
     @Override
     public void LoginRequest() {
-
+        this.loginWindow.hide();
+        this.mainWindow.show();
     }
 
     @Override

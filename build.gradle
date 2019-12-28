@@ -7,6 +7,8 @@ plugins {
     // Apply the application plugin to allow quick running of the program
     id 'application'
 
+    id 'eclipse'
+
     // Apply the javafx plugin to add support for building a gui application.
     id 'org.openjfx.javafxplugin' version '0.0.8'
 
@@ -59,7 +61,7 @@ javafx {
 sourceSets {
     main {
         resources {
-            srcDirs = ["src/main/java/client/ui/login_display","src/main/java/client/ui/main_window"]
+            srcDirs = ["src/main/java", "src/main/res"]
             includes = ["**/*.css"]
         }
     }
