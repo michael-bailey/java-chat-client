@@ -58,12 +58,15 @@ public class LoginWindow implements Window {
 		@Override
 		public void handle(ActionEvent event){
 			System.out.println("<placeholder> logging in...");
+			controller.LoginRequest();
 		}
 	}
 
 	private class CreateAccountHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event) {
+			controller.LoginRequest();
+		
 		}
 	}
 
