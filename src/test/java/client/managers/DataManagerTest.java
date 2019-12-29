@@ -4,6 +4,9 @@ import client.ui.*;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
 
 public class DataManagerTest {
 
@@ -14,15 +17,19 @@ public class DataManagerTest {
     @Test
     public void testIfCreated() {
         DataManager a = new DataManager();
-        System.out.println(a);
-        assertEquals(a != null, a == null);
+        System.out.println(a.toString());
+        assertTrue(a instanceof DataManager);
     }
 
     @Test
     public void testCreation() {
+        new File("test.dat").delete();
         DataManager a = new DataManager();
-        assertEquals(true, a.createNew("test", "Password1"));
+        assertTrue(a instanceof DataManager);
+        boolean b = a.createNew("test", "testKey");
+        assertTrue(b);
     }
+
 
     public void testUnlockingOfFile() {
 
