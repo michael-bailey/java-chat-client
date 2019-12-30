@@ -25,6 +25,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+
+/**
+ * @author Mitch161
+ * @version 1.0
+ * @since 1.0
+ */
 public class LoginWindow implements Window {
 
 	private Stage stage;

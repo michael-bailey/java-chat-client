@@ -11,12 +11,17 @@ import client.ui.main_window.MainWindow;
 import client.interfaces.*;
 import client.managers.DataManager;
 
-
-public class ProgramController extends Application implements LoginWindowController, MainWindowController, DataManagerController {
+/**
+ * @author michael-bailey
+ * @version 1.0
+ * @since 1.0
+ */
+public class ProgramController extends Application implements LoginWindowController, MainWindowController {
 
     PreferencesWindow prefrenceWindow;
     MainWindow mainWindow;
     LoginWindow loginWindow;
+    DataManager dataManager;
 
     public static void main(String[] args) throws Exception {
         System.out.println(FileSystems.getDefault().getPath(".").toAbsolutePath());
@@ -30,21 +35,12 @@ public class ProgramController extends Application implements LoginWindowControl
         this.prefrenceWindow = new PreferencesWindow();
         this.mainWindow = new MainWindow();
         this.loginWindow = new LoginWindow(this);
+        this.dataManager = new DataManager();
 
+        // show the Login window
         loginWindow.show(true);
 
-        DataManager dm = new DataManager();
-        dm.createNew("test","sdgsggsagdsa");
-    }
-
-    @Override
-    public void dataDidLoad() {
-
-    }
-
-    @Override
-    public void dataFailedLoad() {
-
+        
     }
 
     @Override
