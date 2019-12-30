@@ -102,7 +102,7 @@ public class DataManager {
                     byte[] dataArray = decoder.decode(dataStore.dataString);
                     byte[] saltArray = decoder.decode(dataStore.salt);
                     byte[] checkSumArray = decoder.decode(dataStore.checkSum);
-                    new PBE
+                    
                     // creating key.
                     keySpec = new PBEKeySpec(password.toCharArray(), saltArray, 256, 256);
                     this.secretKey = secretKeyFactory.generateSecret(keySpec);
