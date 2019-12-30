@@ -102,9 +102,9 @@ public class DataManager {
                     byte[] dataArray = decoder.decode(dataStore.dataString);
                     byte[] saltArray = decoder.decode(dataStore.salt);
                     byte[] checkSumArray = decoder.decode(dataStore.checkSum);
-
+                    new PBE
                     // creating key.
-                    keySpec = new PBEKeySpec(password.toCharArray(), saltArray, 65536, 256);
+                    keySpec = new PBEKeySpec(password.toCharArray(), saltArray, 256, 256);
                     this.secretKey = secretKeyFactory.generateSecret(keySpec);
                     this.secretKey = new SecretKeySpec(this.secretKey.getEncoded(), "AES"); // this is the key
 
@@ -299,7 +299,7 @@ public class DataManager {
                         String saltString = encoder.encodeToString(salt);
 
                         // assigning vars
-                        keySpec = new PBEKeySpec(password.toCharArray(), salt, 65536, 256);
+                        keySpec = new PBEKeySpec(password.toCharArray(), salt, 256, 256);
                         this.secretKey = secretKeyFactory.generateSecret(keySpec);
                         this.secretKey = new SecretKeySpec(this.secretKey.getEncoded(), "AES"); // this is the key
 
