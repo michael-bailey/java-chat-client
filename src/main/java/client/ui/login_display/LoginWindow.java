@@ -3,7 +3,6 @@ package client.ui.login_display;
 
 import java.io.IOException;
 
-import basekit.Preferences;
 import client.interfaces.LoginWindowController;
 import client.interfaces.Window;
 import javafx.event.ActionEvent;
@@ -35,7 +34,6 @@ public class LoginWindow implements Window {
 
 	private Stage stage;
 	private LoginWindowController controller;
-	private Preferences preferences = Preferences.getInstance();
 	private String css = "LoginWindow.css";
 
 	private TextField userTextField = new TextField();
