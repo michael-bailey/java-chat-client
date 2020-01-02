@@ -3,6 +3,8 @@ package client.managers;
 import client.ui.*;
 
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -62,11 +64,47 @@ public class DataManagerTest {
         assertTrue(!b);
     }
 
+    
     @Test
-    public void testAddingValues() {
-        
+    public void testAddingAndGettingValues() {
+        new File("helloWorld.dat").delete();
+        DataManager a = new DataManager();
+        a.createNew("helloWorld", "Password1234");
+        Object b = new Object();
+        a.addObject("bob", b);
+        assertEquals(b, a.getObject("bob"));
     }
 
+    @Test
+    public void testaddingNullValue() {
+        new File("helloWorld.dat").delete();
+        DataManager a = new DataManager();
+        a.createNew("helloWorld", "Password1234");
+    }
+
+    @Test
+    public void testGettingNonExistantKey() {
+        new File("helloWorld.dat").delete();
+        DataManager a = new DataManager();
+        a.createNew("helloWorld", "Password1234");
+    }
+
+    @Test
+    public void testLockingAndUnlockingFile() {
+        new File("helloWorld.dat").delete();
+        DataManager a = new DataManager();
+        a.createNew("helloWorld", "Password1234");
+    }
+
+    @Test
+    public void testForceSaveData() {
+        new File("helloWorld.dat").delete();
+        DataManager a = new DataManager();
+        a.createNew("helloWorld", "Password1234");
+    }
+
+
+// TODO imlement this test for locking
 /*
     public void testLockingOfFile() {
         new File("helloWorld.dat").delete();
