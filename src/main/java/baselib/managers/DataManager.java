@@ -1,8 +1,7 @@
-package client.managers;
+package baselib.managers;
 
-import client.managers.data_types.DataStore;
+import baselib.managers.data_types.DataStore;
 
-import java.beans.Encoder;
 import java.io.*;
 import java.util.Base64;
 import java.util.HashMap;
@@ -12,8 +11,6 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import com.google.common.annotations.Beta;
-
-import org.checkerframework.checker.units.qual.s;
 
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
@@ -193,7 +190,11 @@ public class DataManager {
         return false;
     }
 
-    
+    /**
+     * called when data is to be saved and the object be reset to its original state
+     * @return true if it completed
+     * @since 1.0
+     */
     public boolean lock() {
         if (!this.isLocked) {
             DataStore dataStore = new DataStore();     
@@ -273,7 +274,7 @@ public class DataManager {
         }
 
     /**
-     * 
+     * this creates a new file and writes a blank hashmap to it
      */
     public boolean createNew(String name, String password) {
         if (this.isLocked) {
