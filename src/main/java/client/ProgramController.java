@@ -1,15 +1,13 @@
 package client;
 
-import java.nio.file.FileSystems;
-
 import javafx.stage.Stage;
 import javafx.application.Application;
 
-import client.ui.preference_window.PreferencesWindow;
+import client.ui.preference_window.PreferenceWindow;
 import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
 import client.interfaces.*;
-import client.managers.DataManager;
+import baselib.managers.DataManager;
 
 /**
  * @author michael-bailey
@@ -18,39 +16,24 @@ import client.managers.DataManager;
  */
 public class ProgramController extends Application implements LoginWindowController, MainWindowController {
 
-    PreferencesWindow prefrenceWindow;
+    PreferenceWindow preferenceWindow;
     MainWindow mainWindow;
     LoginWindow loginWindow;
     DataManager dataManager;
 
     public static void main(String[] args) throws Exception {
-        System.out.println(FileSystems.getDefault().getPath(".").toAbsolutePath());
         launch(args);
-
     }
 
     public void start(Stage stage) throws Exception {
 
         // create windows in memory
-        this.prefrenceWindow = new PreferencesWindow();
+        this.preferenceWindow = new PreferenceWindow();
         this.mainWindow = new MainWindow();
         this.loginWindow = new LoginWindow(this);
         this.dataManager = new DataManager();
 
         // show the Login window
         loginWindow.show(true);
-
-        
-    }
-
-    @Override
-    public void LoginRequest() {
-        this.loginWindow.hide();
-        this.mainWindow.show();
-    }
-
-    @Override
-    public void LoginCreateUser() {
-
     }
 }
