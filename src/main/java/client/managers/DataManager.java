@@ -65,6 +65,7 @@ public class DataManager {
 
     /**
      * nulls all internal state on creation
+     * @since 1.0
      */
     public DataManager() {
 
