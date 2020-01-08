@@ -273,7 +273,11 @@ public class DataManager {
         }
 
     /**
-     * 
+     * creates a new data file and saves a blank hash map
+     * @param name the name of the file that will be created.
+     * @param password the pasword used when encrypting the data.
+     * @return true when created and ready to use.
+     * @since 1.0
      */
     public boolean createNew(String name, String password) {
         if (this.isLocked) {
@@ -385,7 +389,80 @@ public class DataManager {
      * @return true if it was successful
      */
     public boolean Save() {
-        return isLocked;
+        if (!this.isLocked) {
+            DataStore dataStore = new DataStore();
+
+            try {
+                // creating instances.
+                MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+                Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+                Base64.Encoder encoder = Base64.getEncoder();
+
+                // initalise the cipher.
+                cipher.init(Cipher.ENCRYPT_MODE, this.secretKey, ivspec);
+
+                // write the object to a byte array
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                new ObjectOutputStream(byteArrayOutputStream).writeObject(this.dataObject);
+
+                // generate the checksum
+                byte[] checksum = messageDigest.digest(byteArrayOutputStream.toByteArray());
+                String checkSumString = encoder.encodeToString(checksum);
+
+                // encrypt the data
+                byte[] encryptedByteArray = cipher.doFinal(byteArrayOutputStream.toByteArray());
+                String encryptedDataString = encoder.encodeToString(encryptedByteArray);
+
+                // add then to the dataStore
+                dataStore.dataString = encryptedDataString;
+                dataStore.checkSum = checkSumString;
+                dataStore.salt = this.saltString;
+
+                FileOutputStream tmpOut = new FileOutputStream(this.fileHandle);
+                new ObjectOutputStream(tmpOut).writeObject(dataStore);
+                tmpOut.close();
+
+                return true;
+
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println("class not found occurred");
+                System.out.println("=== Stack Trace ===");
+                e.printStackTrace();
+                return false;
+            } catch (IOException e) {
+                System.out.println("class not found occurred");
+                System.out.println("=== Stack Trace ===");
+                e.printStackTrace();
+                return false;
+            } catch (IllegalBlockSizeException e) {
+                System.out.println("class not found occurred");
+                System.out.println("=== Stack Trace ===");
+                e.printStackTrace();
+                return false;
+            } catch (BadPaddingException e) {
+                System.out.println("class not found occurred");
+                System.out.println("=== Stack Trace ===");
+                e.printStackTrace();
+                return false;
+            } catch (NoSuchPaddingException e) {
+                System.out.println("class not found occurred");
+                System.out.println("=== Stack Trace ===");
+                e.printStackTrace();
+                return false;
+            } catch (InvalidKeyException e) {
+                System.out.println("class not found occurred");
+                System.out.println("=== Stack Trace ===");
+                e.printStackTrace();
+                return false;
+            } catch (InvalidAlgorithmParameterException e) {
+                System.out.println("class not found occurred");
+                System.out.println("=== Stack Trace ===");
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     public Object getObject(String key) {
