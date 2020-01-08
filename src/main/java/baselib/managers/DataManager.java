@@ -486,6 +486,14 @@ public class DataManager {
             return false;
         }
     }
+
+    public Boolean removeObject(String key) {
+        if (this.dataObject.containsKey(key)) {
+            this.dataObject.remove(key);
+            return true;
+        }
+        return false;
+    }
 }
 
 
