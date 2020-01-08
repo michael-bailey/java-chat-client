@@ -91,6 +91,7 @@ public class LoginWindow implements Window {
 	// Displays
 	private Scene loginDisplay(){
 		stage.setTitle("Login Window");
+		stage.setHeight(350);
 		// init main gird
 		GridPane mainGrid = new GridPane();
 		mainGrid.setAlignment(Pos.CENTER);
@@ -174,6 +175,7 @@ public class LoginWindow implements Window {
 
 	private Scene createAccDisplay(){
 		stage.setTitle("Create Account");
+		stage.setHeight(300);
 		// init main grid
 		GridPane mainGrid = new GridPane();
 		mainGrid.setAlignment(Pos.CENTER);

@@ -1,6 +1,4 @@
-package client.managers;
-
-import client.ui.*;
+package baselib.managers;
 
 import org.junit.Test;
 

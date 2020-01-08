@@ -7,11 +7,11 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class PreferencesWindow implements Window {
+public class PreferenceWindow implements Window {
 
     Stage stage;
 
-    public PreferencesWindow() {
+    public PreferenceWindow() {
         System.out.println(this);
         this.stage = new Stage();
 
