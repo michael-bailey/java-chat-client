@@ -88,13 +88,6 @@ public class DataManagerTest {
     }
 
     @Test
-    public void testLockingAndUnlockingFile() {
-        new File("helloWorld.dat").delete();
-        DataManager a = new DataManager();
-        a.createNew("helloWorld", "Password1234");
-    }
-
-    @Test
     public void testForceSaveData() {
         new File("helloWorld.dat").delete();
         DataManager a = new DataManager();
@@ -102,15 +95,16 @@ public class DataManagerTest {
     }
 
 
-// TODO imlement this test for locking
-/*
+    @Test
     public void testLockingOfFile() {
         new File("helloWorld.dat").delete();
         DataManager a = new DataManager();
         a.createNew("helloWorld", "Password1234");
+        a.addObject("testObject", new String("hello world"));
         boolean b = a.lock();
-        assertTrue(!b);
+        assertTrue(b);
+        a.unlock("helloWorld", "Password1234");
+        String c = (String) a.getObject("testObject");
+        assertTrue(c.equals("hello world"));
     }
-*/
-    
 }
