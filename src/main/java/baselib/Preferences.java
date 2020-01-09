@@ -1,8 +1,9 @@
-package basekit;
+package baselib;
 
 import java.io.*;
 import java.util.HashMap;
 
+@Deprecated
 public class Preferences {
     private static Preferences instance;
 

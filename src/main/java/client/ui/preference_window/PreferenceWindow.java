@@ -2,16 +2,16 @@ package client.ui.preference_window;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import client.ui.interfaces.Window;
+import client.interfaces.Window;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class PreferencesWindow implements Window {
+public class PreferenceWindow implements Window {
 
     Stage stage;
 
-    public PreferencesWindow() {
+    public PreferenceWindow() {
         System.out.println(this);
         this.stage = new Stage();
 

@@ -7,6 +7,8 @@ plugins {
     // Apply the application plugin to allow quick running of the program
     id 'application'
 
+    id 'eclipse'
+
     // Apply the javafx plugin to add support for building a gui application.
     id 'org.openjfx.javafxplugin' version '0.0.8'
 
@@ -25,14 +27,17 @@ repositories {
 
 // defines dependencies
 dependencies {
+
+
     // Use JUnit test framework for unit testing.
     testImplementation 'junit:junit:4.12'
 
-    // Googles json serialiser and deserialiser.
+    // Google dependencies
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.guava:guava:28.1-jre'
 
     // Am mdns implementation. 
-    implementation name: "jmdns-3.5.6"
+    compile group: 'javax.jmdns', name: 'jmdns', version: '3.4.1'
 
     // Javafx cross platform dependencies.
     compile "org.openjfx:javafx-graphics:11.0.1:win"
@@ -56,7 +61,7 @@ javafx {
 sourceSets {
     main {
         resources {
-            srcDirs = ["src/main/java/client/ui/login_display","src/main/java/client/ui/main_window"]
+            srcDirs = ["src/main/java", "src/main/res"]
             includes = ["**/*.css"]
         }
     }

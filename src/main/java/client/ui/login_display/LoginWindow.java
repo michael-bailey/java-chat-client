@@ -2,11 +2,9 @@
 package client.ui.login_display;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
-import client.ui.interfaces.LoginWindowController;
-import client.ui.interfaces.Window;
+import client.interfaces.LoginWindowController;
+import client.interfaces.Window;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -26,14 +24,23 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+
+/**
+ * @author Mitch161
+ * @version 1.0
+ * @since 1.0
+ */
 public class LoginWindow implements Window {
 
 	private Stage stage;
 	private LoginWindowController controller;
-
 	private String css = "LoginWindow.css";
 
+	private TextField userTextField = new TextField();
+	private PasswordField pwBox = new PasswordField();
+
 	public LoginWindow(LoginWindowController controller) throws IOException {
+		System.out.println(this);
 		this.controller = controller;
 
 		// creating a new stage
@@ -48,32 +55,33 @@ public class LoginWindow implements Window {
 				System.exit(1);
 			}
 		});
-
-		this.stage.setScene(this.loginDisplay());
 	}
 
 	// Event Handlers
-	private class LoginHandler implements EventHandler<ActionEvent>{
+	private class LoginHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event){
 			System.out.println("<placeholder> logging in...");
-
-
-
-
-			controller.LoginDidPass();
+			controller.LoginRequest();
 		}
 	}
 
-	private class CreateButtonHandler implements EventHandler<ActionEvent>{
+	private class CreateAccountHandler implements EventHandler<ActionEvent> {
+		@Override
+		public void handle(ActionEvent event) {
+			controller.LoginRequest();
+		
+		}
+	}
+
+	private class CreateButtonHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event){
-			System.out.println("Create Account");
 			stage.setScene(createAccDisplay());
 		}
 	}
 
-	private class ReturnHandler implements EventHandler<ActionEvent>{
+	private class ReturnHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event){
 			stage.setScene(loginDisplay());
@@ -83,6 +91,7 @@ public class LoginWindow implements Window {
 	// Displays
 	private Scene loginDisplay(){
 		stage.setTitle("Login Window");
+		stage.setHeight(350);
 		// init main gird
 		GridPane mainGrid = new GridPane();
 		mainGrid.setAlignment(Pos.CENTER);
@@ -116,12 +125,10 @@ public class LoginWindow implements Window {
 		loginGrid.add(title,0,0,2,1);
 		Label username = new Label("Username:");
 		loginGrid.add(username,0,1);
-		TextField userTextField = new TextField();
-		loginGrid.add(userTextField,0,2,2,1);
+		loginGrid.add(this.userTextField,0,2,2,1);
 		Label pw = new Label("Password:");
 		loginGrid.add(pw,0,3);
-		PasswordField pwBox = new PasswordField();
-		loginGrid.add(pwBox,0,4,2,1);
+		loginGrid.add(this.pwBox,0,4,2,1);
 
 		// add login button
 		Button loginBtn = new Button("Sign in");
@@ -147,11 +154,13 @@ public class LoginWindow implements Window {
 		accMsg.setFont(Font.font("Consolas",FontWeight.NORMAL,11));
 		createAccGrid.add(accMsg,0,0);
 		
+		
 		// button actions
 		LoginHandler loginAttempt = new LoginHandler();
 		loginBtn.setOnAction(loginAttempt);
 		CreateButtonHandler createAccPress = new CreateButtonHandler();	
 		createAccBtn.setOnAction(createAccPress);
+		
 
 		// add to grids to roots
 		loginRoot.getChildren().add(loginGrid);
@@ -166,6 +175,7 @@ public class LoginWindow implements Window {
 
 	private Scene createAccDisplay(){
 		stage.setTitle("Create Account");
+		stage.setHeight(300);
 		// init main grid
 		GridPane mainGrid = new GridPane();
 		mainGrid.setAlignment(Pos.CENTER);
@@ -189,12 +199,10 @@ public class LoginWindow implements Window {
 		createAccGrid.add(title,0,0,2,1);
 		Label username = new Label("Username:");
 		createAccGrid.add(username,0,1);
-		TextField userTextField = new TextField();
-		createAccGrid.add(userTextField,0,2,2,1);
+		createAccGrid.add(this.userTextField,0,2,2,1);
 		Label pw = new Label("Password:");
 		createAccGrid.add(pw,0,3);
-		PasswordField pwBox = new PasswordField();
-		createAccGrid.add(pwBox,0,4,2,1);
+		createAccGrid.add(this.pwBox,0,4,2,1);
 
 		// create button box
 		HBox buttonBox = new HBox();
@@ -209,6 +217,7 @@ public class LoginWindow implements Window {
 		// create button events
 		ReturnHandler returnFunc = new ReturnHandler();
 		returnBtn.setOnAction(returnFunc);
+		continueBtn.setOnAction(new CreateAccountHandler());
 
 		// add to grids to roots
 		root.getChildren().add(createAccGrid);
@@ -219,12 +228,24 @@ public class LoginWindow implements Window {
 		return new Scene(mainGrid,300,275); 
 	}
 
-	public void show() {
+	// window functions.
+	public void show(boolean userDataExists) {
+		if (userDataExists) {
+			this.stage.setScene(this.loginDisplay());
+		} else {
+			this.stage.setScene(this.createAccDisplay());
+		}
 		this.stage.show();
 	}
 
 	public void hide() {
 		this.stage.hide();
+	}
+
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

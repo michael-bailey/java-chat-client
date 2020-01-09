@@ -4,6 +4,7 @@
 # Ignore Gradle build output directory
 build
 
+*.dat
 
 bin/
 .settings/
@@ -11,6 +12,7 @@ libs/
 preferences.pref
 .classpath
 .idea/
-gradle
+
 java-chat-client.iml
 .vscode/
+User.dat

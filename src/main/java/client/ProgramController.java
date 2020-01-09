@@ -1,60 +1,39 @@
 package client;
 
-import java.nio.file.FileSystems;
+import javafx.stage.Stage;
+import javafx.application.Application;
 
-import client.ui.preference_window.PreferencesWindow;
-import client.ui.interfaces.LoginWindowController;
+import client.ui.preference_window.PreferenceWindow;
 import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
-import javafx.application.Application;
-import javafx.stage.Stage;
+import client.interfaces.*;
+import baselib.managers.DataManager;
 
+/**
+ * @author michael-bailey
+ * @version 1.0
+ * @since 1.0
+ */
+public class ProgramController extends Application implements LoginWindowController, MainWindowController {
 
-public class ProgramController extends Application implements LoginWindowController {
-
-    PreferencesWindow prefrenceWindow;
+    PreferenceWindow preferenceWindow;
     MainWindow mainWindow;
     LoginWindow loginWindow;
+    DataManager dataManager;
 
     public static void main(String[] args) throws Exception {
-        System.out.println(FileSystems.getDefault().getPath(".").toAbsolutePath());
         launch(args);
-
     }
 
     public void start(Stage stage) throws Exception {
 
         // create windows in memory
-        this.prefrenceWindow = new PreferencesWindow();
+        this.preferenceWindow = new PreferenceWindow();
         this.mainWindow = new MainWindow();
         this.loginWindow = new LoginWindow(this);
+        this.dataManager = new DataManager();
 
-        loginWindow.show();
-
-    }
-
-    @Override
-    public void LoginDidPass() {
-        this.loginWindow.hide();
-        this.mainWindow.show();
-
-    }
-
-    @Override
-    public void LoginDidFail() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void LoginDidCreateUser() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void LoginDidCreateUserFailed() {
-        // TODO Auto-generated method stub
-
+        // show the Login window
+        loginWindow.show(true);
     }
 }
