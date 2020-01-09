@@ -1,0 +1,7 @@
+#BtnDesign{
+	-fx-background-radius: 5em;
+	-fx-min-width: 15px;
+	-fx-min-height: 15px;
+	-fx-max-width: 15px;
+	-fx-max-height: 15px;
+}
