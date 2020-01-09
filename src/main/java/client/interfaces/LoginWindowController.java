@@ -6,7 +6,7 @@ public interface LoginWindowController {
     }
 
     default void LoginRequest() {
-
+        System.out.println("<LoginRequest Called>");
     }
 
     default void LoginCreateUser(String username, String Password) {
@@ -14,6 +14,6 @@ public interface LoginWindowController {
     }
 
     default void LoginCreateUser() {
-
+        System.out.println("<LoginCreateUser Called>");
     }
 }
