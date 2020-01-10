@@ -1,6 +1,6 @@
 package baselib.managers;
 
-import baselib.managers.data_types.DataStore;
+import baselib.data_types.DataStore;
 
 import java.io.*;
 import java.util.Base64;
@@ -304,7 +304,7 @@ public class DataManager {
 
                     // creating the salt
                     sr.nextBytes(salt);
-                    String saltString = encoder.encodeToString(salt);
+                    this.saltString = encoder.encodeToString(salt);
 
                     // assigning vars
                     keySpec = new PBEKeySpec(password.toCharArray(), salt, 256, 256);
@@ -329,7 +329,7 @@ public class DataManager {
                     // add then to the dataStore
                     dataStore.dataString = encryptedDataString;
                     dataStore.checkSum = checkSumString;
-                    dataStore.salt = saltString;
+                    dataStore.salt = this.saltString;
 
                     FileOutputStream tmpOut = new FileOutputStream(this.fileHandle);
                     new ObjectOutputStream(tmpOut).writeObject(dataStore);

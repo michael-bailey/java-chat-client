@@ -1,4 +1,4 @@
-package baselib.managers.data_types;
+package baselib.data_types;
 
 import java.io.Serializable;
 
