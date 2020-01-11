@@ -76,11 +76,12 @@ public class DataManager {
     /**
      * loads data stored in a file into the data manager.
      * @param name the name of the file that contains the data.
-     * @param password the pasword used when encrypting the data.
+     * @param password the password used when encrypting the data.
      * @return true when loaded.
      * @since 1.0
      */
     public boolean unlock(String name, String password) {
+		// check if the object is currently unlocked
         if (this.isLocked) {
             // create new file
             this.fileHandle = new File("./" + name + ".dat");
@@ -196,6 +197,7 @@ public class DataManager {
      * @since 1.0
      */
     public boolean lock() {
+		// check if the object is currently unlocked
         if (!this.isLocked) {
             DataStore dataStore = new DataStore();     
             try {
@@ -281,6 +283,12 @@ public class DataManager {
      * @since 1.0
      */
     public boolean createNew(String name, String password) {
+		// check if the name and password is null or empty
+		if (name.equals("") || name == null || password.equals("") || password == null) {
+			return false;
+		}
+		
+		// check if the object is currently unlocked
         if (this.isLocked) {
             // create new file
             this.fileHandle = new File("./" + name + ".dat");
