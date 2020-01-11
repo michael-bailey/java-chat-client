@@ -36,4 +36,21 @@ public class ProgramController extends Application implements LoginWindowControl
         // show the Login window
         loginWindow.show(true);
     }
+
+    @Override
+    public void LoginRequest(String username, String Password) {
+        if (this.dataManager.unlock(username, Password)) {
+            this.loginWindow.hide();
+            this.mainWindow.show();
+        }
+        
+    }
+
+    @Override
+    public void LoginCreateUser(String username, String Password) {
+        if (this.dataManager.createNew(username, Password)) {
+            this.loginWindow.hide();
+            this.mainWindow.show();
+        }
+    }
 }
