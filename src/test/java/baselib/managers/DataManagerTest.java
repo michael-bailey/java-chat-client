@@ -119,7 +119,8 @@ public class DataManagerTest {
     public void testLockingOfFile() {
         new File("helloWorld.dat").delete();
         DataManager a = new DataManager();
-        a.createNew("helloWorld", "Password1234");
+        boolean d = a.createNew("helloWorld", "Password1234");
+        assertTrue(d);
         a.addObject("testObject", new String("hello world"));
         boolean b = a.lock();
         assertTrue(b);

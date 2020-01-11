@@ -312,7 +312,7 @@ public class DataManager {
 
                     // creating the salt
                     sr.nextBytes(salt);
-                    String saltString = encoder.encodeToString(salt);
+                    this.saltString = encoder.encodeToString(salt);
 
                     // assigning vars
                     keySpec = new PBEKeySpec(password.toCharArray(), salt, 256, 256);
@@ -337,7 +337,7 @@ public class DataManager {
                     // add then to the dataStore
                     dataStore.dataString = encryptedDataString;
                     dataStore.checkSum = checkSumString;
-                    dataStore.salt = saltString;
+                    dataStore.salt = this.saltString;
 
                     FileOutputStream tmpOut = new FileOutputStream(this.fileHandle);
                     new ObjectOutputStream(tmpOut).writeObject(dataStore);
@@ -503,8 +503,6 @@ public class DataManager {
         return false;
     }
 }
-
-
 // these websites where used to kelp with the keygeneration
 // https://stackoverflow.com/questions/3451670/java-aes-and-using-my-own-key
 // https://javapapers.com/java/java-file-encryption-decryption-using-aes-password-based-encryption-pbe/
