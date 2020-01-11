@@ -1,15 +1,14 @@
 package baselib.managers;
 
-class NetworkManager extends Object {
-
-    // socket Definitions for the the local network.
-
+/**
+ * @author michael-bailey
+ * @version 1.0
+ * @since 1.0
+ */
+public class NetworkManager extends Object {
 
 
     public NetworkManager() {
 
     }
-
-
-
 }
