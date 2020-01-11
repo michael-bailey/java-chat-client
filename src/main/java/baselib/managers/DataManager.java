@@ -284,7 +284,7 @@ public class DataManager {
      */
     public boolean createNew(String name, String password) {
 		// check if the name and password is null or empty
-		if (name.equals("") || name == null || password.equals("") || password == null) {
+		if (name == null || password == null || password.equals("") || name.equals("")) {
 			return false;
 		}
 		

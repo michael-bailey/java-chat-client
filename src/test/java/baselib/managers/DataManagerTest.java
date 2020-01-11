@@ -35,7 +35,7 @@ public class DataManagerTest {
         DataManager a = new DataManager();
         assertTrue(a instanceof DataManager);
         boolean b = a.createNew(null, null);
-        assertTrue(b);
+        assertTrue(!b);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class DataManagerTest {
         DataManager a = new DataManager();
         assertTrue(a instanceof DataManager);
         boolean b = a.createNew("", "");
-        assertTrue(b);
+        assertTrue(!b);
     }
 
 
