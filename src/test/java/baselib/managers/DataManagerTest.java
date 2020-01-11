@@ -30,6 +30,27 @@ public class DataManagerTest {
     }
 
     @Test
+    public void testCreationNullInputs() {
+        new File("test.dat").delete();
+        DataManager a = new DataManager();
+        assertTrue(a instanceof DataManager);
+        boolean b = a.createNew(null, null);
+        assertTrue(b);
+    }
+
+    @Test
+    public void testCreationEmptyInputs() {
+        new File("test.dat").delete();
+        DataManager a = new DataManager();
+        assertTrue(a instanceof DataManager);
+        boolean b = a.createNew("", "");
+        assertTrue(b);
+    }
+
+
+
+
+    @Test
     public void testUnlockingFileCorrectPassword() {
         new File("helloWorld.dat").delete();
         DataManager a = new DataManager();
@@ -61,7 +82,6 @@ public class DataManagerTest {
         boolean b = a.unlock("helloworld", "Password1234");
         assertTrue(!b);
     }
-
     
     @Test
     public void testAddingAndGettingValues() {
@@ -107,4 +127,5 @@ public class DataManagerTest {
         String c = (String) a.getObject("testObject");
         assertTrue(c.equals("hello world"));
     }
+
 }
