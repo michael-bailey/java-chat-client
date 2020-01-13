@@ -76,11 +76,12 @@ public class DataManager {
     /**
      * loads data stored in a file into the data manager.
      * @param name the name of the file that contains the data.
-     * @param password the pasword used when encrypting the data.
+     * @param password the password used when encrypting the data.
      * @return true when loaded.
      * @since 1.0
      */
     public boolean unlock(String name, String password) {
+		// check if the object is currently unlocked
         if (this.isLocked) {
             // create new file
             this.fileHandle = new File("./" + name + ".dat");
@@ -196,6 +197,7 @@ public class DataManager {
      * @since 1.0
      */
     public boolean lock() {
+		// check if the object is currently unlocked
         if (!this.isLocked) {
             DataStore dataStore = new DataStore();     
             try {
@@ -281,6 +283,12 @@ public class DataManager {
      * @since 1.0
      */
     public boolean createNew(String name, String password) {
+		// check if the name and password is null or empty
+		if (name == null || password == null || password.equals("") || name.equals("")) {
+			return false;
+		}
+		
+		// check if the object is currently unlocked
         if (this.isLocked) {
             // create new file
             this.fileHandle = new File("./" + name + ".dat");
@@ -495,8 +503,6 @@ public class DataManager {
         return false;
     }
 }
-
-
 // these websites where used to kelp with the keygeneration
 // https://stackoverflow.com/questions/3451670/java-aes-and-using-my-own-key
 // https://javapapers.com/java/java-file-encryption-decryption-using-aes-password-based-encryption-pbe/

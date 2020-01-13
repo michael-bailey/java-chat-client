@@ -38,8 +38,8 @@ public class ProgramController extends Application implements LoginWindowControl
     }
 
     @Override
-    public void LoginRequest(String name, String password) {
-        if (this.dataManager.unlock(name, password)) {
+    public void LoginRequest(String username, String Password) {
+        if (this.dataManager.unlock(username, Password)) {
             this.loginWindow.hide();
             this.mainWindow.show();
         }

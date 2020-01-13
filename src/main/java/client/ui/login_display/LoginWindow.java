@@ -61,7 +61,7 @@ public class LoginWindow implements Window {
 	private class LoginHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event){
-			System.out.println("logging in...");
+			System.out.println("<placeholder> logging in...");
 			controller.LoginRequest(userTextField.getText(), pwBox.getText());
 		}
 	}
@@ -73,15 +73,15 @@ public class LoginWindow implements Window {
 			controller.LoginCreateUser(userTextField.getText(), pwBox.getText());
 		}
 	}
-
-	private class switchToCreateButtonHandler implements EventHandler<ActionEvent> {
+  
+	private class CreateAccountPageButtonHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event){
 			stage.setScene(createAccDisplay());
 		}
 	}
 
-	private class switchToLoginButtonHandler implements EventHandler<ActionEvent> {
+	private class LoginPageButtonHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event){
 			stage.setScene(loginDisplay());
@@ -158,7 +158,7 @@ public class LoginWindow implements Window {
 		// button actions
 		LoginHandler loginAttempt = new LoginHandler();
 		loginBtn.setOnAction(loginAttempt);
-		switchToCreateButtonHandler createAccPress = new switchToCreateButtonHandler();	
+		CreateAccountPageButtonHandler createAccPress = new CreateAccountPageButtonHandler();	
 		createAccBtn.setOnAction(createAccPress);
 		
 
@@ -215,7 +215,7 @@ public class LoginWindow implements Window {
 		// add button box to grid
 		createAccGrid.add(buttonBox,0,6,2,1);
 		// create button events
-		switchToLoginButtonHandler returnFunc = new switchToLoginButtonHandler();
+		LoginPageButtonHandler returnFunc = new LoginPageButtonHandler();
 		returnBtn.setOnAction(returnFunc);
 		continueBtn.setOnAction(new CreateAccountHandler());
 
@@ -247,5 +247,4 @@ public class LoginWindow implements Window {
 		// TODO Auto-generated method stub
 
 	}
-
 }

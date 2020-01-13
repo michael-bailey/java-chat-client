@@ -1,2 +1,6 @@
 # java-chat-client
-Hello World!
+
+this project requires 
+* jmdns
+
+gradle resolves the javafx dependency
