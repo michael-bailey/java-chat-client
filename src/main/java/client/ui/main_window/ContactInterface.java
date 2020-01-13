@@ -1,13 +1,12 @@
 package client.ui.main_window;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import java.util.ArrayList;
-import java.io.Serializable;
-import java.io.IOException;
-import java.lang.ClassNotFoundException;
 
 public class ContactInterface{
 	private ArrayList<Contact> contactArr;

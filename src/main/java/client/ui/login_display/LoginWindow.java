@@ -69,11 +69,11 @@ public class LoginWindow implements Window {
 	private class CreateAccountHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event) {
-			System.out.println("creating account...");
+			System.out.println("creating user...");
 			controller.LoginCreateUser(userTextField.getText(), pwBox.getText());
 		}
 	}
-
+  
 	private class CreateAccountPageButtonHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event){
@@ -247,5 +247,4 @@ public class LoginWindow implements Window {
 		// TODO Auto-generated method stub
 
 	}
-
 }

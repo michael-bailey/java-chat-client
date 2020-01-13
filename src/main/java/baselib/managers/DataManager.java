@@ -1,6 +1,6 @@
 package baselib.managers;
 
-import baselib.managers.data_types.DataStore;
+import baselib.data_types.DataStore;
 
 import java.io.*;
 import java.util.Base64;

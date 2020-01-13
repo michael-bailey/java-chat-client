@@ -43,7 +43,6 @@ public class ProgramController extends Application implements LoginWindowControl
             this.loginWindow.hide();
             this.mainWindow.show();
         }
-        
     }
 
     @Override
