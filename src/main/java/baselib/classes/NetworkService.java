@@ -1,12 +1,6 @@
 package baselib.classes;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
-
-import com.google.common.collect.Iterators;
-
-import baselib.managers.NetworkManager;
+import baselib.interfaces.NetworkServiceController;
 
 /**
  * NetworkService is to be extended by other classes. provides a default way of handling incoming messages
@@ -29,7 +23,7 @@ public class NetworkService implements Runnable {
      * a way of the service to communicate with the manager
      * @since 1.0
      */
-    private NetworkManager networkManager;
+    private NetworkServiceController serviceController;
 
     /**
      * A thread that should constantly check for incoming and outgoing data
@@ -40,29 +34,29 @@ public class NetworkService implements Runnable {
     /**
      * a boolean stating wether the service is running for use in the run function
      */
-    private boolean running;
+    private String status;
     
     /**
      * initalises the service by setting up its name, its callback, and its daemon.
      * @param serviceName a unique name used for identifying a service
-     * @param networkManager a reference to the network manager
+     * @param serviceController a reference to the network manager
      * @since 1.0
      */
-    NetworkService(String serviceName, NetworkManager networkManager) {
+    NetworkService(String serviceName, NetworkServiceController serviceController) {
         this.serviceName = serviceName;
 
-        this.networkManager = networkManager;
+        this.serviceController = serviceController;
 
         this.thread = new Thread(this);
         this.thread.setDaemon(true);
     }
 
     /**
-     * get the running state of the service.
+     * get the current state of the service.
      * @since 1.0
      */
-    public boolean isRunning() {
-        return this.running;
+    public String getStatus() {
+        return this.status;
     }
 
     /**
@@ -82,7 +76,7 @@ public class NetworkService implements Runnable {
      * @since 1.0
      */
     public void start() {
-        this.running = true;
+        this.status = "Running";
         this.thread.start();
         System.out.println("the service has been started.");
     }
@@ -92,7 +86,7 @@ public class NetworkService implements Runnable {
      * @since 1.0
      */
     public void stop() {
-        this.running = false;
+        this.status = "Stopped";
         System.out.println("the service has been stopped.");
     }
 
@@ -110,7 +104,7 @@ public class NetworkService implements Runnable {
      */
     @Override
     public void run() {
-        while(this.running) {
+        while(this.status.equals("Running")) {
             System.out.println("the service is running.");
             this.executor();
         }
