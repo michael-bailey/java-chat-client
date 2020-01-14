@@ -1,12 +1,15 @@
 package client;
 
+import client.interfaces.controllers.ILoginWindowController;
+import client.interfaces.controllers.IMainWindowController;
+import client.interfaces.controllers.IPreferenceWindowController;
+import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.application.Application;
 
 import client.ui.preference_window.PreferenceWindow;
 import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
-import client.interfaces.*;
 import baselib.managers.DataManager;
 
 /**
@@ -14,11 +17,22 @@ import baselib.managers.DataManager;
  * @version 1.0
  * @since 1.0
  */
-public class ProgramController extends Application implements LoginWindowController, MainWindowController {
+public class ProgramController extends Application implements ILoginWindowController, IMainWindowController, IPreferenceWindowController {
 
+    /**
+     * this section defines the windows that are in use
+     * @version 1.0
+     * @since 1.0
+     */
     PreferenceWindow preferenceWindow;
     MainWindow mainWindow;
     LoginWindow loginWindow;
+
+    /**
+     * this defines data models that are in use
+     * @version 1.0
+     * @since 1.0
+     */
     DataManager dataManager;
 
     public static void main(String[] args) throws Exception {
@@ -28,13 +42,15 @@ public class ProgramController extends Application implements LoginWindowControl
     public void start(Stage stage) throws Exception {
 
         // create windows in memory
-        this.preferenceWindow = new PreferenceWindow();
-        this.mainWindow = new MainWindow();
+        this.mainWindow = new MainWindow(this);
         this.loginWindow = new LoginWindow(this);
+        this.preferenceWindow = new PreferenceWindow();
+
         this.dataManager = new DataManager();
 
         // show the Login window
-        loginWindow.show(true);
+        this.loginWindow.show();
+        this.preferenceWindow.show();
     }
 
     @Override
