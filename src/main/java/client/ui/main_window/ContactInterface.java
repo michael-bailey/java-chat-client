@@ -52,20 +52,3 @@ public class ContactInterface{
 	}*/
 }
 
-class Contact implements Serializable{
-	private String name;
-	private int id;
-	private VBox contactVB = new VBox();
-	public Contact(String name,int id){
-		this.name=name;
-		this.id=id;
-		Image img = new Image(getClass().getResourceAsStream(""));
-		Button contactBtn = new Button();
-		contactBtn.setGraphic(new ImageView(img));
-		contactBtn.setId("BtnDesign");
-		contactBtn.getStylesheets().add("contactCss.css");
-		contactVB.getChildren().add(contactBtn);
-	}
-	public VBox getContactVB(){return contactVB;}
-	public String getName(){return name;}
-}
