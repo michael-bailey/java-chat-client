@@ -1,9 +1,7 @@
 //Created by Mitchell Hardie
 package client.ui.main_window;
 
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -27,7 +25,7 @@ public class Message{
 		//-------------------------
 		msgVBox.getChildren().add(this.msg);
 		msgVBox.setId("sentMsg");
-		msgVBox.getStylesheets().add("cssMsg.css");
+		msgVBox.getStylesheets().add("css/cssMsg.css");
 	}
 	public VBox getMsg(){return msgVBox;}
 	public double getMsgHeight(){return msgVBox.getMaxHeight();}
