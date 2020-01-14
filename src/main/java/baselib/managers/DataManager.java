@@ -1,7 +1,5 @@
 package baselib.managers;
 
-import baselib.data_types.DataStore;
-
 import java.io.*;
 import java.util.Base64;
 import java.util.HashMap;
@@ -10,12 +8,12 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import baselib.classes.DataStore;
 import com.google.common.annotations.Beta;
 
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-
 /**
  * <h1>Data Manager</h1>
  * <p>
@@ -81,6 +79,9 @@ public class DataManager {
      * @since 1.0
      */
     public boolean unlock(String name, String password) {
+        System.out.println(name);
+        System.out.println(password);
+
 		// check if the object is currently unlocked
         if (this.isLocked) {
             // create new file
