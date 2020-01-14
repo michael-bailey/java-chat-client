@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<Scene xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+      <rowConstraints>
+         <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" />
+      </rowConstraints>
+      <children>
+         <VBox>
+            <children>
+               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="https://www.google.com/url?sa=i&amp;source=images&amp;cd=&amp;ved=2ahUKEwjI-t3ziYTnAhVTAGMBHZ8XCWEQjRx6BAgBEAQ&amp;url=https%3A%2F%2Fetherealmind.com%2Fbonjour-zeroconf-rendezvous-why-three-names-for-the-same-thing%2F&amp;psig=AOvVaw0u9h_NYG8LjuAlUh5gZVKr&amp;ust=1579125194159886" />
+                  </image>
+               </ImageView>
+            </children>
+         </VBox>
+         <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" GridPane.columnIndex="1" />
+         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
+      </children>
+      <columnConstraints>
+         <ColumnConstraints maxWidth="50.0" minWidth="-Infinity" prefWidth="50.0" />
+         <ColumnConstraints />
+         <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints></GridPane>
+</Scene>
