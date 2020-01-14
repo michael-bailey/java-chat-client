@@ -1,6 +1,6 @@
 package baselib;
 
-import baselib.Preferences;
+import baselib.legacy.Preferences;
 
 
 
