@@ -1,7 +1,8 @@
 //Created by Mitchell Hardie
 package client.ui.main_window;
 
-import client.interfaces.Window;
+import client.interfaces.controllers.IMainWindowController;
+import client.interfaces.IWindow;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -18,12 +19,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Screen;
-import javafx.geometry.Rectangle2D;
-import java.util.Scanner;
-import java.io.File;
 import javafx.stage.Stage;
 
-public class MainWindow implements Window{
+public class MainWindow implements IWindow {
+
+	IMainWindowController controller;
+
 	private double width = Screen.getPrimary().getBounds().getWidth();
 	private double height = Screen.getPrimary().getBounds().getHeight();
 	private double currMsgHeight = 0;
@@ -34,10 +35,17 @@ public class MainWindow implements Window{
 	private VBox chatFrame = new VBox();
 	private VBox msgFrame = new VBox();
 	private ContactInterface contIn = new ContactInterface();
-	
+
+	@Deprecated
 	public MainWindow(){
 		this.stage = new Stage();
 	}
+
+	public MainWindow(IMainWindowController controller){
+		this.stage = new Stage();
+		this.controller = controller;
+	}
+
 	private class MsgHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
@@ -135,7 +143,7 @@ public class MainWindow implements Window{
 
 
 		msgEntry.setId("msgEntryBox");
-		msgEntry.getStylesheets().add("mainwindow.css");
+		msgEntry.getStylesheets().add("css/mainWindow.css");
 		msgEntry.prefWidthProperty().bind(msgFrame.widthProperty().multiply(0.85));
 		msgEntry.prefHeightProperty().bind(msgFrame.heightProperty().multiply(1.0));
 		sendBtn.prefWidthProperty().bind(msgFrame.widthProperty().multiply(0.05));
