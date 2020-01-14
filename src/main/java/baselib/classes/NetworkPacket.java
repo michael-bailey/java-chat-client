@@ -1,4 +1,4 @@
-package baselib.data_types;
+package baselib.classes;
 
 /**
  * NetworkPacket

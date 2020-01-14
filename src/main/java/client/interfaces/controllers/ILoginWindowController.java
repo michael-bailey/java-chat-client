@@ -1,6 +1,6 @@
-package client.interfaces;
+package client.interfaces.controllers;
 
-public interface LoginWindowController {
+public interface ILoginWindowController {
     default void LoginRequest(String username, String Password) {
         System.out.println("<LoginRequest Called>");
     }

@@ -1,29 +1,51 @@
 package client.ui.preference_window;
 
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import client.interfaces.Window;
-import javafx.scene.Node;
+import client.interfaces.IWindow;
+import client.interfaces.controllers.IPreferenceWindowController;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class PreferenceWindow implements Window {
+import java.io.IOException;
+import java.net.URL;
 
+public class PreferenceWindow implements IWindow {
+
+    // defining the window
     Stage stage;
 
-    public PreferenceWindow() {
-        System.out.println(this);
+    //urls of fxml resources
+    URL mainSceneURL = getClass().getClassLoader().getResource("layouts/PreferenceWindow/PreferenceWindow.fxml");
+    URL AccountPaneURL = getClass().getClassLoader().getResource("layouts/PreferenceWindow/panes/AccountPane.fxml");
+
+    // fxml components.
+    private Scene mainScene;
+
+    @FXML
+    private Pane SettingsMenuPane;
+
+    public PreferenceWindow() throws IOException {
+        // create stage
         this.stage = new Stage();
 
-        this.stage.setScene(new Scene((VBox) this.sideMenu()));
+        FXMLLoader tmpLoader = new FXMLLoader(mainSceneURL);
+        tmpLoader.setController(this);
+        this.mainScene = tmpLoader.load();
+
+
+
+
+        this.stage.setScene(this.mainScene);
+
     }
 
-    public Node sideMenu() {
-        VBox tabs = new VBox();
-        Button userTab = new Button("User preferences");
-        tabs.getChildren().add(userTab);
-
-        return tabs;
+    @FXML
+    private void switchAccountPane(ActionEvent e) {
+        System.out.println("switch to account pane");
     }
 
     @Override

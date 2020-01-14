@@ -1,6 +1,6 @@
 package client.interfaces;
 
-public interface Window {
+public interface IWindow {
     void show();
     void hide();
 }

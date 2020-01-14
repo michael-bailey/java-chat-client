@@ -1,4 +1,4 @@
-package baselib;
+package baselib.legacy;
 
 import java.io.*;
 import java.util.HashMap;
