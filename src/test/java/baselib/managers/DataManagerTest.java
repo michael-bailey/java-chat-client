@@ -7,10 +7,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
+import baselib.data_types.DataStore;
+
 public class DataManagerTest {
 
     public DataManagerTest() {
-
+        new DataStore();
     }
 
     @Test
@@ -47,9 +49,6 @@ public class DataManagerTest {
         assertTrue(!b);
     }
 
-
-
-
     @Test
     public void testUnlockingFileCorrectPassword() {
         new File("helloWorld.dat").delete();
@@ -79,7 +78,7 @@ public class DataManagerTest {
         a.createNew("helloWorld", "Password1234");
         a = null;
         a = new DataManager();
-        boolean b = a.unlock("helloworld", "Password1234");
+        boolean b = a.unlock("oof", "Password1234");
         assertTrue(!b);
     }
     
