@@ -3,8 +3,8 @@ package client.ui.login_display;
 
 import java.io.IOException;
 
-import client.interfaces.LoginWindowController;
-import client.interfaces.Window;
+import client.interfaces.controllers.ILoginWindowController;
+import client.interfaces.IWindow;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -30,16 +30,16 @@ import javafx.stage.WindowEvent;
  * @version 1.0
  * @since 1.0
  */
-public class LoginWindow implements Window {
+public class LoginWindow implements IWindow {
 
 	private Stage stage;
-	private LoginWindowController controller;
-	private String css = "LoginWindow.css";
+	private ILoginWindowController controller;
+	private String css = "css/LoginWindow.css";
 
 	private TextField userTextField = new TextField();
 	private PasswordField pwBox = new PasswordField();
 
-	public LoginWindow(LoginWindowController controller) throws IOException {
+	public LoginWindow(ILoginWindowController controller) throws IOException {
 		System.out.println(this);
 		this.controller = controller;
 
@@ -142,7 +142,7 @@ public class LoginWindow implements Window {
 		// add create account button
 		Button createAccBtn = new Button("Create Account");
 		createAccBtn.setId("createAccount");
-		createAccBtn.getStylesheets().add("buttonStyle.css");
+		createAccBtn.getStylesheets().add("css/buttonStyle.css");
 		HBox createAccHB = new HBox(10);
 		createAccHB.setAlignment(Pos.CENTER);
 		HBox.setHgrow(createAccBtn,Priority.ALWAYS);
@@ -229,22 +229,15 @@ public class LoginWindow implements Window {
 	}
 
 	// window functions.
-	public void show(boolean userDataExists) {
-		if (userDataExists) {
-			this.stage.setScene(this.loginDisplay());
-		} else {
-			this.stage.setScene(this.createAccDisplay());
-		}
+	@Override
+	public void show() {
+		this.stage.setScene(this.loginDisplay());
 		this.stage.show();
 	}
 
+	@Override
 	public void hide() {
 		this.stage.hide();
 	}
 
-	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-
-	}
 }
