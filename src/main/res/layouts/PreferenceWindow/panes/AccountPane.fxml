@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane gridLinesVisible="true" prefHeight="122.0" prefWidth="185.0" style="-fx-padding: 5;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 5;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="127.0" prefWidth="87.0" style="-fx-padding: 5;" text="Label" />
       <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 5;" text="Label" GridPane.rowIndex="2" />
@@ -13,11 +13,11 @@
       <TextField style="-fx-padding: 5;" GridPane.columnIndex="1" />
    </children>
    <columnConstraints>
-      <ColumnConstraints maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
-      <ColumnConstraints maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+      <ColumnConstraints maxWidth="100.0" minWidth="-Infinity" />
+      <ColumnConstraints maxWidth="1.7976931348623157E308" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="30.0" />
+      <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" />
       <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="29.0" />
       <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="29.0" />
       <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="41.0" />

@@ -9,9 +9,9 @@
     <items>
        <VBox prefHeight="200.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
           <children>
-             <Button fx:id="AccountButton" mnemonicParsing="false" onAction="#switchAccountPane" text="Account Settings" />
+             <Button fx:id="AccountButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#switchAccountPane" prefHeight="30.0" text="Account Settings" VBox.vgrow="NEVER" />
           </children>
        </VBox>
-       <Pane id="settingsMenuPane" fx:id="SettingsMenuPane" prefHeight="200.0" prefWidth="200.0" />
+       <Pane id="settingsMenuPane" fx:id="SettingsMenuPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
     </items></SplitPane>
 </Scene>

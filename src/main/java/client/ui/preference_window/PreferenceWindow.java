@@ -44,7 +44,11 @@ public class PreferenceWindow implements IWindow {
     }
 
     @FXML
-    private void switchAccountPane(ActionEvent e) {
+    private void switchAccountPane(ActionEvent e) throws IOException {
+        this.SettingsMenuPane.getChildren().clear();
+        FXMLLoader tmpLoader = new FXMLLoader(AccountPaneURL);
+        tmpLoader.setController(this);
+        this.SettingsMenuPane.getChildren().add(tmpLoader.load());
         System.out.println("switch to account pane");
     }
 
