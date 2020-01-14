@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import baselib.classes.NetworkService;
+import baselib.interfaces.NetworkManagerController;
 
 /**
  * Network Manager
@@ -17,6 +18,7 @@ import baselib.classes.NetworkService;
 public class NetworkManager extends Object {
 
     ArrayList<NetworkService> services;
+    NetworkManagerController controller;
 
     public NetworkManager() {
         this.services = new ArrayList<>();
@@ -90,7 +92,15 @@ public class NetworkManager extends Object {
         }
     }
 
-    public void send(String serviceName, Object data) {
-
+    public boolean send(String serviceName, Object data) {
+        Iterator<NetworkService> i = this.services.iterator();
+        while (i.hasNext()) {
+            NetworkService tmp =  i.next();
+            if (tmp.serviceName == serviceName) {
+                tmp.send(data);
+                return true;
+            }
+        }
+        return false;
     }
 }

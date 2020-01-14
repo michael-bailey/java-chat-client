@@ -1,6 +1,6 @@
 package baselib.interfaces;
 
-import baselib.data_types.NetworkPacket;
+import baselib.classes.NetworkPacket;
 
 /**
  * NetworkManagerController
