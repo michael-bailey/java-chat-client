@@ -12,15 +12,22 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 
 public class PreferenceWindow implements IWindow {
 
     // defining the window
     Stage stage;
 
-    //urls of fxml resources
+    // urls of fxml resources
     URL mainSceneURL = getClass().getClassLoader().getResource("layouts/PreferenceWindow/PreferenceWindow.fxml");
     URL AccountPaneURL = getClass().getClassLoader().getResource("layouts/PreferenceWindow/panes/AccountPane.fxml");
+
+    // urls for stylesheets
+
+    // other attributes
+    HashMap<String, Object> preferences;
+    Pane currentPane;
 
     // fxml components.
     private Scene mainScene;
@@ -28,19 +35,15 @@ public class PreferenceWindow implements IWindow {
     @FXML
     private Pane SettingsMenuPane;
 
-    public PreferenceWindow() throws IOException {
+    public PreferenceWindow(HashMap<String, Object> preferences) throws IOException {
         // create stage
         this.stage = new Stage();
-
+        this.preferences = preferences;
         FXMLLoader tmpLoader = new FXMLLoader(mainSceneURL);
         tmpLoader.setController(this);
         this.mainScene = tmpLoader.load();
-
-
-
-
+        this.mainScene.getStylesheets().add("css/PreferenceWindow/PreferenceWindow.css");
         this.stage.setScene(this.mainScene);
-
     }
 
     @FXML
@@ -48,8 +51,19 @@ public class PreferenceWindow implements IWindow {
         this.SettingsMenuPane.getChildren().clear();
         FXMLLoader tmpLoader = new FXMLLoader(AccountPaneURL);
         tmpLoader.setController(this);
-        this.SettingsMenuPane.getChildren().add(tmpLoader.load());
+        this.currentPane = tmpLoader.load();
+        this.SettingsMenuPane.getChildren().add(this.currentPane);
         System.out.println("switch to account pane");
+    }
+
+    @FXML
+    private void accountSettingsChanged(ActionEvent e) {
+
+    }
+
+    @FXML
+    private void switchWindowPane(ActionEvent e) {
+
     }
 
     @Override
