@@ -143,7 +143,7 @@ public class MainWindow implements IWindow {
 
 
 		msgEntry.setId("msgEntryBox");
-		msgEntry.getStylesheets().add("css/mainWindow.css");
+		msgEntry.getStylesheets().add("css/MainWindow.css");
 		msgEntry.prefWidthProperty().bind(msgFrame.widthProperty().multiply(0.85));
 		msgEntry.prefHeightProperty().bind(msgFrame.heightProperty().multiply(1.0));
 		sendBtn.prefWidthProperty().bind(msgFrame.widthProperty().multiply(0.05));
