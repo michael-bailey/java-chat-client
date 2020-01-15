@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+
+
+<MenuBar xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <menus>
+      <Menu mnemonicParsing="false" text="File">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+        </items>
+      </Menu>
+      <Menu mnemonicParsing="false" text="Edit">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+        </items>
+      </Menu>
+   </menus>
+</MenuBar>

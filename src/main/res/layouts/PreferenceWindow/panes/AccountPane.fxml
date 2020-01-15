@@ -5,12 +5,12 @@
 
 <GridPane gridLinesVisible="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 5;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="127.0" prefWidth="87.0" style="-fx-padding: 5;" text="Label" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="127.0" prefWidth="87.0" style="-fx-padding: 5;" text="username:" />
       <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 5;" text="Label" GridPane.rowIndex="2" />
       <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 5;" text="Label" GridPane.rowIndex="3" />
-      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 5;" text="Label" GridPane.rowIndex="1" />
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-padding: 5;" text="userID:" GridPane.rowIndex="1" />
       <PasswordField style="-fx-padding: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextField style="-fx-padding: 5;" GridPane.columnIndex="1" />
+      <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="testUsername" GridPane.columnIndex="1" />
    </children>
    <columnConstraints>
       <ColumnConstraints maxWidth="100.0" minWidth="-Infinity" />
