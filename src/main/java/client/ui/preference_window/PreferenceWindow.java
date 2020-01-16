@@ -22,6 +22,7 @@ public class PreferenceWindow implements IWindow {
     // urls of fxml resources
     URL mainSceneURL = getClass().getClassLoader().getResource("layouts/PreferenceWindow/PreferenceWindow.fxml");
     URL AccountPaneURL = getClass().getClassLoader().getResource("layouts/PreferenceWindow/panes/AccountPane.fxml");
+    URL WindowPaneURL = getClass().getClassLoader().getResource("layouts/PreferenceWindow/panes/WindowPane.fxml");
 
     // urls for stylesheets
 
@@ -53,7 +54,7 @@ public class PreferenceWindow implements IWindow {
         tmpLoader.setController(this);
         this.currentPane = tmpLoader.load();
         this.SettingsMenuPane.getChildren().add(this.currentPane);
-        System.out.println("switch to account pane");
+        System.out.println("switched to account pane");
     }
 
     @FXML
@@ -63,6 +64,10 @@ public class PreferenceWindow implements IWindow {
 
     @FXML
     private void switchWindowPane(ActionEvent e) {
+        this.SettingsMenuPane.getChildren().clear();
+        // FXMLLoader tmpLoader = new FXMLLoader()
+        this.SettingsMenuPane.getChildren().add(this.currentPane);
+        System.out.println("switched to account pane");
 
     }
 
