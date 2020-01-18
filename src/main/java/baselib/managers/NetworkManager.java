@@ -1,9 +1,13 @@
 package baselib.managers;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import baselib.interfaces.INetworkManagerController;
+
+import javax.jmdns.*;
 
 /**
  * Network Manager
@@ -15,5 +19,20 @@ import baselib.interfaces.INetworkManagerController;
  * @since 1.0
  */
 public class NetworkManager extends Object {
+    // defining network interfaces
+    ServerSocket incomingSocket;
+    JmDNS MDNS;
+
+    //defining threads
+    Thread internetThread;
+
+    public NetworkManager() {
+        try {
+            incomingSocket = new ServerSocket(1000);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
