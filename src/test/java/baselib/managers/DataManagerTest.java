@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import baselib.data_types.DataStore;
+import baselib.classes.DataStore;
 
 public class DataManagerTest {
 
