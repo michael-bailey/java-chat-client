@@ -1,7 +1,5 @@
 package baselib.managers;
 
-import baselib.managers.data_types.DataStore;
-
 import java.io.*;
 import java.util.Base64;
 import java.util.HashMap;
@@ -10,12 +8,12 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import baselib.classes.DataStore;
 import com.google.common.annotations.Beta;
 
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-
 /**
  * <h1>Data Manager</h1>
  * <p>
@@ -76,11 +74,15 @@ public class DataManager {
     /**
      * loads data stored in a file into the data manager.
      * @param name the name of the file that contains the data.
-     * @param password the pasword used when encrypting the data.
+     * @param password the password used when encrypting the data.
      * @return true when loaded.
      * @since 1.0
      */
     public boolean unlock(String name, String password) {
+        System.out.println(name);
+        System.out.println(password);
+
+		// check if the object is currently unlocked
         if (this.isLocked) {
             // create new file
             this.fileHandle = new File("./" + name + ".dat");
@@ -196,6 +198,7 @@ public class DataManager {
      * @since 1.0
      */
     public boolean lock() {
+		// check if the object is currently unlocked
         if (!this.isLocked) {
             DataStore dataStore = new DataStore();     
             try {
@@ -281,6 +284,11 @@ public class DataManager {
      * @since 1.0
      */
     public boolean createNew(String name, String password) {
+	// check if the name and password is null or empty
+	if (name == null || password == null || password.equals("") || name.equals("")) {
+		return false;
+	}
+
 	if((name.length()>=7 && name.length()<=14) && (password.length()>=7 && password.length()<=14)){
 		if (this.isLocked) {
 		    // create new file
@@ -500,8 +508,6 @@ public class DataManager {
         return false;
     }
 }
-
-
 // these websites where used to kelp with the keygeneration
 // https://stackoverflow.com/questions/3451670/java-aes-and-using-my-own-key
 // https://javapapers.com/java/java-file-encryption-decryption-using-aes-password-based-encryption-pbe/

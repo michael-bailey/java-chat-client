@@ -1,7 +1,8 @@
 //Created by Mitchell Hardie
 package client.ui.main_window;
 
-import client.interfaces.Window;
+import client.interfaces.controllers.IMainWindowController;
+import client.interfaces.IWindow;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -18,10 +19,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Screen;
-import javafx.geometry.Rectangle2D;
-import java.util.Scanner;
-import java.io.File;
 import javafx.stage.Stage;
+import javafx.geometry.Rectangle2D;
 
 /*
  * Class is responsible for creating all components of the main appliactions interface.
@@ -32,7 +31,9 @@ import javafx.stage.Stage;
  * Private attributes are typically important components used within the main
  * interface. Such as a VBox used in serverl methods.
  */
-public class MainWindow implements Window{
+public class MainWindow implements IWindow {
+	IMainWindowController controller;
+
 	private Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 	private double width = Screen.getPrimary().getBounds().getWidth();
 	private double height = Screen.getPrimary().getBounds().getHeight();
@@ -43,15 +44,22 @@ public class MainWindow implements Window{
 	private VBox friendFrame = new VBox();
 	private VBox chatFrame = new VBox();
 	private HBox msgFrame = new HBox();
-	private ContactInterface contIn = new ContactInterface();
+
 	/*
-	 * Constructor
+	 * Constructors
 	 * Initilizes the stage.
 	 * Assigns the stage attribute to a new stage.
 	 */
+	@Deprecated
 	public MainWindow(){
 		this.stage = new Stage();
 	}
+
+	public MainWindow(IMainWindowController controller){
+		this.stage = new Stage();
+		this.controller = controller;
+	}
+
 	/*
 	 * Event Handlers
 	 *
@@ -63,23 +71,25 @@ public class MainWindow implements Window{
 			displayMsg(newMsg.getMsg());
 		}
 	}
+
 	private class LanWanHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
 			System.out.println("Lan Frame");
 		}
 	}
+
 	private class AddContact implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
-			//contIn.createContact();
 			System.out.println("Add Contact");
 
 		}
 	}
+
 	public Scene createWindow(){
 		this.stage.setTitle("Application");
-		GridPane mainGrid = new GridPane();	
+		GridPane mainGrid = new GridPane();		
 		sp.setVmax(100);
 		sp.setVvalue(100);
 		sp.setHbarPolicy(ScrollBarPolicy.NEVER);
@@ -154,7 +164,7 @@ public class MainWindow implements Window{
 		AddContact addContact = new AddContact();
 		addBtn.setOnAction(addContact);
 		addContactsHB.getChildren().add(addBtn);
-		this.displayContacts(contactsVB);
+		//this.displayContacts(contactsVB);
 		root.add(contactsVB,0,0);
 		root.add(addContactsHB,0,1);
 
@@ -209,8 +219,7 @@ public class MainWindow implements Window{
 		sendBtn.setOnAction(msgHandler);
 		// ---------
 		msgEntry.setId("msgEntryBox");
-		msgEntry.getStylesheets().add("mainwindow.css");
-		
+		msgEntry.getStylesheets().add("mainwindow.css");		
 		root.add(photoBtn,0,0);
 		root.add(msgEntry,1,0);
 		root.add(emojiBtn,2,0);
@@ -261,11 +270,11 @@ public class MainWindow implements Window{
 		else{chatFrame.setAlignment(Pos.BOTTOM_LEFT);}
 		chatFrame.getChildren().add(msg);
 	}
-	public void displayContacts(VBox contactsVB){
+	/*public void displayContacts(VBox contactsVB){
 		for(int i=0;i<contIn.getContactArrSize();i++){
 			contactsVB.getChildren().add(contIn.getContact(i).getContactVB());
 		}
-	}
+	}*/
 	@Override
 	public void show() {
 		this.stage.setScene(this.createWindow());
@@ -282,11 +291,3 @@ public class MainWindow implements Window{
 		this.stage.hide();
 	}
 }
-/*class LanFrame{
-	private Scene scene;
-	private VBox lanVB = new VBox();
-	public Scene createFrame(){
-
-		return scene;
-	}
-}*/

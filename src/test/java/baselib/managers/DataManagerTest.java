@@ -7,10 +7,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
+import baselib.classes.DataStore;
+
 public class DataManagerTest {
 
     public DataManagerTest() {
-
+        new DataStore();
     }
 
     @Test
@@ -22,11 +24,29 @@ public class DataManagerTest {
 
     @Test
     public void testCreation() {
+        new File("testtest.dat").delete();
+        DataManager a = new DataManager();
+        assertTrue(a instanceof DataManager);
+        boolean b = a.createNew("testtest", "testtestKey");
+        assertTrue(b);
+    }
+
+    @Test
+    public void testCreationNullInputs() {
         new File("test.dat").delete();
         DataManager a = new DataManager();
         assertTrue(a instanceof DataManager);
-        boolean b = a.createNew("test", "testKey");
-        assertTrue(b);
+        boolean b = a.createNew(null, null);
+        assertTrue(!b);
+    }
+
+    @Test
+    public void testCreationEmptyInputs() {
+        new File("test.dat").delete();
+        DataManager a = new DataManager();
+        assertTrue(a instanceof DataManager);
+        boolean b = a.createNew("", "");
+        assertTrue(!b);
     }
 
     @Test
@@ -58,10 +78,9 @@ public class DataManagerTest {
         a.createNew("helloWorld", "Password1234");
         a = null;
         a = new DataManager();
-        boolean b = a.unlock("helloworld", "Password1234");
+        boolean b = a.unlock("oof", "Password1234");
         assertTrue(!b);
     }
-
     
     @Test
     public void testAddingAndGettingValues() {
@@ -99,7 +118,8 @@ public class DataManagerTest {
     public void testLockingOfFile() {
         new File("helloWorld.dat").delete();
         DataManager a = new DataManager();
-        a.createNew("helloWorld", "Password1234");
+        boolean d = a.createNew("helloWorld", "Password1234");
+        assertTrue(d);
         a.addObject("testObject", new String("hello world"));
         boolean b = a.lock();
         assertTrue(b);
@@ -107,4 +127,5 @@ public class DataManagerTest {
         String c = (String) a.getObject("testObject");
         assertTrue(c.equals("hello world"));
     }
+
 }

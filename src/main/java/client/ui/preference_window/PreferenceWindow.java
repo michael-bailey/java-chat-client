@@ -1,29 +1,74 @@
 package client.ui.preference_window;
 
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import client.interfaces.Window;
-import javafx.scene.Node;
+import client.interfaces.IWindow;
+import client.interfaces.controllers.IPreferenceWindowController;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class PreferenceWindow implements Window {
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
 
+public class PreferenceWindow implements IWindow {
+
+    // defining the window
     Stage stage;
 
-    public PreferenceWindow() {
-        System.out.println(this);
-        this.stage = new Stage();
+    // urls of fxml resources
+    URL mainSceneURL = getClass().getClassLoader().getResource("layouts/PreferenceWindow/PreferenceWindow.fxml");
+    URL AccountPaneURL = getClass().getClassLoader().getResource("layouts/PreferenceWindow/panes/AccountPane.fxml");
+    URL WindowPaneURL = getClass().getClassLoader().getResource("layouts/PreferenceWindow/panes/WindowPane.fxml");
 
-        this.stage.setScene(new Scene((VBox) this.sideMenu()));
+    // urls for stylesheets
+
+    // other attributes
+    HashMap<String, Object> preferences;
+    Pane currentPane;
+
+    // fxml components.
+    private Scene mainScene;
+
+    @FXML
+    private Pane SettingsMenuPane;
+
+    public PreferenceWindow(HashMap<String, Object> preferences) throws IOException {
+        // create stage
+        this.stage = new Stage();
+        this.preferences = preferences;
+        FXMLLoader tmpLoader = new FXMLLoader(mainSceneURL);
+        tmpLoader.setController(this);
+        this.mainScene = tmpLoader.load();
+        this.mainScene.getStylesheets().add("css/PreferenceWindow/PreferenceWindow.css");
+        this.stage.setScene(this.mainScene);
     }
 
-    public Node sideMenu() {
-        VBox tabs = new VBox();
-        Button userTab = new Button("User preferences");
-        tabs.getChildren().add(userTab);
+    @FXML
+    private void switchAccountPane(ActionEvent e) throws IOException {
+        this.SettingsMenuPane.getChildren().clear();
+        FXMLLoader tmpLoader = new FXMLLoader(AccountPaneURL);
+        tmpLoader.setController(this);
+        this.currentPane = tmpLoader.load();
+        this.SettingsMenuPane.getChildren().add(this.currentPane);
+        System.out.println("switched to account pane");
+    }
 
-        return tabs;
+    @FXML
+    private void accountSettingsChanged(ActionEvent e) {
+
+    }
+
+    @FXML
+    private void switchWindowPane(ActionEvent e) {
+        this.SettingsMenuPane.getChildren().clear();
+        // FXMLLoader tmpLoader = new FXMLLoader()
+        this.SettingsMenuPane.getChildren().add(this.currentPane);
+        System.out.println("switched to account pane");
+
     }
 
     @Override
