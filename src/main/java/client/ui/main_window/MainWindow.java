@@ -22,14 +22,14 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.geometry.Rectangle2D;
 
-/*
+/**
  * Class is responsible for creating all components of the main appliactions interface.
  * The class implements the class Window to enable show and hide features of various
  * scenes.
  * Each method of the MainWindow class is designated for each frame of the main window,
  * or an individual function for the main window.
  * Private attributes are typically important components used within the main
- * interface. Such as a VBox used in serverl methods.
+ * interface. Such as a VBox used in server methods.
  */
 public class MainWindow implements IWindow {
 	IMainWindowController controller;
@@ -118,7 +118,7 @@ public class MainWindow implements IWindow {
 		mainGrid.setVgrow(msgFrame,Priority.ALWAYS);
 
 		this.stage.heightProperty().addListener(new ChangeListener(){
-			/* 
+			/**
 			 * Ensures that the listener of the height property updates all the frames
 			 * of the stage so their heights resize correctly.
 			 * @param arg0 observable value.
@@ -134,8 +134,9 @@ public class MainWindow implements IWindow {
 				msgFrame.setPrefHeight(height*0.10);
 			}
 		});
+		
 		this.stage.widthProperty().addListener(new ChangeListener(){
-			/* 
+			/**
 			 * Ensures that the listener of the width property updates all the frames
 			 * of the stage so their widths resize correctly.
 			 * @param arg0 observable value.
@@ -156,6 +157,7 @@ public class MainWindow implements IWindow {
 		Scene scene = new Scene(mainGrid);
 		return scene;
 	}
+
 	public GridPane FriendGrid(){
 		GridPane root = new GridPane();
 		VBox contactsVB = new VBox();
@@ -169,7 +171,7 @@ public class MainWindow implements IWindow {
 		root.add(addContactsHB,0,1);
 
 		friendFrame.heightProperty().addListener(new ChangeListener(){
-			/* 
+			/**
 			 * Ensures that the listener of the height property updates all the children
 			 * of FriendGrid so their heights resize correctly.
 			 * @param arg0 observable value.
@@ -184,8 +186,9 @@ public class MainWindow implements IWindow {
 				addContactsHB.setPrefHeight(height*0.10);
 			}
 		});
+
 		friendFrame.widthProperty().addListener(new ChangeListener(){
-			/* 
+			/**
 			 * Ensures that the listener of the width property updates all the children
 			 * of FriendGrid so their widths resize correctly.
 			 * @param arg0 observable value.
@@ -226,7 +229,7 @@ public class MainWindow implements IWindow {
 		root.add(sendBtn,3,0);
 
 		msgFrame.heightProperty().addListener(new ChangeListener(){
-			/* 
+			/**
 			 * Ensures that the listener of the height property updates all the children
 			 * of MsgGrid so their heights resize correctly.
 			 * @param arg0 observable value.
@@ -244,7 +247,7 @@ public class MainWindow implements IWindow {
 			}
 		});
 		msgFrame.widthProperty().addListener(new ChangeListener(){
-			/* 
+			/**
 			 * Ensures that the listener of the width property updates all the children
 			 * of MsgGrid so their widths resize correctly.
 			 * @param arg0 observable value.
