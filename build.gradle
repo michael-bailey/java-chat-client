@@ -47,7 +47,7 @@ dependencies {
 
 // defines the main class
 application {
-  mainClassName "client.Main"
+  mainClassName "Main"
 }
 
 // configures the javafx modules we use.
