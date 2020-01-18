@@ -54,12 +54,14 @@ public class MainWindow implements IWindow {
 			displayMsg(newMsg.getMsg());
 		}
 	}
+
 	private class LanWanHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
 			System.out.println("Lan Frame");
 		}
 	}
+
 	private class AddContact implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
@@ -68,11 +70,12 @@ public class MainWindow implements IWindow {
 
 		}
 	}
+
 	public Scene createWindow(){
 		this.stage.setTitle("Application");
 		// init main grid
 		GridPane mainGrid = new GridPane();
-		// create vertical boxes for pannels
+		// create vertical boxes for panels
 		VBox friendFrame = new VBox();
 		friendFrame.setPrefWidth(this.width*0.10);
 		friendFrame.setPrefHeight(this.height*1.0);		
