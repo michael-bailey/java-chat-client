@@ -20,22 +20,36 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.geometry.Rectangle2D;
 
+/*
+ * Class is responsible for creating all components of the main appliactions interface.
+ * The class implements the class Window to enable show and hide features of various
+ * scenes.
+ * Each method of the MainWindow class is designated for each frame of the main window,
+ * or an individual function for the main window.
+ * Private attributes are typically important components used within the main
+ * interface. Such as a VBox used in serverl methods.
+ */
 public class MainWindow implements IWindow {
-
 	IMainWindowController controller;
 
+	private Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 	private double width = Screen.getPrimary().getBounds().getWidth();
 	private double height = Screen.getPrimary().getBounds().getHeight();
-	private double currMsgHeight = 0;
 	private boolean msgSent = true;
 	private Stage stage;
 	private TextField msgEntry = new TextField();
 	private ScrollPane sp = new ScrollPane();
+	private VBox friendFrame = new VBox();
 	private VBox chatFrame = new VBox();
-	private VBox msgFrame = new VBox();
-	private ContactInterface contIn = new ContactInterface();
+	private HBox msgFrame = new HBox();
 
+	/*
+	 * Constructors
+	 * Initilizes the stage.
+	 * Assigns the stage attribute to a new stage.
+	 */
 	@Deprecated
 	public MainWindow(){
 		this.stage = new Stage();
@@ -46,11 +60,14 @@ public class MainWindow implements IWindow {
 		this.controller = controller;
 	}
 
+	/*
+	 * Event Handlers
+	 *
+	 */
 	private class MsgHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
 			Message newMsg = new Message(msgEntry.getText());
-			currMsgHeight+=newMsg.getMsgHeight();
 			displayMsg(newMsg.getMsg());
 		}
 	}
@@ -65,7 +82,6 @@ public class MainWindow implements IWindow {
 	private class AddContact implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
-			//contIn.createContact();
 			System.out.println("Add Contact");
 
 		}
@@ -73,16 +89,8 @@ public class MainWindow implements IWindow {
 
 	public Scene createWindow(){
 		this.stage.setTitle("Application");
-		// init main grid
-		GridPane mainGrid = new GridPane();
-		// create vertical boxes for panels
-		VBox friendFrame = new VBox();
-		friendFrame.setPrefWidth(this.width*0.10);
-		friendFrame.setPrefHeight(this.height*1.0);		
-		
+		GridPane mainGrid = new GridPane();		
 		sp.setVmax(100);
-		sp.setPrefWidth(this.width*0.90);
-		sp.setPrefHeight(this.height*0.90);
 		sp.setVvalue(100);
 		sp.setHbarPolicy(ScrollBarPolicy.NEVER);
 		sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
@@ -91,9 +99,6 @@ public class MainWindow implements IWindow {
 				chatFrame.setLayoutY((new_val.intValue() - 1)/100);
 			}
 		});
-
-		msgFrame.setPrefWidth(this.width*0.90);
-		msgFrame.setPrefHeight(this.height*0.02);
 
 		// create frames
 		friendFrame.getChildren().add(FriendGrid());
@@ -111,8 +116,44 @@ public class MainWindow implements IWindow {
 		mainGrid.setVgrow(friendFrame,Priority.ALWAYS);
 		mainGrid.setVgrow(chatFrame,Priority.ALWAYS);
 		mainGrid.setVgrow(msgFrame,Priority.ALWAYS);
+
+		this.stage.heightProperty().addListener(new ChangeListener(){
+			/* 
+			 * Ensures that the listener of the height property updates all the frames
+			 * of the stage so their heights resize correctly.
+			 * @param arg0 observable value.
+			 * @param arg1 actual value of the height of the stage.
+			 * @param arg2 new value of the height of the stage.
+			 */
+			@Override
+			public void changed(ObservableValue arg0, Object arg1, Object arg2){
+				double height = (double) arg2;
+				// Children added here:
+				friendFrame.setPrefHeight(height*1.0);
+				sp.setPrefHeight(height*0.90);
+				msgFrame.setPrefHeight(height*0.10);
+			}
+		});
+		this.stage.widthProperty().addListener(new ChangeListener(){
+			/* 
+			 * Ensures that the listener of the width property updates all the frames
+			 * of the stage so their widths resize correctly.
+			 * @param arg0 observable value.
+			 * @param arg1 actual value of the width of the stage.
+			 * @param arg2 new value of the width of the stage.
+			 */
+			@Override
+			public void changed(ObservableValue arg0, Object arg1, Object arg2){
+				double width = (double) arg2;
+				// Children added here:
+				friendFrame.setPrefWidth(width*0.10);
+				sp.setPrefWidth(width*0.90);
+				msgFrame.setPrefWidth(width*0.90);
+			}
+		});
+		
 		// create scene
-		Scene scene = new Scene(mainGrid,this.width,this.height);
+		Scene scene = new Scene(mainGrid);
 		return scene;
 	}
 	public GridPane FriendGrid(){
@@ -123,9 +164,43 @@ public class MainWindow implements IWindow {
 		AddContact addContact = new AddContact();
 		addBtn.setOnAction(addContact);
 		addContactsHB.getChildren().add(addBtn);
-		this.displayContacts(contactsVB);
+		//this.displayContacts(contactsVB);
 		root.add(contactsVB,0,0);
 		root.add(addContactsHB,0,1);
+
+		friendFrame.heightProperty().addListener(new ChangeListener(){
+			/* 
+			 * Ensures that the listener of the height property updates all the children
+			 * of FriendGrid so their heights resize correctly.
+			 * @param arg0 observable value.
+			 * @param arg1 actual value of the height of the FriendGrid(root).
+			 * @param arg2 new value of the height of the FriendGrid(root).
+			 */
+			@Override
+			public void changed(ObservableValue arg0, Object arg1, Object arg2){
+				double height = (double) arg2;
+				// Children added here:
+				contactsVB.setPrefHeight(height*0.90);
+				addContactsHB.setPrefHeight(height*0.10);
+			}
+		});
+		friendFrame.widthProperty().addListener(new ChangeListener(){
+			/* 
+			 * Ensures that the listener of the width property updates all the children
+			 * of FriendGrid so their widths resize correctly.
+			 * @param arg0 observable value.
+			 * @param arg1 actual value of the width of the FriendGrid(root).
+			 * @param arg2 new value of the width of the FriendGrid(root).
+			 */
+			@Override
+			public void changed(ObservableValue arg0, Object arg1, Object arg2){
+				double width = (double) arg2;
+				// Children added here:
+				contactsVB.setPrefWidth(width*1);
+				addContactsHB.setPrefWidth(width*1);
+			}
+		});
+		
 		return root;
 	}
 	public VBox chatFrame(){
@@ -143,22 +218,50 @@ public class MainWindow implements IWindow {
 		MsgHandler msgHandler = new MsgHandler();
 		sendBtn.setOnAction(msgHandler);
 		// ---------
-
-
 		msgEntry.setId("msgEntryBox");
-		msgEntry.getStylesheets().add("css/MainWindow.css");
-		msgEntry.prefWidthProperty().bind(msgFrame.widthProperty().multiply(0.85));
-		msgEntry.prefHeightProperty().bind(msgFrame.heightProperty().multiply(1.0));
-		sendBtn.prefWidthProperty().bind(msgFrame.widthProperty().multiply(0.05));
-		sendBtn.prefHeightProperty().bind(msgFrame.heightProperty().multiply(1.0));
-		emojiBtn.prefWidthProperty().bind(msgFrame.widthProperty().multiply(0.05));
-		emojiBtn.prefHeightProperty().bind(msgFrame.heightProperty().multiply(1.0));
-		photoBtn.prefWidthProperty().bind(msgFrame.widthProperty().multiply(0.05));
-		photoBtn.prefHeightProperty().bind(msgFrame.heightProperty().multiply(1.0));
+		msgEntry.getStylesheets().add("mainwindow.css");		
 		root.add(photoBtn,0,0);
 		root.add(msgEntry,1,0);
 		root.add(emojiBtn,2,0);
 		root.add(sendBtn,3,0);
+
+		msgFrame.heightProperty().addListener(new ChangeListener(){
+			/* 
+			 * Ensures that the listener of the height property updates all the children
+			 * of MsgGrid so their heights resize correctly.
+			 * @param arg0 observable value.
+			 * @param arg1 actual value of the height of the MsgGrid(root).
+			 * @param arg2 new value of the height of the MsgGrid(root).
+			 */
+			@Override
+			public void changed(ObservableValue arg0, Object arg1, Object arg2){
+				double height = (double) arg2;
+				// Children added here:
+				photoBtn.setPrefHeight(height*1.0);
+				msgEntry.setPrefHeight(height*1.0);
+				emojiBtn.setPrefHeight(height*1.0);
+				sendBtn.setPrefHeight(height*1.0);
+			}
+		});
+		msgFrame.widthProperty().addListener(new ChangeListener(){
+			/* 
+			 * Ensures that the listener of the width property updates all the children
+			 * of MsgGrid so their widths resize correctly.
+			 * @param arg0 observable value.
+			 * @param arg1 actual value of the width of the MsgGrid(root).
+			 * @param arg2 new value of the width of the MsgGrid(root).
+			 */
+			@Override
+			public void changed(ObservableValue arg0, Object arg1, Object arg2){
+				double width = (double) arg2;
+				// Children added here:
+				photoBtn.setPrefWidth(width*0.05);
+				msgEntry.setPrefWidth(width*0.85);
+				emojiBtn.setPrefWidth(width*0.05);
+				sendBtn.setPrefWidth(width*0.05);
+			}
+		});
+
 		return root;
 	}
 	// get current message in text box
@@ -167,18 +270,19 @@ public class MainWindow implements IWindow {
 		else{chatFrame.setAlignment(Pos.BOTTOM_LEFT);}
 		chatFrame.getChildren().add(msg);
 	}
-	public void displayContacts(VBox contactsVB){
+	/*public void displayContacts(VBox contactsVB){
 		for(int i=0;i<contIn.getContactArrSize();i++){
 			contactsVB.getChildren().add(contIn.getContact(i).getContactVB());
 		}
-	}
+	}*/
 	@Override
 	public void show() {
 		this.stage.setScene(this.createWindow());
-		this.stage.setMaxHeight(1080);
+		this.stage.setMaxHeight(this.primaryScreenBounds.getHeight());
 		this.stage.setMinHeight(250);
-		this.stage.setMaxWidth(1920);
+		this.stage.setMaxWidth(this.primaryScreenBounds.getWidth());
 		this.stage.setMinWidth(500);
+		this.stage.setMaximized(true);
 		this.stage.show();
 	}
 
@@ -187,11 +291,3 @@ public class MainWindow implements IWindow {
 		this.stage.hide();
 	}
 }
-/*class LanFrame{
-	private Scene scene;
-	private VBox lanVB = new VBox();
-	public Scene createFrame(){
-
-		return scene;
-	}
-}*/

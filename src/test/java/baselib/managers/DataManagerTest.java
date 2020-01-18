@@ -24,10 +24,10 @@ public class DataManagerTest {
 
     @Test
     public void testCreation() {
-        new File("test.dat").delete();
+        new File("testtest.dat").delete();
         DataManager a = new DataManager();
         assertTrue(a instanceof DataManager);
-        boolean b = a.createNew("test", "testKey");
+        boolean b = a.createNew("testtest", "testtestKey");
         assertTrue(b);
     }
 

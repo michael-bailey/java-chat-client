@@ -284,117 +284,121 @@ public class DataManager {
      * @since 1.0
      */
     public boolean createNew(String name, String password) {
-		// check if the name and password is null or empty
-		if (name == null || password == null || password.equals("") || name.equals("")) {
+	// check if the name and password is null or empty
+	if (name == null || password == null || password.equals("") || name.equals("")) {
+		return false;
+	}
+
+	if((name.length()>=7 && name.length()<=14) && (password.length()>=7 && password.length()<=14)){
+		if (this.isLocked) {
+		    // create new file
+		    this.fileHandle = new File("./" + name + ".dat");
+
+		    if (!this.fileHandle.exists()) {
+			try {
+			    // creating objects
+			    this.dataObject = new HashMap<>();
+			    DataStore dataStore = new DataStore();
+			    byte[] salt = new byte[16];
+
+			    // creating instances.
+			    SecureRandom sr = SecureRandom.getInstanceStrong();
+			    MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+			    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			    SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+			    Base64.Encoder encoder = Base64.getEncoder();
+
+			    // reserving names.
+			    KeySpec keySpec;
+
+			    // creating the salt
+			    sr.nextBytes(salt);
+			    String saltString = encoder.encodeToString(salt);
+
+			    // assigning vars
+			    keySpec = new PBEKeySpec(password.toCharArray(), salt, 256, 256);
+			    this.secretKey = secretKeyFactory.generateSecret(keySpec);
+			    this.secretKey = new SecretKeySpec(this.secretKey.getEncoded(), "AES"); // this is the key
+
+			    // initalise the cipher.
+			    cipher.init(Cipher.ENCRYPT_MODE, this.secretKey, ivspec);
+
+			    // write the object to a byte array
+			    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			    new ObjectOutputStream(byteArrayOutputStream).writeObject(this.dataObject);
+
+			    // generate the checksum
+			    byte[] checksum = messageDigest.digest(byteArrayOutputStream.toByteArray());
+			    String checkSumString = encoder.encodeToString(checksum);
+
+			    // encrypt the data
+			    byte[] encryptedByteArray = cipher.doFinal(byteArrayOutputStream.toByteArray());
+			    String encryptedDataString = encoder.encodeToString(encryptedByteArray);
+
+			    // add then to the dataStore
+			    dataStore.dataString = encryptedDataString;
+			    dataStore.checkSum = checkSumString;
+			    dataStore.salt = saltString;
+
+			    FileOutputStream tmpOut = new FileOutputStream(this.fileHandle);
+			    new ObjectOutputStream(tmpOut).writeObject(dataStore);
+			    tmpOut.close();
+
+			    // set unlocked
+			    this.isLocked = !this.isLocked;
+			    return true;
+
+			} catch (NoSuchAlgorithmException e) {
+			    System.out.println("class not found occurred");
+			    System.out.println("=== Stack Trace ===");
+			    e.printStackTrace();
+			    return false;
+			} catch (InvalidKeyException e) {
+			    System.out.println("class not found occurred");
+			    System.out.println("=== Stack Trace ===");
+			    e.printStackTrace();
+			    return false;
+			} catch (NoSuchPaddingException e) {
+			    System.out.println("class not found occurred");
+			    System.out.println("=== Stack Trace ===");
+			    e.printStackTrace();
+			    return false;
+			} catch (IOException e) {
+			    System.out.println("class not found occurred");
+			    System.out.println("=== Stack Trace ===");
+			    e.printStackTrace();
+			    return false;
+			} catch (IllegalBlockSizeException e) {
+			    System.out.println("class not found occurred");
+			    System.out.println("=== Stack Trace ===");
+			    e.printStackTrace();
+			    return false;
+			} catch (BadPaddingException e) {
+			    System.out.println("class not found occurred");
+			    System.out.println("=== Stack Trace ===");
+			    e.printStackTrace();
+			    return false;
+			} catch (InvalidKeySpecException e) {
+			    System.out.println("class not found occurred");
+			    System.out.println("=== Stack Trace ===");
+			    e.printStackTrace();
+			    return false;
+			} catch (InvalidAlgorithmParameterException e) {
+			    System.out.println("class not found occurred");
+			    System.out.println("=== Stack Trace ===");
+			    e.printStackTrace();
+			    return false;
+			}
+
+		    } else {
 			return false;
+		    }
 		}
-		
-		// check if the object is currently unlocked
-        if (this.isLocked) {
-            // create new file
-            this.fileHandle = new File("./" + name + ".dat");
-
-            if (!this.fileHandle.exists()) {
-                try {
-                    // creating objects
-                    this.dataObject = new HashMap<>();
-                    DataStore dataStore = new DataStore();
-                    byte[] salt = new byte[16];
-
-                    // creating instances.
-                    SecureRandom sr = SecureRandom.getInstanceStrong();
-                    MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-                    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-                    SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-                    Base64.Encoder encoder = Base64.getEncoder();
-
-                    // reserving names.
-                    KeySpec keySpec;
-
-                    // creating the salt
-                    sr.nextBytes(salt);
-                    this.saltString = encoder.encodeToString(salt);
-
-                    // assigning vars
-                    keySpec = new PBEKeySpec(password.toCharArray(), salt, 256, 256);
-                    this.secretKey = secretKeyFactory.generateSecret(keySpec);
-                    this.secretKey = new SecretKeySpec(this.secretKey.getEncoded(), "AES"); // this is the key
-
-                    // initalise the cipher.
-                    cipher.init(Cipher.ENCRYPT_MODE, this.secretKey, ivspec);
-
-                    // write the object to a byte array
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    new ObjectOutputStream(byteArrayOutputStream).writeObject(this.dataObject);
-
-                    // generate the checksum
-                    byte[] checksum = messageDigest.digest(byteArrayOutputStream.toByteArray());
-                    String checkSumString = encoder.encodeToString(checksum);
-
-                    // encrypt the data
-                    byte[] encryptedByteArray = cipher.doFinal(byteArrayOutputStream.toByteArray());
-                    String encryptedDataString = encoder.encodeToString(encryptedByteArray);
-
-                    // add then to the dataStore
-                    dataStore.dataString = encryptedDataString;
-                    dataStore.checkSum = checkSumString;
-                    dataStore.salt = this.saltString;
-
-                    FileOutputStream tmpOut = new FileOutputStream(this.fileHandle);
-                    new ObjectOutputStream(tmpOut).writeObject(dataStore);
-                    tmpOut.close();
-
-                    // set unlocked
-                    this.isLocked = !this.isLocked;
-                    return true;
-
-                } catch (NoSuchAlgorithmException e) {
-                    System.out.println("class not found occurred");
-                    System.out.println("=== Stack Trace ===");
-                    e.printStackTrace();
-                    return false;
-                } catch (InvalidKeyException e) {
-                    System.out.println("class not found occurred");
-                    System.out.println("=== Stack Trace ===");
-                    e.printStackTrace();
-                    return false;
-                } catch (NoSuchPaddingException e) {
-                    System.out.println("class not found occurred");
-                    System.out.println("=== Stack Trace ===");
-                    e.printStackTrace();
-                    return false;
-                } catch (IOException e) {
-                    System.out.println("class not found occurred");
-                    System.out.println("=== Stack Trace ===");
-                    e.printStackTrace();
-                    return false;
-                } catch (IllegalBlockSizeException e) {
-                    System.out.println("class not found occurred");
-                    System.out.println("=== Stack Trace ===");
-                    e.printStackTrace();
-                    return false;
-                } catch (BadPaddingException e) {
-                    System.out.println("class not found occurred");
-                    System.out.println("=== Stack Trace ===");
-                    e.printStackTrace();
-                    return false;
-                } catch (InvalidKeySpecException e) {
-                    System.out.println("class not found occurred");
-                    System.out.println("=== Stack Trace ===");
-                    e.printStackTrace();
-                    return false;
-                } catch (InvalidAlgorithmParameterException e) {
-                    System.out.println("class not found occurred");
-                    System.out.println("=== Stack Trace ===");
-                    e.printStackTrace();
-                    return false;
-                }
-
-            } else {
-                return false;
-            }
-        }
-        return false;
+		return false;
+	}else{
+		System.out.println("Invalid Details entered!");
+		return false;
+	}
     }
 
     /**

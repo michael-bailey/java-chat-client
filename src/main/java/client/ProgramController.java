@@ -32,7 +32,8 @@ public class ProgramController extends Application implements ILoginWindowContro
     DataManager dataManager;
     HashMap<String, Object> preferences;
     Account account;
-
+    
+    private String loginMsg = "Incorrect Login Details!", createAccountMsg = "Invalid Details! Please correct!";
 
     public static void main(String[] args) throws Exception {
         launch(args);
@@ -60,9 +61,7 @@ public class ProgramController extends Application implements ILoginWindowContro
             this.preferences = (HashMap<String, Object>) this.dataManager.getObject("preferences");
             // this.contacts
             this.mainWindow.show();
-        } else {
-            // code to show error message
-        }
+        }else{loginWindow.incorrectDetails(this.loginMsg);}
     }
 
     @Override
@@ -75,8 +74,6 @@ public class ProgramController extends Application implements ILoginWindowContro
             this.preferences = new HashMap<>();
             this.dataManager.addObject("preferences", this.preferences);
             this.mainWindow.show();
-        } else {
-            // code to say the account exists
-        }
+        }else{loginWindow.incorrectDetails(this.createAccountMsg);}
     }
 }
