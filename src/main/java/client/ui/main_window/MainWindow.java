@@ -134,7 +134,7 @@ public class MainWindow implements IWindow {
 				msgFrame.setPrefHeight(height*0.10);
 			}
 		});
-		
+
 		this.stage.widthProperty().addListener(new ChangeListener(){
 			/**
 			 * Ensures that the listener of the width property updates all the frames
