@@ -58,6 +58,7 @@ public class ProgramController extends Application implements ILoginWindowContro
             this.loginWindow.hide();
             this.account = (Account) this.dataManager.getObject("account");
             this.preferences = (HashMap<String, Object>) this.dataManager.getObject("preferences");
+            // this.contacts
             this.mainWindow.show();
         } else {
             // code to show error message
