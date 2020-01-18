@@ -20,6 +20,8 @@ public class ProgramController extends Application implements LoginWindowControl
     MainWindow mainWindow;
     LoginWindow loginWindow;
     DataManager dataManager;
+    
+    private String loginMsg = "Incorrect Login Details!", createAccountMsg = "Invalid Details! Please correct!";
 
     public static void main(String[] args) throws Exception {
         launch(args);
@@ -42,8 +44,7 @@ public class ProgramController extends Application implements LoginWindowControl
         if (this.dataManager.unlock(username, Password)) {
             this.loginWindow.hide();
             this.mainWindow.show();
-        }
-        
+        }else{loginWindow.incorrectDetails(this.loginMsg);}
     }
 
     @Override
@@ -51,6 +52,6 @@ public class ProgramController extends Application implements LoginWindowControl
         if (this.dataManager.createNew(username, Password)) {
             this.loginWindow.hide();
             this.mainWindow.show();
-        }
+        }else{loginWindow.incorrectDetails(this.createAccountMsg);}
     }
 }

@@ -4,3 +4,9 @@
 	-fx-border-radius: 5;
 	-fx-border-style: solid;
 }
+#errorBox{
+	-fx-border-color: red;
+	-fx-border-width: 2;
+	-fx-border-radius: 5;
+	-fx-border-style: solid;
+}
