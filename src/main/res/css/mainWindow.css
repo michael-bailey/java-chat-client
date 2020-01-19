@@ -1,3 +1,8 @@
 #msgEntryBox{
 	-fx-background-radius: 8;
 }
+
+
+.VBox {
+    -fx-background-color: blue;
+}

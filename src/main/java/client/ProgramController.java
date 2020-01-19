@@ -50,7 +50,7 @@ public class ProgramController extends Application implements ILoginWindowContro
 
         // show the Login window
         this.loginWindow.show();
-        this.preferenceWindow.show();
+        //this.preferenceWindow.show();
     }
 
     @Override

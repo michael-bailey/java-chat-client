@@ -14,10 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.geometry.Rectangle2D;
@@ -40,7 +38,7 @@ public class MainWindow implements IWindow {
 	private boolean msgSent = true;
 	private Stage stage;
 	private TextField msgEntry = new TextField();
-	private ScrollPane sp = new ScrollPane();
+	private ScrollPane messageView = new ScrollPane();
 	private VBox friendFrame = new VBox();
 	private VBox chatFrame = new VBox();
 	private HBox msgFrame = new HBox();
@@ -57,12 +55,12 @@ public class MainWindow implements IWindow {
 
 	public MainWindow(IMainWindowController controller){
 		this.stage = new Stage();
+		this.stage.setTitle("Application");
 		this.controller = controller;
 	}
 
 	/*
 	 * Event Handlers
-	 *
 	 */
 	private class MsgHandler implements EventHandler<ActionEvent>{
 		@Override
@@ -87,13 +85,46 @@ public class MainWindow implements IWindow {
 		}
 	}
 
-	public Scene createWindow(){
-		this.stage.setTitle("Application");
-		GridPane mainGrid = new GridPane();		
+	public Scene createWindow() {
+
+		GridPane mainGrid = new GridPane();
+		mainGrid.setGridLinesVisible(true);
+
+		mainGrid.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+		mainGrid.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+		mainGrid.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+
+		//setting Column constraints.
+		ColumnConstraints column0 = new ColumnConstraints();
+		column0.hgrowProperty().set(Priority.NEVER);
+		column0.setMinWidth(Region.USE_PREF_SIZE);
+		column0.setMaxWidth(Double.MAX_VALUE);
+		column0.setPrefWidth(50);
+
+		ColumnConstraints column1 = new ColumnConstraints();
+		column1.setMinWidth(Region.USE_PREF_SIZE);
+		column1.setMaxWidth(Region.USE_PREF_SIZE);
+		column1.setPrefWidth(200);
+
+		ColumnConstraints column2 = new ColumnConstraints();
+		column2.setMaxWidth(Double.MAX_VALUE);
+
+		mainGrid.getColumnConstraints().add(column0);
+		mainGrid.getColumnConstraints().add(column1);
+		mainGrid.getColumnConstraints().add(column2);
+
+		mainGrid.add(serverFrame(),0,0);
+		mainGrid.add(friendFrame,1,0);
+		mainGrid.add(chatFrame,2,0);
+		mainGrid.add(MsgGrid(),2,1 );
+
+
+	/*
 		sp.setVmax(100);
 		sp.setVvalue(100);
 		sp.setHbarPolicy(ScrollBarPolicy.NEVER);
 		sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		sp.fitToWidthProperty().set(true);
 		sp.vvalueProperty().addListener(new ChangeListener<Number>() {
 		       	public void changed(ObservableValue<? extends Number> ov,Number old_val, Number new_val) {
 				chatFrame.setLayoutY((new_val.intValue() - 1)/100);
@@ -105,9 +136,11 @@ public class MainWindow implements IWindow {
 		sp.setContent(chatFrame());
 		msgFrame.getChildren().add(MsgGrid());
 		// add frames to main gird
+
 		mainGrid.add(friendFrame,0,0,1,2);
 		mainGrid.add(sp,1,0);
 		mainGrid.add(msgFrame,1,1);
+
 
 		//configure mainGrid
 		mainGrid.setHgrow(friendFrame,Priority.ALWAYS);
@@ -116,6 +149,7 @@ public class MainWindow implements IWindow {
 		mainGrid.setVgrow(friendFrame,Priority.ALWAYS);
 		mainGrid.setVgrow(chatFrame,Priority.ALWAYS);
 		mainGrid.setVgrow(msgFrame,Priority.ALWAYS);
+		*/
 
 		this.stage.heightProperty().addListener(new ChangeListener(){
 			/**
@@ -130,7 +164,7 @@ public class MainWindow implements IWindow {
 				double height = (double) arg2;
 				// Children added here:
 				friendFrame.setPrefHeight(height*1.0);
-				sp.setPrefHeight(height*0.90);
+				messageView.setPrefHeight(height*0.90);
 				msgFrame.setPrefHeight(height*0.10);
 			}
 		});
@@ -148,18 +182,27 @@ public class MainWindow implements IWindow {
 				double width = (double) arg2;
 				// Children added here:
 				friendFrame.setPrefWidth(width*0.10);
-				sp.setPrefWidth(width*0.90);
+				messageView.setPrefWidth(width*0.90);
 				msgFrame.setPrefWidth(width*0.90);
 			}
 		});
 		
 		// create scene
 		Scene scene = new Scene(mainGrid);
+		scene.getStylesheets().add("css/MainWindow.css");
 		return scene;
 	}
 
-	public GridPane FriendGrid(){
+	public VBox serverFrame() {
+		VBox tmpBox = new VBox();
+		tmpBox.getStyleClass().add(".VBox");
+		return tmpBox;
+	}
+
+	public GridPane FriendGrid() {
+
 		GridPane root = new GridPane();
+
 		VBox contactsVB = new VBox();
 		HBox addContactsHB = new HBox();
 		Button addBtn = new Button("Add");
@@ -206,6 +249,7 @@ public class MainWindow implements IWindow {
 		
 		return root;
 	}
+
 	public VBox chatFrame(){
 		chatFrame.setPrefWidth(this.width*0.90);
 		chatFrame.setPrefHeight(this.height*0.90);
@@ -214,15 +258,22 @@ public class MainWindow implements IWindow {
 		chatFrame.setMaxHeight(this.height*0.90);
 		return chatFrame;
 	}
+
 	public GridPane MsgGrid(){
 		GridPane root = new GridPane();
-		Button sendBtn = new Button("send"),emojiBtn = new Button("emoji"),photoBtn = new Button("photo");
+
+
+		Button sendBtn = new Button("send");
+		Button emojiBtn = new Button("emoji");
+		Button photoBtn = new Button("photo");
+
 		// create msg handler
 		MsgHandler msgHandler = new MsgHandler();
 		sendBtn.setOnAction(msgHandler);
+
 		// ---------
 		msgEntry.setId("msgEntryBox");
-		msgEntry.getStylesheets().add("mainwindow.css");		
+		msgEntry.getStylesheets().add("css/MainWindow.css");
 		root.add(photoBtn,0,0);
 		root.add(msgEntry,1,0);
 		root.add(emojiBtn,2,0);
@@ -267,17 +318,20 @@ public class MainWindow implements IWindow {
 
 		return root;
 	}
+
 	// get current message in text box
 	public void displayMsg(VBox msg){
 		if(msgSent){chatFrame.setAlignment(Pos.BOTTOM_RIGHT);}
 		else{chatFrame.setAlignment(Pos.BOTTOM_LEFT);}
 		chatFrame.getChildren().add(msg);
 	}
+
 	/*public void displayContacts(VBox contactsVB){
 		for(int i=0;i<contIn.getContactArrSize();i++){
 			contactsVB.getChildren().add(contIn.getContact(i).getContactVB());
 		}
 	}*/
+
 	@Override
 	public void show() {
 		this.stage.setScene(this.createWindow());

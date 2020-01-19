@@ -5,15 +5,19 @@ import java.io.IOException;
 
 import client.interfaces.controllers.ILoginWindowController;
 import client.interfaces.IWindow;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -23,6 +27,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 
 
 /**
@@ -40,6 +45,7 @@ public class LoginWindow implements IWindow {
 	private PasswordField pwBox = new PasswordField();
 
 	private VBox incorrectMsgVB = new VBox();
+
 
 	public LoginWindow(ILoginWindowController controller) throws IOException {
 		System.out.println(this);
@@ -258,6 +264,19 @@ public class LoginWindow implements IWindow {
 		System.out.println("<placeholder> Incorrect Login! Try Again!");
 		if(incorrectMsgVB.getChildren().isEmpty()){
 			Text incorrectLoginMsg = new Text(errorMsg);
+
+
+			// animate the rotation
+			RotateTransition animation = new RotateTransition();
+			animation.setNode(incorrectLoginMsg);
+			animation.setDuration(new Duration(500));
+			animation.setCycleCount(3);
+			animation.setFromAngle(360);
+			animation.setToAngle(0);
+			animation.setAutoReverse(true);
+			animation.play();
+
+
 			this.incorrectMsgVB.getChildren().add(incorrectLoginMsg);
 			this.incorrectMsgVB.setVisible(true);
 		}
