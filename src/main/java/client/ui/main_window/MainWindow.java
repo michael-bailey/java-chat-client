@@ -44,6 +44,7 @@ public class MainWindow implements IWindow {
 	private VBox friendFrame = new VBox();
 	private VBox chatFrame = new VBox();
 	private HBox msgFrame = new HBox();
+	int preSize = 0;
 
 	/*
 	 * Constructors
@@ -89,20 +90,27 @@ public class MainWindow implements IWindow {
 
 	public Scene createWindow(){
 		this.stage.setTitle("Application");
-		GridPane mainGrid = new GridPane();		
+		GridPane mainGrid = new GridPane();
+		//ScrollPane start
+		sp.setVmin(0);
 		sp.setVmax(100);
 		sp.setVvalue(100);
 		sp.setHbarPolicy(ScrollBarPolicy.NEVER);
 		sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		sp.setFitToWidth(true);
+		sp.setPadding(new Insets(20,40,20,20));
 		sp.vvalueProperty().addListener(new ChangeListener<Number>() {
-		       	public void changed(ObservableValue<? extends Number> ov,Number old_val, Number new_val) {
-				chatFrame.setLayoutY((new_val.intValue() - 1)/100);
+		       	@Override
+			public void changed(ObservableValue<? extends Number> ov,Number old_val, Number new_val) {
+				if((old_val.intValue()-new_val.intValue())==(old_val.intValue()-1)){
+					sp.setVvalue(old_val.intValue());
+				}
 			}
 		});
 
 		// create frames
 		friendFrame.getChildren().add(FriendGrid());
-		sp.setContent(chatFrame());
+		sp.setContent(chatFrameOptions());
 		msgFrame.getChildren().add(MsgGrid());
 		// add frames to main gird
 		mainGrid.add(friendFrame,0,0,1,2);
@@ -130,8 +138,8 @@ public class MainWindow implements IWindow {
 				double height = (double) arg2;
 				// Children added here:
 				friendFrame.setPrefHeight(height*1.0);
-				sp.setPrefHeight(height*0.90);
-				msgFrame.setPrefHeight(height*0.10);
+				sp.setPrefHeight(height*0.95);
+				msgFrame.setPrefHeight(height*0.05);
 			}
 		});
 
@@ -140,7 +148,7 @@ public class MainWindow implements IWindow {
 			 * Ensures that the listener of the width property updates all the frames
 			 * of the stage so their widths resize correctly.
 			 * @param arg0 observable value.
-			 * @param arg1 actual value of the width of the stage.
+			 * @param rg1 actual value of the width of the stage.
 			 * @param arg2 new value of the width of the stage.
 			 */
 			@Override
@@ -206,12 +214,12 @@ public class MainWindow implements IWindow {
 		
 		return root;
 	}
-	public VBox chatFrame(){
+	public VBox chatFrameOptions(){
 		chatFrame.setPrefWidth(this.width*0.90);
-		chatFrame.setPrefHeight(this.height*0.90);
+		chatFrame.setPrefHeight(this.height*0.95);
 		chatFrame.setSpacing(10);
 		chatFrame.setPadding(new Insets(20,20,20,20));
-		chatFrame.setMaxHeight(this.height*0.90);
+		//chatFrame.setMaxHeight(this.height*0.95);
 		return chatFrame;
 	}
 	public GridPane MsgGrid(){
