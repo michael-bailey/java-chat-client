@@ -18,10 +18,12 @@ public class Message{
 		this.msg.setFill(Color.WHITE);
 		//-------------------------
 		this.width = this.msg.getLayoutBounds().getWidth();
-		msgVBox.setMaxWidth(width+10);
+		msgVBox.setMaxWidth(width+20);
+		msgVBox.setMaxWidth(width+20);
 		msgVBox.setAlignment(Pos.CENTER);
 		this.height = this.msg.getLayoutBounds().getHeight();
 		msgVBox.setMaxHeight(height+10);
+		msgVBox.setMinHeight(height+10);
 		//-------------------------
 		msgVBox.getChildren().add(this.msg);
 		msgVBox.setId("sentMsg");
