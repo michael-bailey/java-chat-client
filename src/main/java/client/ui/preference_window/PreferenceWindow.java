@@ -2,6 +2,7 @@ package client.ui.preference_window;
 
 import client.interfaces.IWindow;
 import client.interfaces.controllers.IPreferenceWindowController;
+import client.ui.preference_window.panes.AccountPaneController;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -14,6 +15,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 
+/**
+ * this class 
+ */
 public class PreferenceWindow implements IWindow {
 
     // defining the window
@@ -39,21 +43,29 @@ public class PreferenceWindow implements IWindow {
     public PreferenceWindow(HashMap<String, Object> preferences) throws IOException {
         // create stage
         this.stage = new Stage();
+        this.stage.setMinHeight(350);
+        this.stage.setMinWidth(600);
+
         this.preferences = preferences;
+
         FXMLLoader tmpLoader = new FXMLLoader(mainSceneURL);
         tmpLoader.setController(this);
         this.mainScene = tmpLoader.load();
         this.mainScene.getStylesheets().add("css/PreferenceWindow/PreferenceWindow.css");
         this.stage.setScene(this.mainScene);
+        this.switchAccountPane(null);
     }
 
     @FXML
     private void switchAccountPane(ActionEvent e) throws IOException {
+
         this.SettingsMenuPane.getChildren().clear();
+
         FXMLLoader tmpLoader = new FXMLLoader(AccountPaneURL);
         tmpLoader.setController(this);
         this.currentPane = tmpLoader.load();
         this.SettingsMenuPane.getChildren().add(this.currentPane);
+
         System.out.println("switched to account pane");
     }
 
@@ -63,10 +75,15 @@ public class PreferenceWindow implements IWindow {
     }
 
     @FXML
-    private void switchWindowPane(ActionEvent e) {
+    private void switchWindowPane(ActionEvent e) throws IOException {
+
         this.SettingsMenuPane.getChildren().clear();
-        // FXMLLoader tmpLoader = new FXMLLoader()
+
+        FXMLLoader tmpLoader = new FXMLLoader(this.WindowPaneURL);
+        tmpLoader.setController(this);
+        this.currentPane = tmpLoader.load();
         this.SettingsMenuPane.getChildren().add(this.currentPane);
+
         System.out.println("switched to account pane");
 
     }

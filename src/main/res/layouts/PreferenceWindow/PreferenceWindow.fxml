@@ -5,40 +5,39 @@
 <?import javafx.scene.layout.*?>
 
 <Scene fx:id="mainScene" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
-   <VBox>
-      <children>
-         <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
-           <menus>
-             <Menu mnemonicParsing="false" text="File">
-               <items>
-                     <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-                 <MenuItem mnemonicParsing="false" text="Close" />
-               </items>
-             </Menu>
-             <Menu mnemonicParsing="false" text="Edit">
-               <items>
-                 <MenuItem mnemonicParsing="false" text="Delete" />
-               </items>
-             </Menu>
-             <Menu mnemonicParsing="false" text="Window">
-               <items>
-                 <MenuItem mnemonicParsing="false" text="About" />
-               </items>
-             </Menu>
-           </menus>
-         </MenuBar>
-          <SplitPane dividerPositions="0.5">
-          <items>
-             <VBox prefHeight="200.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
-                <children>
-                    <Button fx:id="AccountPaneButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#switchAccountPane" prefHeight="30.0" text="Account Settings" VBox.vgrow="NEVER" />
-                    <Button fx:id="WindowPaneButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#switchWindowPane" prefHeight="30.0" text="Window Settings" VBox.vgrow="NEVER" />
-
-                </children>
-             </VBox>
-             <Pane id="settingsMenuPane" fx:id="SettingsMenuPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
-          </items>
-         </SplitPane>
-      </children>
-   </VBox>
+    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: pink;">
+        <children>
+            <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+                <menus>
+                    <Menu mnemonicParsing="false" text="File">
+                        <items>
+                            <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                            <MenuItem mnemonicParsing="false" text="Close" />
+                        </items>
+                    </Menu>
+                    <Menu mnemonicParsing="false" text="Edit">
+                        <items>
+                            <MenuItem mnemonicParsing="false" text="Delete" />
+                        </items>
+                    </Menu>
+                    <Menu mnemonicParsing="false" text="Window">
+                        <items>
+                            <MenuItem mnemonicParsing="false" text="About" />
+                        </items>
+                    </Menu>
+                </menus>
+            </MenuBar>
+            <SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                <items>
+                    <VBox prefHeight="200.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+                    <children>
+                        <Button fx:id="AccountPaneButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#switchAccountPane" prefHeight="30.0" text="Account Settings" VBox.vgrow="NEVER" />
+                        <Button fx:id="WindowPaneButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#switchWindowPane" prefHeight="30.0" text="Window Settings" VBox.vgrow="NEVER" />
+                    </children>
+                </VBox>
+                <Pane id="settingsMenuPane" fx:id="SettingsMenuPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
+                </items>
+            </SplitPane>
+        </children>
+    </VBox>
 </Scene>
