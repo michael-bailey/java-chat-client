@@ -51,18 +51,10 @@ public class PreferenceWindow implements IWindow {
         // save the reference
         this.dataManager = dataManager;
 
-        // create stage
-        this.stage = new Stage();
-        this.stage.setMinHeight(350);
-        this.stage.setMinWidth(600);
-
-        this.preferences = preferences;
-
         FXMLLoader tmpLoader = new FXMLLoader(mainSceneURL);
         tmpLoader.setController(this);
-        this.mainScene = tmpLoader.load();
-        this.mainScene.getStylesheets().add("css/PreferenceWindow/PreferenceWindow.css");
-        this.stage.setScene(this.mainScene);
+        this.stage = tmpLoader.load();
+        this.stage.getScene().getStylesheets().add("css/PreferenceWindow/PreferenceWindow.css");
     }
 
     @Override

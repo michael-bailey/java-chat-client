@@ -15,7 +15,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Paint;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.geometry.Rectangle2D;
@@ -49,16 +48,16 @@ public class MainWindow implements IWindow {
 	 * Initilizes the stage.
 	 * Assigns the stage attribute to a new stage.
 	 */
-	@Deprecated
-	public MainWindow(){
-		this.stage = new Stage();
-		this.stage.setMinWidth(700);
-	}
-
 	public MainWindow(IMainWindowController controller){
 		this.stage = new Stage();
 		this.stage.setTitle("Application");
 		this.controller = controller;
+		this.stage.setMaxHeight(this.primaryScreenBounds.getHeight());
+		this.stage.setMaxWidth(this.primaryScreenBounds.getWidth());
+		this.stage.setMinWidth(625);
+		this.stage.setMinHeight(350);
+		this.stage.setScene(this.createWindow());
+		this.messageView.setHbarPolicy(ScrollBarPolicy.ALWAYS);
 	}
 
 	/*
@@ -87,7 +86,6 @@ public class MainWindow implements IWindow {
 		}
 	}
 
-
 	public Scene createWindow() {
 
 		GridPane mainGrid = new GridPane();
@@ -95,7 +93,7 @@ public class MainWindow implements IWindow {
 
 		mainGrid.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 		mainGrid.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-		mainGrid.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+		mainGrid.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
 		//setting Column constraints.
 		ColumnConstraints column0 = new ColumnConstraints();
@@ -105,14 +103,14 @@ public class MainWindow implements IWindow {
 		column0.setPrefWidth(50);
 
 		ColumnConstraints column1 = new ColumnConstraints();
-		column0.hgrowProperty().set(Priority.NEVER);
+		column1.hgrowProperty().set(Priority.NEVER);
 		column1.setMinWidth(Region.USE_PREF_SIZE);
 		column1.setMaxWidth(Region.USE_PREF_SIZE);
 		column1.setPrefWidth(200);
 
 		ColumnConstraints column2 = new ColumnConstraints();
 		column2.hgrowProperty().set(Priority.ALWAYS);
-		column2.setMinWidth(400);
+		column2.setMinWidth(350);
 		column2.setMaxWidth(Double.MAX_VALUE);
 		column2.setPrefWidth(Region.USE_COMPUTED_SIZE);
 
@@ -120,10 +118,19 @@ public class MainWindow implements IWindow {
 		mainGrid.getColumnConstraints().add(column1);
 		mainGrid.getColumnConstraints().add(column2);
 
+		// height constraints
+		RowConstraints row0 = new RowConstraints();
+		row0.vgrowProperty().set(Priority.ALWAYS);
+		row0.setMinHeight(275);
+		row0.setMaxHeight(Double.MAX_VALUE);
+
+		mainGrid.getRowConstraints().add(row0);
+
 		mainGrid.add(serverFrame(),0,0);
 		mainGrid.add(friendFrame,1,0);
 		mainGrid.add(chatFrame,2,0);
 		mainGrid.add(MsgGrid(),2,1 );
+
 
 
 		/*
@@ -134,7 +141,7 @@ public class MainWindow implements IWindow {
 		sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
 		sp.setFitToWidth(true);
 		sp.setPadding(new Insets(20,40,20,20));
-		sp.vvalueProperty().addListener(new ChangeListener<Number>() {
+		sp.valueProperty().addListener(new ChangeListener<Number>() {
 		       	@Override
 			public void changed(ObservableValue<? extends Number> ov,Number old_val, Number new_val) {
 				if((old_val.intValue()-new_val.intValue())==(old_val.intValue()-1)){
@@ -163,7 +170,9 @@ public class MainWindow implements IWindow {
 		mainGrid.setVgrow(msgFrame,Priority.ALWAYS);
 		*/
 
-		this.stage.heightProperty().addListener(new ChangeListener(){
+		/*
+		this.stage.heightProperty().addListener(new ChangeListener() {
+		 */
 			/**
 			 * Ensures that the listener of the height property updates all the frames
 			 * of the stage so their heights resize correctly.
@@ -171,6 +180,7 @@ public class MainWindow implements IWindow {
 			 * @param arg1 actual value of the height of the stage.
 			 * @param arg2 new value of the height of the stage.
 			 */
+			/*
 			@Override
 			public void changed(ObservableValue arg0, Object arg1, Object arg2){
 				double height = (double) arg2;
@@ -180,8 +190,10 @@ public class MainWindow implements IWindow {
 				msgFrame.setPrefHeight(height*0.05);
 			}
 		});
-
+		*/
+		/*
 		this.stage.widthProperty().addListener(new ChangeListener(){
+		*/
 			/**
 			 * Ensures that the listener of the width property updates all the frames
 			 * of the stage so their widths resize correctly.
@@ -189,6 +201,7 @@ public class MainWindow implements IWindow {
 			 * @param arg1 actual value of the width of the stage.
 			 * @param arg2 new value of the width of the stage.
 			 */
+			/*
 			@Override
 			public void changed(ObservableValue arg0, Object arg1, Object arg2){
 				double width = (double) arg2;
@@ -198,6 +211,7 @@ public class MainWindow implements IWindow {
 				msgFrame.setPrefWidth(width*0.90);
 			}
 		});
+		*/
 		
 		// create scene
 		Scene scene = new Scene(mainGrid);
@@ -274,10 +288,47 @@ public class MainWindow implements IWindow {
 	public GridPane MsgGrid() {
 		GridPane root = new GridPane();
 
-
 		Button sendBtn = new Button("send");
+		sendBtn.setMaxWidth(Double.MAX_VALUE);
+
 		Button emojiBtn = new Button("emoji");
+		emojiBtn.setMaxWidth(Double.MAX_VALUE);
+
 		Button photoBtn = new Button("photo");
+		photoBtn.setMaxWidth(Double.MAX_VALUE);
+
+		// defining column grid
+		ColumnConstraints column0 = new ColumnConstraints();
+		column0.hgrowProperty().set(Priority.NEVER);
+		column0.setMinWidth(Region.USE_PREF_SIZE);
+		column0.setMaxWidth(Region.USE_PREF_SIZE);
+		column0.setPrefWidth(50);
+
+		// defining column grid
+		ColumnConstraints column1 = new ColumnConstraints();
+		column1.hgrowProperty().set(Priority.ALWAYS);
+		column1.setMinWidth(Region.USE_PREF_SIZE);
+		column1.setMaxWidth(Double.MAX_VALUE);
+		column1.setPrefWidth(200);
+
+		// defining column grid
+		ColumnConstraints column2 = new ColumnConstraints();
+		column2.setMinWidth(Region.USE_PREF_SIZE);
+		column2.setMinWidth(Region.USE_COMPUTED_SIZE);
+		column2.setMaxWidth(Region.USE_PREF_SIZE);
+		column2.setPrefWidth(50);
+
+		// defining column grid
+		ColumnConstraints column3 = new ColumnConstraints();
+		column3.hgrowProperty().set(Priority.NEVER);
+		column3.setMinWidth(Region.USE_PREF_SIZE);
+		column3.setMaxWidth(Region.USE_PREF_SIZE);
+		column3.setPrefWidth(50);
+
+		root.getColumnConstraints().add(column0);
+		root.getColumnConstraints().add(column1);
+		root.getColumnConstraints().add(column2);
+		root.getColumnConstraints().add(column3);
 
 		// create msg handler
 		MsgHandler msgHandler = new MsgHandler();
@@ -285,10 +336,8 @@ public class MainWindow implements IWindow {
 		// ---------
 		msgEntry.setId("msgEntryBox");
 		msgEntry.getStylesheets().add("css/mainWindow.css");
+		msgEntry.setMinWidth(200);
 
-		// defining column constraints
-		ColumnConstraints column0 = new ColumnConstraints();
-		//column0		
 
 		root.add(photoBtn,0,0);
 		root.add(msgEntry,1,0);
@@ -361,12 +410,8 @@ public class MainWindow implements IWindow {
 
 	@Override
 	public void show() {
-		this.stage.setScene(this.createWindow());
-		this.stage.setMaxHeight(this.primaryScreenBounds.getHeight());
-		this.stage.setMinHeight(250);
-		this.stage.setMaxWidth(this.primaryScreenBounds.getWidth());
-		this.stage.setMinWidth(500);
-		this.stage.setMaximized(true);
+
+
 		this.stage.show();
 	}
 

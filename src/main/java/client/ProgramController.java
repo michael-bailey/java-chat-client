@@ -47,7 +47,10 @@ public class ProgramController extends Application implements ILoginWindowContro
         this.loginWindow = new LoginWindow(this);
         this.dataManager = new DataManager();
 
-        // show the Login window
+        // REMOVE THIS WHEN NOT NEEDED.
+        //LoginRequest("michael", "password");
+
+        // show the login window
         this.loginWindow.show();
     }
 
