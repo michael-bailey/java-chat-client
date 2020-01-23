@@ -1,3 +1,11 @@
 .button {
     -fx-background-color: white;
 }
+
+Pane {
+    -fx-background-color: green;
+}
+
+GridPane {
+    -fx-background-color: blue;
+}
