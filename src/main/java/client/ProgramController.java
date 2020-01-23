@@ -13,6 +13,7 @@ import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
 import baselib.managers.DataManager;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -44,23 +45,29 @@ public class ProgramController extends Application implements ILoginWindowContro
         // create windows in memory
         this.mainWindow = new MainWindow(this);
         this.loginWindow = new LoginWindow(this);
-        this.preferenceWindow = new PreferenceWindow(new HashMap<>());
-
         this.dataManager = new DataManager();
 
         // show the Login window
         this.loginWindow.show();
-        //this.preferenceWindow.show();
     }
 
     @Override
     public void LoginRequest(String username, String Password) {
         if (this.dataManager.unlock(username, Password)) {
-            this.loginWindow.hide();
-            this.account = (Account) this.dataManager.getObject("account");
-            this.preferences = (HashMap<String, Object>) this.dataManager.getObject("preferences");
-            // this.contacts
-            this.mainWindow.show();
+            try {
+                this.loginWindow.hide();
+
+                // setting up windows that require a login to be complete.
+                this.mainWindow = new MainWindow(this);
+                this.preferenceWindow = new PreferenceWindow(this.dataManager);
+
+                this.account = (Account) this.dataManager.getObject("account");
+
+                this.mainWindow.show();
+                this.preferenceWindow.show();
+            } catch (IOException e) {
+
+            }
         }else{loginWindow.incorrectDetails(this.loginMsg);}
     }
 

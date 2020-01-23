@@ -274,13 +274,21 @@ public class MainWindow implements IWindow {
 	public GridPane MsgGrid() {
 		GridPane root = new GridPane();
 
+
 		Button sendBtn = new Button("send");
 		Button emojiBtn = new Button("emoji");
 		Button photoBtn = new Button("photo");
 
+		// create msg handler
+		MsgHandler msgHandler = new MsgHandler();
+		sendBtn.setOnAction(msgHandler);
+		// ---------
+		msgEntry.setId("msgEntryBox");
+		msgEntry.getStylesheets().add("css/mainWindow.css");
+
 		// defining column constraints
 		ColumnConstraints column0 = new ColumnConstraints();
-		//column0
+		//column0		
 
 		root.add(photoBtn,0,0);
 		root.add(msgEntry,1,0);

@@ -1,7 +1,10 @@
 package client.ui.preference_window;
 
+import baselib.managers.DataManager;
+import client.classes.Account;
 import client.interfaces.IWindow;
 import client.interfaces.controllers.IPreferenceWindowController;
+import client.ui.preference_window.panes.AccountPaneController;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -14,7 +17,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 
+/**
+ * this class 
+ */
 public class PreferenceWindow implements IWindow {
+
+    // reference to the data manager
+    DataManager dataManager;
 
     // defining the window
     Stage stage;
@@ -30,45 +39,30 @@ public class PreferenceWindow implements IWindow {
     HashMap<String, Object> preferences;
     Pane currentPane;
 
-    // fxml components.
+
     private Scene mainScene;
 
-    @FXML
-    private Pane SettingsMenuPane;
+    // FXML components
 
-    public PreferenceWindow(HashMap<String, Object> preferences) throws IOException {
+
+
+    public PreferenceWindow(DataManager dataManager) throws IOException {
+
+        // save the reference
+        this.dataManager = dataManager;
+
         // create stage
         this.stage = new Stage();
+        this.stage.setMinHeight(350);
+        this.stage.setMinWidth(600);
+
         this.preferences = preferences;
+
         FXMLLoader tmpLoader = new FXMLLoader(mainSceneURL);
         tmpLoader.setController(this);
         this.mainScene = tmpLoader.load();
         this.mainScene.getStylesheets().add("css/PreferenceWindow/PreferenceWindow.css");
         this.stage.setScene(this.mainScene);
-    }
-
-    @FXML
-    private void switchAccountPane(ActionEvent e) throws IOException {
-        this.SettingsMenuPane.getChildren().clear();
-        FXMLLoader tmpLoader = new FXMLLoader(AccountPaneURL);
-        tmpLoader.setController(this);
-        this.currentPane = tmpLoader.load();
-        this.SettingsMenuPane.getChildren().add(this.currentPane);
-        System.out.println("switched to account pane");
-    }
-
-    @FXML
-    private void accountSettingsChanged(ActionEvent e) {
-
-    }
-
-    @FXML
-    private void switchWindowPane(ActionEvent e) {
-        this.SettingsMenuPane.getChildren().clear();
-        // FXMLLoader tmpLoader = new FXMLLoader()
-        this.SettingsMenuPane.getChildren().add(this.currentPane);
-        System.out.println("switched to account pane");
-
     }
 
     @Override
