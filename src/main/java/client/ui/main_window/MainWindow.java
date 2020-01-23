@@ -52,6 +52,7 @@ public class MainWindow implements IWindow {
 	@Deprecated
 	public MainWindow(){
 		this.stage = new Stage();
+		this.stage.setMinWidth(700);
 	}
 
 	public MainWindow(IMainWindowController controller){
@@ -104,12 +105,16 @@ public class MainWindow implements IWindow {
 		column0.setPrefWidth(50);
 
 		ColumnConstraints column1 = new ColumnConstraints();
+		column0.hgrowProperty().set(Priority.NEVER);
 		column1.setMinWidth(Region.USE_PREF_SIZE);
 		column1.setMaxWidth(Region.USE_PREF_SIZE);
 		column1.setPrefWidth(200);
 
 		ColumnConstraints column2 = new ColumnConstraints();
+		column2.hgrowProperty().set(Priority.ALWAYS);
+		column2.setMinWidth(400);
 		column2.setMaxWidth(Double.MAX_VALUE);
+		column2.setPrefWidth(Region.USE_COMPUTED_SIZE);
 
 		mainGrid.getColumnConstraints().add(column0);
 		mainGrid.getColumnConstraints().add(column1);
@@ -171,7 +176,7 @@ public class MainWindow implements IWindow {
 				double height = (double) arg2;
 				// Children added here:
 				friendFrame.setPrefHeight(height*1.0);
-				sp.setPrefHeight(height*0.95);
+				messageView.setPrefHeight(height*0.95);
 				msgFrame.setPrefHeight(height*0.05);
 			}
 		});
@@ -181,7 +186,7 @@ public class MainWindow implements IWindow {
 			 * Ensures that the listener of the width property updates all the frames
 			 * of the stage so their widths resize correctly.
 			 * @param arg0 observable value.
-			 * @param rg1 actual value of the width of the stage.
+			 * @param arg1 actual value of the width of the stage.
 			 * @param arg2 new value of the width of the stage.
 			 */
 			@Override
@@ -266,27 +271,25 @@ public class MainWindow implements IWindow {
 		return chatFrame;
 	}
 
-	public GridPane MsgGrid(){
+	public GridPane MsgGrid() {
 		GridPane root = new GridPane();
-
 
 		Button sendBtn = new Button("send");
 		Button emojiBtn = new Button("emoji");
 		Button photoBtn = new Button("photo");
 
-		// create msg handler
-		MsgHandler msgHandler = new MsgHandler();
-		sendBtn.setOnAction(msgHandler);
+		// defining column constraints
+		ColumnConstraints column0 = new ColumnConstraints();
+		//column0
 
-		// ---------
-		msgEntry.setId("msgEntryBox");
-		msgEntry.getStylesheets().add("css/MainWindow.css");
 		root.add(photoBtn,0,0);
 		root.add(msgEntry,1,0);
 		root.add(emojiBtn,2,0);
 		root.add(sendBtn,3,0);
 
-		msgFrame.heightProperty().addListener(new ChangeListener(){
+
+
+		// msgFrame.heightProperty().addListener(new ChangeListener(){
 			/**
 			 * Ensures that the listener of the height property updates all the children
 			 * of MsgGrid so their heights resize correctly.
@@ -294,6 +297,8 @@ public class MainWindow implements IWindow {
 			 * @param arg1 actual value of the height of the MsgGrid(root).
 			 * @param arg2 new value of the height of the MsgGrid(root).
 			 */
+
+			/*
 			@Override
 			public void changed(ObservableValue arg0, Object arg1, Object arg2){
 				double height = (double) arg2;
@@ -304,7 +309,9 @@ public class MainWindow implements IWindow {
 				sendBtn.setPrefHeight(height*1.0);
 			}
 		});
-		msgFrame.widthProperty().addListener(new ChangeListener(){
+		*/
+
+		// msgFrame.widthProperty().addListener(new ChangeListener(){
 			/**
 			 * Ensures that the listener of the width property updates all the children
 			 * of MsgGrid so their widths resize correctly.
@@ -312,6 +319,7 @@ public class MainWindow implements IWindow {
 			 * @param arg1 actual value of the width of the MsgGrid(root).
 			 * @param arg2 new value of the width of the MsgGrid(root).
 			 */
+			/*
 			@Override
 			public void changed(ObservableValue arg0, Object arg1, Object arg2){
 				double width = (double) arg2;
@@ -322,6 +330,10 @@ public class MainWindow implements IWindow {
 				sendBtn.setPrefWidth(width*0.05);
 			}
 		});
+		*/
+
+		// set msg handler
+		sendBtn.setOnAction(new MsgHandler());
 
 		return root;
 	}
