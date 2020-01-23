@@ -230,7 +230,7 @@ public class MainWindow implements IWindow {
 		sendBtn.setOnAction(msgHandler);
 		// ---------
 		msgEntry.setId("msgEntryBox");
-		msgEntry.getStylesheets().add("mainwindow.css");		
+		msgEntry.getStylesheets().add("css/mainWindow.css");
 		root.add(photoBtn,0,0);
 		root.add(msgEntry,1,0);
 		root.add(emojiBtn,2,0);
