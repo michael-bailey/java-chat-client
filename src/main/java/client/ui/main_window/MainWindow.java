@@ -4,6 +4,7 @@ package client.ui.main_window;
 import client.interfaces.IWindow;
 import client.interfaces.controllers.IMainWindowController;
 import client.ui.main_window.widgets.ChatPane;
+import client.ui.main_window.MainWindowMenuBar;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -73,7 +74,7 @@ public class MainWindow implements IWindow {
 		this.stage.setMaxHeight(this.primaryScreenBounds.getHeight());
 		this.stage.setMaxWidth(this.primaryScreenBounds.getWidth());
 		this.stage.setMinWidth(625);
-		this.stage.setMinHeight(350);
+		this.stage.setMinHeight(375);
 
 		// creating the main
 		GridPane mainGrid = new GridPane();
@@ -108,15 +109,23 @@ public class MainWindow implements IWindow {
 
 		// height constraints
 		RowConstraints row0 = new RowConstraints();
-		row0.vgrowProperty().set(Priority.ALWAYS);
-		row0.setMinHeight(275);
-		row0.setMaxHeight(Double.MAX_VALUE);
+		row0.vgrowProperty().set(Priority.NEVER);
+		row0.setMinHeight(Region.USE_PREF_SIZE);
+		row0.setPrefHeight(25);
+		row0.setMaxHeight(Region.USE_PREF_SIZE);
+
+		RowConstraints row1 = new RowConstraints();
+		row1.vgrowProperty().set(Priority.ALWAYS);
+		row1.setMinHeight(250);
+		row1.setMaxHeight(Double.MAX_VALUE);
 
 		mainGrid.getRowConstraints().add(row0);
+		mainGrid.getRowConstraints().add(row1);
 
-		mainGrid.add(serverFrame(),0,0);
-		mainGrid.add(friendFrame,1,0);
-		mainGrid.add(new ChatPane(),2,0);
+		mainGrid.add(new MainWindowMenuBar(),0,0,GridPane.REMAINING, 1);
+		mainGrid.add(serverFrame(),0,1);
+		mainGrid.add(friendFrame,1,1);
+		mainGrid.add(new ChatPane(),2,1);
 
 
 		// setting up the scene

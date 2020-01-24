@@ -38,6 +38,7 @@ public class ChatPane extends GridPane {
 
         // creating teh message view.
         messageView = new ListView<>();
+        messageView.setMinHeight(Region.USE_COMPUTED_SIZE);
 
         // creating objects for the tool row
         sendBtn = new Button("send");
@@ -96,6 +97,7 @@ public class ChatPane extends GridPane {
         this.getColumnConstraints().add(column2);
         this.getColumnConstraints().add(column3);
         this.getRowConstraints().add(row0);
+
 
         this.add(this.messageView,0,0, GridPane.REMAINING, 1);
         this.add(this.photoBtn,0,1);
