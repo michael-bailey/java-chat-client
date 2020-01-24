@@ -1,14 +1,16 @@
-//Created by Mitchell Hardie
+// Created by Mitchell Hardie
 package client.ui.main_window;
 
-import client.interfaces.controllers.IMainWindowController;
 import client.interfaces.IWindow;
+import client.interfaces.controllers.IMainWindowController;
+import client.ui.main_window.widgets.ChatPane;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -17,7 +19,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.geometry.Rectangle2D;
 
 /**
  * Class is responsible for creating all components of the main appliactions interface.
@@ -49,6 +50,8 @@ public class MainWindow implements IWindow {
 	 * Assigns the stage attribute to a new stage.
 	 */
 	public MainWindow(IMainWindowController controller){
+
+		//setting up the stage.
 		this.stage = new Stage();
 		this.stage.setTitle("Application");
 		this.controller = controller;
@@ -57,7 +60,68 @@ public class MainWindow implements IWindow {
 		this.stage.setMinWidth(625);
 		this.stage.setMinHeight(350);
 		this.stage.setScene(this.createWindow());
-		this.messageView.setHbarPolicy(ScrollBarPolicy.ALWAYS);
+
+	}
+
+	public MainWindow(IMainWindowController controller, int testversion) {
+
+		this.controller = controller;
+
+		//creating the stage.
+		this.stage = new Stage();
+		this.stage.setTitle("Application");
+		this.stage.setMaxHeight(this.primaryScreenBounds.getHeight());
+		this.stage.setMaxWidth(this.primaryScreenBounds.getWidth());
+		this.stage.setMinWidth(625);
+		this.stage.setMinHeight(350);
+
+		// creating the main
+		GridPane mainGrid = new GridPane();
+		mainGrid.setGridLinesVisible(true);
+
+		mainGrid.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+		mainGrid.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+		mainGrid.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+		//setting Column constraints.
+		ColumnConstraints column0 = new ColumnConstraints();
+		column0.hgrowProperty().set(Priority.NEVER);
+		column0.setMinWidth(Region.USE_PREF_SIZE);
+		column0.setMaxWidth(Double.MAX_VALUE);
+		column0.setPrefWidth(50);
+
+		ColumnConstraints column1 = new ColumnConstraints();
+		column1.hgrowProperty().set(Priority.NEVER);
+		column1.setMinWidth(Region.USE_PREF_SIZE);
+		column1.setMaxWidth(Region.USE_PREF_SIZE);
+		column1.setPrefWidth(200);
+
+		ColumnConstraints column2 = new ColumnConstraints();
+		column2.hgrowProperty().set(Priority.ALWAYS);
+		column2.setMinWidth(350);
+		column2.setMaxWidth(Double.MAX_VALUE);
+		column2.setPrefWidth(Region.USE_COMPUTED_SIZE);
+
+		mainGrid.getColumnConstraints().add(column0);
+		mainGrid.getColumnConstraints().add(column1);
+		mainGrid.getColumnConstraints().add(column2);
+
+		// height constraints
+		RowConstraints row0 = new RowConstraints();
+		row0.vgrowProperty().set(Priority.ALWAYS);
+		row0.setMinHeight(275);
+		row0.setMaxHeight(Double.MAX_VALUE);
+
+		mainGrid.getRowConstraints().add(row0);
+
+		mainGrid.add(serverFrame(),0,0);
+		mainGrid.add(friendFrame,1,0);
+		mainGrid.add(new ChatPane(),2,0);
+
+
+		// setting up the scene
+		Scene scene = new Scene(mainGrid);
+		this.stage.setScene(scene);
 	}
 
 	/*
@@ -130,88 +194,6 @@ public class MainWindow implements IWindow {
 		mainGrid.add(friendFrame,1,0);
 		mainGrid.add(chatFrame,2,0);
 		mainGrid.add(MsgGrid(),2,1 );
-
-
-
-		/*
-		sp.setVmin(0);
-		sp.setVmax(100);
-		sp.setVvalue(100);
-		sp.setHbarPolicy(ScrollBarPolicy.NEVER);
-		sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
-		sp.setFitToWidth(true);
-		sp.setPadding(new Insets(20,40,20,20));
-		sp.valueProperty().addListener(new ChangeListener<Number>() {
-		       	@Override
-			public void changed(ObservableValue<? extends Number> ov,Number old_val, Number new_val) {
-				if((old_val.intValue()-new_val.intValue())==(old_val.intValue()-1)){
-					sp.setVvalue(old_val.intValue());
-				}
-			}
-		});
-
-		// create frames
-		friendFrame.getChildren().add(FriendGrid());
-		sp.setContent(chatFrameOptions());
-		msgFrame.getChildren().add(MsgGrid());
-		// add frames to main gird
-
-		mainGrid.add(friendFrame,0,0,1,2);
-		mainGrid.add(sp,1,0);
-		mainGrid.add(msgFrame,1,1);
-
-
-		//configure mainGrid
-		mainGrid.setHgrow(friendFrame,Priority.ALWAYS);
-		mainGrid.setHgrow(chatFrame,Priority.ALWAYS);
-		mainGrid.setHgrow(msgFrame,Priority.ALWAYS);
-		mainGrid.setVgrow(friendFrame,Priority.ALWAYS);
-		mainGrid.setVgrow(chatFrame,Priority.ALWAYS);
-		mainGrid.setVgrow(msgFrame,Priority.ALWAYS);
-		*/
-
-		/*
-		this.stage.heightProperty().addListener(new ChangeListener() {
-		 */
-			/**
-			 * Ensures that the listener of the height property updates all the frames
-			 * of the stage so their heights resize correctly.
-			 * @param arg0 observable value.
-			 * @param arg1 actual value of the height of the stage.
-			 * @param arg2 new value of the height of the stage.
-			 */
-			/*
-			@Override
-			public void changed(ObservableValue arg0, Object arg1, Object arg2){
-				double height = (double) arg2;
-				// Children added here:
-				friendFrame.setPrefHeight(height*1.0);
-				messageView.setPrefHeight(height*0.95);
-				msgFrame.setPrefHeight(height*0.05);
-			}
-		});
-		*/
-		/*
-		this.stage.widthProperty().addListener(new ChangeListener(){
-		*/
-			/**
-			 * Ensures that the listener of the width property updates all the frames
-			 * of the stage so their widths resize correctly.
-			 * @param arg0 observable value.
-			 * @param arg1 actual value of the width of the stage.
-			 * @param arg2 new value of the width of the stage.
-			 */
-			/*
-			@Override
-			public void changed(ObservableValue arg0, Object arg1, Object arg2){
-				double width = (double) arg2;
-				// Children added here:
-				friendFrame.setPrefWidth(width*0.10);
-				messageView.setPrefWidth(width*0.90);
-				msgFrame.setPrefWidth(width*0.90);
-			}
-		});
-		*/
 		
 		// create scene
 		Scene scene = new Scene(mainGrid);
@@ -278,7 +260,7 @@ public class MainWindow implements IWindow {
 
 	public VBox chatFrame() {
 		chatFrame.setPrefWidth(this.width*0.90);
-		chatFrame.setPrefHeight(this.height*0.95);
+		//chatFrame.setPrefHeight(this.height*0.95);
 		chatFrame.setSpacing(10);
 		chatFrame.setPadding(new Insets(20,20,20,20));
 		//chatFrame.setMaxHeight(this.height*0.95);
@@ -338,80 +320,37 @@ public class MainWindow implements IWindow {
 		msgEntry.getStylesheets().add("css/mainWindow.css");
 		msgEntry.setMinWidth(200);
 
-
 		root.add(photoBtn,0,0);
 		root.add(msgEntry,1,0);
 		root.add(emojiBtn,2,0);
 		root.add(sendBtn,3,0);
-
-
-
-		// msgFrame.heightProperty().addListener(new ChangeListener(){
-			/**
-			 * Ensures that the listener of the height property updates all the children
-			 * of MsgGrid so their heights resize correctly.
-			 * @param arg0 observable value.
-			 * @param arg1 actual value of the height of the MsgGrid(root).
-			 * @param arg2 new value of the height of the MsgGrid(root).
-			 */
-
-			/*
-			@Override
-			public void changed(ObservableValue arg0, Object arg1, Object arg2){
-				double height = (double) arg2;
-				// Children added here:
-				photoBtn.setPrefHeight(height*1.0);
-				msgEntry.setPrefHeight(height*1.0);
-				emojiBtn.setPrefHeight(height*1.0);
-				sendBtn.setPrefHeight(height*1.0);
-			}
-		});
-		*/
-
-		// msgFrame.widthProperty().addListener(new ChangeListener(){
-			/**
-			 * Ensures that the listener of the width property updates all the children
-			 * of MsgGrid so their widths resize correctly.
-			 * @param arg0 observable value.
-			 * @param arg1 actual value of the width of the MsgGrid(root).
-			 * @param arg2 new value of the width of the MsgGrid(root).
-			 */
-			/*
-			@Override
-			public void changed(ObservableValue arg0, Object arg1, Object arg2){
-				double width = (double) arg2;
-				// Children added here:
-				photoBtn.setPrefWidth(width*0.05);
-				msgEntry.setPrefWidth(width*0.85);
-				emojiBtn.setPrefWidth(width*0.05);
-				sendBtn.setPrefWidth(width*0.05);
-			}
-		});
-		*/
 
 		// set msg handler
 		sendBtn.setOnAction(new MsgHandler());
 
 		return root;
 	}
-
 	// get current message in text box
 	public void displayMsg(VBox msg){
-		if(msgSent){chatFrame.setAlignment(Pos.BOTTOM_RIGHT);}
-		else{chatFrame.setAlignment(Pos.BOTTOM_LEFT);}
+		if (msgSent) {
+			chatFrame.setAlignment(Pos.BOTTOM_RIGHT);
+		}
+		else {
+			chatFrame.setAlignment(Pos.BOTTOM_LEFT);
+		}
 		chatFrame.getChildren().add(msg);
 	}
 
-	/*public void displayContacts(VBox contactsVB){
+	/*
+	public void displayContacts(VBox contactsVB){
 		for(int i=0;i<contIn.getContactArrSize();i++){
 			contactsVB.getChildren().add(contIn.getContact(i).getContactVB());
 		}
-	}*/
+	}
+	 */
 
 	@Override
 	public void show() {
-
-
 		this.stage.show();
 	}
 

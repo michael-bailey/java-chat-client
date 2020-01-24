@@ -24,7 +24,7 @@ public class NetworkManager extends Object {
     JmDNS MDNS;
 
     //defining threads
-    Thread internetThread;
+    ArrayList<Thread> threads = new ArrayList();
 
     public NetworkManager() {
         try {

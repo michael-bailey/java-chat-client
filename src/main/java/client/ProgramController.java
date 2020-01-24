@@ -4,7 +4,9 @@ import client.classes.Account;
 import client.interfaces.controllers.ILoginWindowController;
 import client.interfaces.controllers.IMainWindowController;
 import client.interfaces.controllers.IPreferenceWindowController;
+import client.ui.main_window.widgets.ChatPane;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.application.Application;
 
@@ -48,10 +50,10 @@ public class ProgramController extends Application implements ILoginWindowContro
         this.dataManager = new DataManager();
 
         // REMOVE THIS WHEN NOT NEEDED.
-        //LoginRequest("michael", "password");
+        LoginRequest("michael", "password");
 
         // show the login window
-        this.loginWindow.show();
+        //this.loginWindow.show();
     }
 
     @Override
@@ -62,6 +64,8 @@ public class ProgramController extends Application implements ILoginWindowContro
 
                 // setting up windows that require a login to be complete.
                 this.mainWindow = new MainWindow(this);
+                MainWindow a = new MainWindow(this, 1);
+                a.show();
                 this.preferenceWindow = new PreferenceWindow(this.dataManager);
 
                 this.account = (Account) this.dataManager.getObject("account");

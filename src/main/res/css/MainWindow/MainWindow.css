@@ -1,0 +1,15 @@
+#msgEntryBox{
+	-fx-background-radius: 8;
+}
+
+.VBox {
+    -fx-background-color: blue;
+}
+
+.PANE {
+    -fx-background-color: pink;
+}
+
+Scene {
+    -fx-background-color: blue;
+}
