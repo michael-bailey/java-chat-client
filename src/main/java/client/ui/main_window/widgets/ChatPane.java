@@ -32,7 +32,7 @@ public class ChatPane extends GridPane {
 
         GridPane root = new GridPane();
         this.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        this.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        this.setPrefSize(20, 20);
         this.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
 
