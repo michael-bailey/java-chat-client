@@ -73,7 +73,7 @@ public class MainWindow implements IWindow {
 		this.stage.setTitle("Application");
 		this.stage.setMaxHeight(this.primaryScreenBounds.getHeight());
 		this.stage.setMaxWidth(this.primaryScreenBounds.getWidth());
-		this.stage.setMinWidth(625);
+		this.stage.setMinWidth(675);
 		this.stage.setMinHeight(375);
 
 		// creating the main

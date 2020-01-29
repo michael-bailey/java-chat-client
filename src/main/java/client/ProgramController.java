@@ -90,4 +90,10 @@ public class ProgramController extends Application implements ILoginWindowContro
             this.mainWindow.show();
         }else{loginWindow.incorrectDetails(this.createAccountMsg);}
     }
+
+    @Override
+    public boolean showPreferenceWindow() {
+        this.preferenceWindow.show();
+        return true;
+    }
 }

@@ -63,7 +63,7 @@ public class ChatPane extends GridPane {
         column0.hgrowProperty().set(Priority.NEVER);
         column0.setMinWidth(Region.USE_PREF_SIZE);
         column0.setMaxWidth(Region.USE_PREF_SIZE);
-        column0.setPrefWidth(50);
+        column0.setPrefWidth(75);
 
         // defining column grid
         ColumnConstraints column1 = new ColumnConstraints();
@@ -77,14 +77,14 @@ public class ChatPane extends GridPane {
         column2.setMinWidth(Region.USE_PREF_SIZE);
         column2.setMinWidth(Region.USE_COMPUTED_SIZE);
         column2.setMaxWidth(Region.USE_PREF_SIZE);
-        column2.setPrefWidth(50);
+        column2.setPrefWidth(75);
 
         // defining column grid
         ColumnConstraints column3 = new ColumnConstraints();
         column3.hgrowProperty().set(Priority.NEVER);
         column3.setMinWidth(Region.USE_PREF_SIZE);
         column3.setMaxWidth(Region.USE_PREF_SIZE);
-        column3.setPrefWidth(50);
+        column3.setPrefWidth(75);
 
         // defining row grid
         RowConstraints row0 = new RowConstraints();
