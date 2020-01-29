@@ -16,9 +16,10 @@ public class MessageTextBox extends Label {
 
 	public MessageTextBox(String msg) {
 		super(msg);
-
+		this.getStyleClass().add(".message");
 		this.setFont(Font.font("Consolas",FontWeight.NORMAL,18));
 		this.getStyleClass().add("message");
+		this.setRotate(180);
 	}
 
 	public VBox getMsg() {

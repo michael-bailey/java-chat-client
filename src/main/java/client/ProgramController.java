@@ -43,13 +43,10 @@ public class ProgramController extends Application implements ILoginWindowContro
     }
 
     public void start(Stage stage) throws Exception {
-
-        // create windows in memory
-        this.mainWindow = new MainWindow(this);
         this.loginWindow = new LoginWindow(this);
         this.dataManager = new DataManager();
 
-        // REMOVE THIS WHEN NOT NEEDED.
+        // TODO REMOVE THIS WHEN NOT NEEDED.
         LoginRequest("michael", "password");
 
         // show the login window
@@ -63,15 +60,13 @@ public class ProgramController extends Application implements ILoginWindowContro
                 this.loginWindow.hide();
 
                 // setting up windows that require a login to be complete.
-                this.mainWindow = new MainWindow(this);
-                MainWindow a = new MainWindow(this, 1);
-                a.show();
+                this.mainWindow = new MainWindow(this, 1);
+                mainWindow.show();
                 this.preferenceWindow = new PreferenceWindow(this.dataManager);
 
                 this.account = (Account) this.dataManager.getObject("account");
 
                 this.mainWindow.show();
-                this.preferenceWindow.show();
             } catch (IOException e) {
 
             }

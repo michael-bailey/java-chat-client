@@ -29,6 +29,9 @@ import javafx.stage.Stage;
  * or an individual function for the main window.
  * Private attributes are typically important components used within the main
  * interface. Such as a VBox used in server methods.
+ * @author mitch161
+ * @version 1.0
+ * @since 1.0
  */
 public class MainWindow implements IWindow {
 	IMainWindowController controller;
@@ -67,7 +70,6 @@ public class MainWindow implements IWindow {
 	public MainWindow(IMainWindowController controller, int testversion) {
 
 		this.controller = controller;
-
 		//creating the stage.
 		this.stage = new Stage();
 		this.stage.setTitle("Application");
@@ -130,6 +132,7 @@ public class MainWindow implements IWindow {
 
 		// setting up the scene
 		Scene scene = new Scene(mainGrid);
+		scene.getStylesheets().add("css/MainWindow/MainWindow.css");
 		this.stage.setScene(scene);
 	}
 
@@ -206,7 +209,7 @@ public class MainWindow implements IWindow {
 		
 		// create scene
 		Scene scene = new Scene(mainGrid);
-		scene.getStylesheets().add("css/MainWindow.css");
+		scene.getStylesheets().add("css/MainWindow/MainWindow.css");
 		return scene;
 	}
 
@@ -326,7 +329,7 @@ public class MainWindow implements IWindow {
 		sendBtn.setOnAction(msgHandler);
 		// ---------
 		msgEntry.setId("msgEntryBox");
-		msgEntry.getStylesheets().add("css/mainWindow.css");
+		msgEntry.getStylesheets().add("css/MainWindow/mainWindow.css");
 		msgEntry.setMinWidth(200);
 
 		root.add(photoBtn,0,0);

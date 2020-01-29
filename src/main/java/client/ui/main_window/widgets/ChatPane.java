@@ -3,17 +3,27 @@ package client.ui.main_window.widgets;
 import client.classes.Message;
 import client.ui.main_window.widgets.MessageTextBox;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 
+import java.security.Key;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 public class ChatPane extends GridPane {
+
+    // static constants
+    public static String Left = ".left";
+    public static String Center = ".center";
+    public static String Right = ".center";
 
     private Button sendBtn;
     private EventHandler<ActionEvent> SendButtonEventHandler;
@@ -25,6 +35,8 @@ public class ChatPane extends GridPane {
     private EventHandler<ActionEvent> PhotoButtonEventHandler;
 
     private TextField msgEntry;
+    private EventHandler<KeyEvent> enterPressed;
+
 
     private ListView<MessageTextBox> messageView;
 
@@ -39,6 +51,7 @@ public class ChatPane extends GridPane {
         // creating teh message view.
         messageView = new ListView<>();
         messageView.setMinHeight(Region.USE_COMPUTED_SIZE);
+        messageView.setRotate(180);
 
         // creating objects for the tool row
         sendBtn = new Button("send");
@@ -106,16 +119,41 @@ public class ChatPane extends GridPane {
         this.add(this.sendBtn,3,1);
 
         sendBtn.setOnAction(new MsgHandler());
+        msgEntry.setOnKeyPressed(new EnterPressed());
+    }
+
+    public void addMessage(String text, String alignment) {
+        if (!msgEntry.getText().isEmpty()) {
+            ObservableList tmplist = messageView.getItems();
+
+            Collections.reverse(tmplist);
+
+
+            MessageTextBox tmpMessage = new MessageTextBox(text);
+            tmpMessage.getStyleClass().add(alignment);
+
+
+            tmplist.add(new MessageTextBox(msgEntry.getText()));
+
+
+            Collections.reverse(tmplist);
+            msgEntry.clear();
+        }
+    }
+
+    private class EnterPressed implements EventHandler<KeyEvent> {
+        @Override
+        public void handle(KeyEvent event) {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                addMessage("hello", ChatPane.Left);
+            }
+        }
     }
 
     private class MsgHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-            if (!msgEntry.getText().isEmpty()) {
-                messageView.getItems().add(new MessageTextBox(msgEntry.getText()));
-                msgEntry.clear();
-            }
+            addMessage("hello", ChatPane.Left);
         }
     }
-
 }

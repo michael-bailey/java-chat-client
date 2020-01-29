@@ -1,5 +1,5 @@
-#msgEntryBox{
-	-fx-background-radius: 8;
+Scene {
+    -fx-background-color: blue;
 }
 
 .VBox {
@@ -10,6 +10,25 @@
     -fx-background-color: pink;
 }
 
-Scene {
-    -fx-background-color: blue;
+.message {
+    -fx-color: #FFFFFF;
+    -fx-background-color: #0084FF;
+    -fx-background-radius: 8;
+    -fx-label-padding: 4;
+}
+
+.messageLeft {
+    -fx-alignment: left
+}
+
+.messageCenter {
+    -fx-alignment: center
+}
+
+.messageRight {
+    -fx-alignment: right
+}
+
+#msgEntryBox{
+	-fx-background-radius: 8;
 }

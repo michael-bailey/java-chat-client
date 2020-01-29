@@ -18,5 +18,4 @@ public class MainWindowMenuBar extends MenuBar {
         tmp.getItems().add(new MenuItem("hellow world"));
         return tmp;
     }
-
 }
