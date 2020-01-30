@@ -18,23 +18,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-public class ChatPane extends GridPane {
+public class ChatPane extends AnchorPane {
 
     // static constants
     public static String Left = ".left";
     public static String Center = ".center";
     public static String Right = ".center";
 
-    private Button sendBtn;
+    // size constants
+    private int buttonWidth = 50;
+    private int buttonHeight = 25;
+
+    private Button sendButton;
     private EventHandler<ActionEvent> SendButtonEventHandler;
 
-    private Button emojiBtn;
+    private Button emojiButton;
     private EventHandler<ActionEvent> EmojiButtonEventHandler;
 
-    private Button photoBtn;
+    private Button photoButton;
     private EventHandler<ActionEvent> PhotoButtonEventHandler;
 
-    private TextField msgEntry;
+    private TextField messageBox;
     private EventHandler<KeyEvent> enterPressed;
 
 
@@ -42,11 +46,9 @@ public class ChatPane extends GridPane {
 
     public ChatPane() {
 
-        GridPane root = new GridPane();
         this.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         this.setPrefSize(20, 20);
         this.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
 
         // creating teh message view.
         messageView = new ListView<>();
@@ -54,76 +56,56 @@ public class ChatPane extends GridPane {
         messageView.setRotate(180);
 
         // creating objects for the tool row
-        sendBtn = new Button("send");
-        sendBtn.setMaxWidth(Double.MAX_VALUE);
+        sendButton = new Button("send");
+        sendButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        sendButton.setPrefSize(this.buttonWidth, this.buttonHeight);
+        sendButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
-        emojiBtn = new Button("emoji");
-        emojiBtn.setMaxWidth(Double.MAX_VALUE);
+        emojiButton = new Button("emoji");
+        sendButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        sendButton.setPrefSize(this.buttonWidth, this.buttonHeight);
+        sendButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
-        photoBtn = new Button("photo");
-        photoBtn.setMaxWidth(Double.MAX_VALUE);
+        photoButton = new Button("photo");
+        sendButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        sendButton.setPrefSize(this.buttonWidth, this.buttonHeight);
+        sendButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
         // creating the message entry box
-        msgEntry = new TextField();
-        msgEntry.setMaxWidth(Double.MAX_VALUE);
-        msgEntry.setId("msgEntryBox");
-        msgEntry.getStylesheets().add("css/mainWindow.css");
-        msgEntry.setMinWidth(200);
+        messageBox = new TextField();
+        messageBox.setMaxWidth(Double.MAX_VALUE);
+        messageBox.getStyleClass().add(".messageBox");
+        messageBox.setMinWidth(200);
 
-        // defining constraints.
-        // defining column grid
-        ColumnConstraints column0 = new ColumnConstraints();
-        column0.hgrowProperty().set(Priority.NEVER);
-        column0.setMinWidth(Region.USE_PREF_SIZE);
-        column0.setMaxWidth(Region.USE_PREF_SIZE);
-        column0.setPrefWidth(50);
+        // adding to the anchor pane
+        this.getChildren().add(messageView);
+        this.getChildren().add(messageBox);
+        this.getChildren().add(sendButton);
+        //this.getChildren().add(emojiButton);
+        //this.getChildren().add(photoButton);
 
-        // defining column grid
-        ColumnConstraints column1 = new ColumnConstraints();
-        column1.hgrowProperty().set(Priority.ALWAYS);
-        column1.setMinWidth(Region.USE_PREF_SIZE);
-        column1.setMaxWidth(Double.MAX_VALUE);
-        column1.setPrefWidth(200);
+        // setting constraints to items
+        // message view
+        setTopAnchor(messageView, 0.0);
+        setLeftAnchor(messageView, 0.0);
+        setRightAnchor(messageView, 0.0);
+        setBottomAnchor(messageView, 33.0);
 
-        // defining column grid
-        ColumnConstraints column2 = new ColumnConstraints();
-        column2.setMinWidth(Region.USE_PREF_SIZE);
-        column2.setMinWidth(Region.USE_COMPUTED_SIZE);
-        column2.setMaxWidth(Region.USE_PREF_SIZE);
-        column2.setPrefWidth(50);
+        // message box
+        setBottomAnchor(messageBox, 4.0);
+        setLeftAnchor(messageBox, 4.0);
+        setRightAnchor(messageBox, 58.0);
 
-        // defining column grid
-        ColumnConstraints column3 = new ColumnConstraints();
-        column3.hgrowProperty().set(Priority.NEVER);
-        column3.setMinWidth(Region.USE_PREF_SIZE);
-        column3.setMaxWidth(Region.USE_PREF_SIZE);
-        column3.setPrefWidth(50);
-
-        // defining row grid
-        RowConstraints row0 = new RowConstraints();
-        row0.vgrowProperty().set(Priority.ALWAYS);
-        row0.setMinHeight(275);
-        row0.setMaxHeight(Double.MAX_VALUE);
-
-        this.getColumnConstraints().add(column0);
-        this.getColumnConstraints().add(column1);
-        this.getColumnConstraints().add(column2);
-        this.getColumnConstraints().add(column3);
-        this.getRowConstraints().add(row0);
-
-
-        this.add(this.messageView,0,0, GridPane.REMAINING, 1);
-        this.add(this.photoBtn,0,1);
-        this.add(this.msgEntry,1,1);
-        this.add(this.emojiBtn,2,1);
-        this.add(this.sendBtn,3,1);
-
-        sendBtn.setOnAction(new MsgHandler());
-        msgEntry.setOnKeyPressed(new EnterPressed());
+        setRightAnchor(sendButton, 4.0);
+        setBottomAnchor(sendButton, 4.0);
+        
+        // setting action handlers
+        sendButton.setOnAction(new MsgHandler());
+        messageBox.setOnKeyPressed(new EnterPressed());
     }
 
     public void addMessage(String text, String alignment) {
-        if (!msgEntry.getText().isEmpty()) {
+        if (!messageBox.getText().isEmpty()) {
             ObservableList tmplist = messageView.getItems();
 
             Collections.reverse(tmplist);
@@ -133,11 +115,11 @@ public class ChatPane extends GridPane {
             tmpMessage.getStyleClass().add(alignment);
 
 
-            tmplist.add(new MessageTextBox(msgEntry.getText()));
+            tmplist.add(new MessageTextBox(messageBox.getText()));
 
 
             Collections.reverse(tmplist);
-            msgEntry.clear();
+            messageBox.clear();
         }
     }
 

@@ -29,6 +29,6 @@ Scene {
     -fx-alignment: right
 }
 
-#msgEntryBox{
+.messageBox {
 	-fx-background-radius: 8;
 }
