@@ -96,12 +96,14 @@ public class ChatPane extends AnchorPane {
         setLeftAnchor(messageBox, 4.0);
         setRightAnchor(messageBox, 58.0);
 
+        // send button
         setRightAnchor(sendButton, 4.0);
         setBottomAnchor(sendButton, 4.0);
         
         // setting action handlers
         sendButton.setOnAction(new MsgHandler());
         messageBox.setOnKeyPressed(new EnterPressed());
+
     }
 
     public void addMessage(String text, String alignment) {
