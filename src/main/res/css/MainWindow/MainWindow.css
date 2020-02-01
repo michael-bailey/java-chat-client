@@ -1,5 +1,5 @@
-Scene {
-    -fx-background-color: blue;
+GridPane {
+    -fx-background-color: #202124;
 }
 
 .VBox {
@@ -11,24 +11,47 @@ Scene {
 }
 
 .message {
-    -fx-color: #FFFFFF;
+    -fx-text-fill: #FFFFFF;
     -fx-background-color: #0084FF;
     -fx-background-radius: 8;
     -fx-label-padding: 4;
+    -fx-background-radius: 12.5;
 }
 
 .messageLeft {
-    -fx-alignment: left
+    -fx-alignment: left;
 }
 
 .messageCenter {
-    -fx-alignment: center
+    -fx-alignment: center;
 }
 
 .messageRight {
-    -fx-alignment: right
+    -fx-alignment: right;
+}
+
+.sendButton {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3c4042;
+	-fx-background-radius: 12.5;
 }
 
 .messageBox {
-	-fx-background-radius: 8;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3c4042;
+	-fx-background-radius: 12.5;
+}
+
+.chatPane {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3c4042;
+    -fx-control-inner-background: #3c4042 ;
+    -fx-control-inner-background-alt: #3c4042;
+}
+
+.chatPane ScrollBar {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3c4042;
+    -fx-control-inner-background: #3c4042 ;
+    -fx-control-inner-background-alt: #3c4042;
 }

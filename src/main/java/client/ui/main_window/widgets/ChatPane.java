@@ -8,10 +8,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.security.Key;
 import java.util.ArrayList;
@@ -54,12 +58,14 @@ public class ChatPane extends AnchorPane {
         messageView = new ListView<>();
         messageView.setMinHeight(Region.USE_COMPUTED_SIZE);
         messageView.setRotate(180);
+        messageView.getStyleClass().add("chatPane");
 
         // creating objects for the tool row
         sendButton = new Button("send");
         sendButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         sendButton.setPrefSize(this.buttonWidth, this.buttonHeight);
         sendButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        sendButton.getStyleClass().add("sendButton");
 
         emojiButton = new Button("emoji");
         sendButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -74,8 +80,9 @@ public class ChatPane extends AnchorPane {
         // creating the message entry box
         messageBox = new TextField();
         messageBox.setMaxWidth(Double.MAX_VALUE);
-        messageBox.getStyleClass().add(".messageBox");
         messageBox.setMinWidth(200);
+        messageBox.getStyleClass().add("messageBox");
+
 
         // adding to the anchor pane
         this.getChildren().add(messageView);
@@ -111,7 +118,6 @@ public class ChatPane extends AnchorPane {
             ObservableList tmplist = messageView.getItems();
 
             Collections.reverse(tmplist);
-
 
             MessageTextBox tmpMessage = new MessageTextBox(text);
             tmpMessage.getStyleClass().add(alignment);
