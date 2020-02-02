@@ -28,6 +28,10 @@ public class ClientConnection{
 		return;
 	}
 
+	/*
+	 * Create recipent socket needs to be in a seperate class - a class for p2p
+	 */
+
 	public void createRecipentSocket() throws Exception{
 		if(!recipentAddress.isEmpty()){
 			recipentSocket = new Socket(recipentAddress,SERVER_PORT);

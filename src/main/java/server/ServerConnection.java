@@ -60,8 +60,10 @@ public class ServerConnection{
 				BufferedReader dataInput = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 				String str = dataInput.readLine();
 				System.out.println(str);
+				this.socket.close();
 			}catch(Exception e){
 				System.out.println("ClientThread Error!");
+				this.socket.close();
 			}
 		}
 	}
