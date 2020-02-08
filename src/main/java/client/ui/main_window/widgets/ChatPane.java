@@ -3,6 +3,9 @@ package client.ui.main_window.widgets;
 import client.classes.Message;
 import client.ui.main_window.widgets.MessageTextBox;
 
+import com.sun.javafx.beans.event.AbstractNotifyListener;
+import javafx.application.Platform;
+import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -45,9 +48,17 @@ public class ChatPane extends AnchorPane {
     private TextField messageBox;
     private EventHandler<KeyEvent> enterPressed;
 
-
     private ListView<MessageTextBox> messageView;
 
+    // event handlers
+    private EventHandler onSendMessage;
+
+    /**
+     * Constructor
+     * this creates the chat pane fills it with the controls applies styling
+     * and does some questionable stuff to get messages into the right position
+     * @since 1.0
+     */
     public ChatPane() {
 
         this.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -58,7 +69,7 @@ public class ChatPane extends AnchorPane {
         messageView = new ListView<>();
         messageView.setMinHeight(Region.USE_COMPUTED_SIZE);
         messageView.setRotate(180);
-        messageView.getStyleClass().add("chatPane");
+        messageView.getStyleClass().add("messageView");
 
         // creating objects for the tool row
         sendButton = new Button("send");
@@ -106,44 +117,46 @@ public class ChatPane extends AnchorPane {
         // send button
         setRightAnchor(sendButton, 4.0);
         setBottomAnchor(sendButton, 4.0);
-        
-        // setting action handlers
-        sendButton.setOnAction(new MsgHandler());
-        messageBox.setOnKeyPressed(new EnterPressed());
 
-    }
-
-    public void addMessage(String text, String alignment) {
-        if (!messageBox.getText().isEmpty()) {
-            ObservableList tmplist = messageView.getItems();
-
-            Collections.reverse(tmplist);
-
-            MessageTextBox tmpMessage = new MessageTextBox(text);
-            tmpMessage.getStyleClass().add(alignment);
-
-
-            tmplist.add(new MessageTextBox(messageBox.getText()));
-
-
-            Collections.reverse(tmplist);
-            messageBox.clear();
-        }
-    }
-
-    private class EnterPressed implements EventHandler<KeyEvent> {
-        @Override
-        public void handle(KeyEvent event) {
-            if (event.getCode().equals(KeyCode.ENTER)) {
-                addMessage("hello", ChatPane.Left);
+        // set event handler
+        this.sendButton.setOnAction((event) -> {
+            if (this.onSendMessage != null) {
+                this.onSendMessage.handle(event);
+                this.messageBox.clear();
             }
-        }
+            event.consume();
+        });
+
+        this.messageBox.setOnKeyTyped(event -> {
+            if (this.onSendMessage != null) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    this.onSendMessage.handle(event);
+                    this.messageBox.clear();
+                }
+            }
+        });
     }
 
-    private class MsgHandler implements EventHandler<ActionEvent> {
-        @Override
-        public void handle(ActionEvent event) {
-            addMessage("hello", ChatPane.Left);
-        }
+    /**
+     * this appends a message to the top (bottom) of the list by reversing it many times
+     * @param text a string showing what test should be put into the list
+     * @param alignment where the text should be positioned
+     */
+    public void appendMessage(String text, String alignment) {
+        ObservableList tmplist = messageView.getItems();
+        Collections.reverse(tmplist);
+        MessageTextBox tmpMessage = new MessageTextBox(text);
+        tmpMessage.getStyleClass().add(alignment);
+        tmplist.add(tmpMessage);
+        Collections.reverse(tmplist);
     }
+
+    public void loadMessages(ArrayList<Object> messages) {
+
+    }
+
+    public void setOnMessageHandler(EventHandler handler) {
+        this.onSendMessage = handler;
+    }
+
 }

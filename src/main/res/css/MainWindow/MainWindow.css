@@ -12,7 +12,7 @@ GridPane {
 
 .message {
     -fx-text-fill: #FFFFFF;
-    -fx-background-color: #0084FF;
+    -fx-background-color: #1055AA;
     -fx-background-radius: 8;
     -fx-label-padding: 4;
     -fx-background-radius: 12.5;
@@ -42,16 +42,26 @@ GridPane {
 	-fx-background-radius: 12.5;
 }
 
-.chatPane {
+.messageView {
     -fx-text-fill: #FFFFFF;
     -fx-background-color: #3c4042;
     -fx-control-inner-background: #3c4042 ;
     -fx-control-inner-background-alt: #3c4042;
 }
 
-.chatPane ScrollBar {
+.messageView ScrollBar {
     -fx-text-fill: #FFFFFF;
     -fx-background-color: #3c4042;
     -fx-control-inner-background: #3c4042 ;
     -fx-control-inner-background-alt: #3c4042;
+}
+
+.messageView:focused {
+    -fx-background-color: -fx-focus-color,-fx-box-border,-fx-control-inner-background;
+    -fx-background-insets: -1.4, 0, 1;
+    -fx-background-radius: 1.4, 0, 0;
+
+    /* There is some oddness if padding is in em values rather than pixels,
+       in particular, the left border of the control doesn't show. /
+    -fx-padding: 1; / 0.083333em; /
 }
