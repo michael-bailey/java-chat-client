@@ -79,9 +79,6 @@ public class DataManager {
      * @since 1.0
      */
     public boolean unlock(String name, String password) {
-        System.out.println(name);
-        System.out.println(password);
-
 		// check if the object is currently unlocked
         if (this.isLocked) {
             // create new file
