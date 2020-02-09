@@ -4,9 +4,6 @@ import client.classes.Account;
 import client.interfaces.controllers.ILoginWindowController;
 import client.interfaces.controllers.IMainWindowController;
 import client.interfaces.controllers.IPreferenceWindowController;
-import client.ui.main_window.widgets.ChatPane;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.application.Application;
 
@@ -47,10 +44,10 @@ public class ProgramController extends Application implements ILoginWindowContro
         this.dataManager = new DataManager();
 
         // TODO REMOVE THIS WHEN NOT NEEDED.
-        LoginRequest("michael", "password");
+        // LoginRequest("michael", "password");
 
         // show the login window
-        //this.loginWindow.show();
+        this.loginWindow.show();
     }
 
     @Override
@@ -70,7 +67,9 @@ public class ProgramController extends Application implements ILoginWindowContro
             } catch (IOException e) {
 
             }
-        }else{loginWindow.incorrectDetails(this.loginMsg);}
+        } else {
+            loginWindow.incorrectDetails(this.loginMsg);
+        }
     }
 
     @Override
@@ -90,5 +89,10 @@ public class ProgramController extends Application implements ILoginWindowContro
     public boolean showPreferenceWindow() {
         this.preferenceWindow.show();
         return true;
+    }
+
+    @Override
+    public void requestToSendMessage() {
+
     }
 }

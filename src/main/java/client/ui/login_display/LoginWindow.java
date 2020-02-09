@@ -101,7 +101,7 @@ public class LoginWindow implements IWindow {
 	}
 
 	// Displays
-	private Scene loginDisplay(){
+	private Scene loginDisplay() {
 		stage.setTitle("Login Window");
 		stage.setHeight(400);
 		// init main gird
@@ -191,7 +191,7 @@ public class LoginWindow implements IWindow {
 		return new Scene(mainGrid,300,275);
 	}
 
-	private Scene createAccDisplay(){
+	private Scene createAccDisplay() {
 		stage.setTitle("Create Account");
 		stage.setHeight(380);
 		// init main grid
@@ -265,7 +265,6 @@ public class LoginWindow implements IWindow {
 		if(incorrectMsgVB.getChildren().isEmpty()){
 			Text incorrectLoginMsg = new Text(errorMsg);
 
-
 			// animate the rotation
 			RotateTransition animation = new RotateTransition();
 			animation.setNode(incorrectLoginMsg);
@@ -275,7 +274,6 @@ public class LoginWindow implements IWindow {
 			animation.setToAngle(0);
 			animation.setAutoReverse(true);
 			animation.play();
-
 
 			this.incorrectMsgVB.getChildren().add(incorrectLoginMsg);
 			this.incorrectMsgVB.setVisible(true);

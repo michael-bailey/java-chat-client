@@ -70,7 +70,7 @@ public class MainWindow implements IWindow {
 		this.controller = controller;
 		//creating the stage.
 		this.stage = new Stage();
-		this.stage.setTitle("Application");
+		this.stage.setTitle("chat window");
 		this.stage.setMaxHeight(this.primaryScreenBounds.getHeight());
 		this.stage.setMaxWidth(this.primaryScreenBounds.getWidth());
 		this.stage.setMinWidth(675);
@@ -340,6 +340,7 @@ public class MainWindow implements IWindow {
 
 		return root;
 	}
+
 	// get current message in text box
 	public void displayMsg(VBox msg){
 		if (msgSent) {
@@ -350,14 +351,6 @@ public class MainWindow implements IWindow {
 		}
 		chatFrame.getChildren().add(msg);
 	}
-
-	/*
-	public void displayContacts(VBox contactsVB){
-		for(int i=0;i<contIn.getContactArrSize();i++){
-			contactsVB.getChildren().add(contIn.getContact(i).getContactVB());
-		}
-	}
-	 */
 
 	@Override
 	public void show() {

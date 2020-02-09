@@ -505,6 +505,6 @@ public class DataManager {
         return false;
     }
 }
-// these websites where used to kelp with the keygeneration
+// these websites where used to kelp with the key generation
 // https://stackoverflow.com/questions/3451670/java-aes-and-using-my-own-key
 // https://javapapers.com/java/java-file-encryption-decryption-using-aes-password-based-encryption-pbe/
