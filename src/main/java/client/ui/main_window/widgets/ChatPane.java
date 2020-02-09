@@ -9,10 +9,7 @@ import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -135,6 +132,19 @@ public class ChatPane extends AnchorPane {
                 }
             }
         });
+
+        this.messageView.setContextMenu(this.getContextMenu());
+    }
+
+    private ContextMenu getContextMenu() {
+        ContextMenu tmpContextMenu = new ContextMenu();
+        tmpContextMenu.getStyleClass().add("contextMenu");
+
+        MenuItem preset1 = new MenuItem("load preset 1");
+        preset1.getStyleClass().add("contextMenuItem");
+
+        tmpContextMenu.getItems().add(preset1);
+        return tmpContextMenu;
     }
 
     /**
@@ -152,6 +162,9 @@ public class ChatPane extends AnchorPane {
     }
 
     public void loadMessages(ArrayList<Object> messages) {
+        ArrayList tmpArray = (ArrayList) messages.clone();
+        Collections.reverse(tmpArray);
+        this.messageView.setItems((ObservableList<MessageTextBox>) tmpArray);
 
     }
 
