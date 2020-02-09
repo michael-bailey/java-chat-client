@@ -1,11 +1,11 @@
 package client.ui.main_window.widgets;
 
-import client.classes.Message;
 import client.ui.main_window.widgets.MessageTextBox;
 
 import com.sun.javafx.beans.event.AbstractNotifyListener;
 import javafx.application.Platform;
 import javafx.beans.Observable;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -62,7 +62,7 @@ public class ChatPane extends AnchorPane {
         this.setPrefSize(20, 20);
         this.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-        // creating teh message view.
+        // creating the message view.
         messageView = new ListView<>();
         messageView.setMinHeight(Region.USE_COMPUTED_SIZE);
         messageView.setRotate(180);
@@ -75,10 +75,11 @@ public class ChatPane extends AnchorPane {
         sendButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         sendButton.getStyleClass().add("sendButton");
 
-        emojiButton = new Button("emoji");
-        sendButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        sendButton.setPrefSize(this.buttonWidth, this.buttonHeight);
-        sendButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        emojiButton = new Button("+");
+        emojiButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        emojiButton.setPrefSize(this.buttonHeight, this.buttonHeight);
+        emojiButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        emojiButton.getStyleClass().add("emojiButton");
 
         photoButton = new Button("photo");
         sendButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -91,12 +92,11 @@ public class ChatPane extends AnchorPane {
         messageBox.setMinWidth(200);
         messageBox.getStyleClass().add("messageBox");
 
-
         // adding to the anchor pane
         this.getChildren().add(messageView);
         this.getChildren().add(messageBox);
         this.getChildren().add(sendButton);
-        //this.getChildren().add(emojiButton);
+        this.getChildren().add(emojiButton);
         //this.getChildren().add(photoButton);
 
         // setting constraints to items
@@ -108,12 +108,16 @@ public class ChatPane extends AnchorPane {
 
         // message box
         setBottomAnchor(messageBox, 4.0);
-        setLeftAnchor(messageBox, 4.0);
+        setLeftAnchor(messageBox, 33.0);
         setRightAnchor(messageBox, 58.0);
 
         // send button
         setRightAnchor(sendButton, 4.0);
         setBottomAnchor(sendButton, 4.0);
+
+        //emoji button
+        setLeftAnchor(emojiButton, 4.0);
+        setBottomAnchor(emojiButton, 4.0);
 
         // set event handler
         this.sendButton.setOnAction((event) -> {
@@ -142,6 +146,19 @@ public class ChatPane extends AnchorPane {
 
         MenuItem preset1 = new MenuItem("load preset 1");
         preset1.getStyleClass().add("contextMenuItem");
+        preset1.setOnAction(event -> {
+            ArrayList<MessageTextBox> tmpList = new ArrayList();
+            tmpList.add(new MessageTextBox("hi there"));
+            tmpList.add(new MessageTextBox("hi "));
+            tmpList.add(new MessageTextBox("hi there"));
+            tmpList.add(new MessageTextBox(" there"));
+            tmpList.add(new MessageTextBox("hi there"));
+            tmpList.add(new MessageTextBox("hi ghfgh"));
+            tmpList.add(new MessageTextBox("hi there"));
+            tmpList.add(new MessageTextBox("hi ghfghf"));
+            tmpList.add(new MessageTextBox("hi there"));
+            this.loadMessages(tmpList);
+        });
 
         tmpContextMenu.getItems().add(preset1);
         return tmpContextMenu;
@@ -161,13 +178,20 @@ public class ChatPane extends AnchorPane {
         Collections.reverse(tmplist);
     }
 
-    public void loadMessages(ArrayList<Object> messages) {
+    /**
+     * this replaces the contents of the chat pane with a new set of messages
+     * @param messages an ArrayList that contains the messagesto be displayed on the messageview
+     */
+    public void loadMessages(ArrayList<MessageTextBox> messages) {
         ArrayList tmpArray = (ArrayList) messages.clone();
         Collections.reverse(tmpArray);
-        this.messageView.setItems((ObservableList<MessageTextBox>) tmpArray);
-
+        this.messageView.setItems(FXCollections.observableArrayList(tmpArray));
     }
 
+    /**
+     * this will set the event handler for when a message is to be sent
+     * @param handler An Event handler that will be called when send or enter is pressed/typed
+     */
     public void setOnMessageHandler(EventHandler handler) {
         this.onSendMessage = handler;
     }

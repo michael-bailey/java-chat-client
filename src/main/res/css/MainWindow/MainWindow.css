@@ -36,6 +36,12 @@ GridPane {
 	-fx-background-radius: 12.5;
 }
 
+.emojiButton {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3c4042;
+	-fx-background-radius: 12.5;
+}
+
 .messageBox {
     -fx-text-fill: #FFFFFF;
     -fx-background-color: #3c4042;
@@ -57,7 +63,11 @@ GridPane {
 }
 
 .messageView:focused {
-    -fx-background-color: -fx-focus-color,-fx-box-border,-fx-control-inner-background;
+
+    -fx-focus-color: #2c3032;
+    -fx-box-border: #000000;
+    /* -fx-control-inner-background: */
+
     -fx-background-insets: -1.4, 0, 1;
     -fx-background-radius: 1.4, 0, 0;
 

@@ -1,14 +1,14 @@
 //Created by Mitchell Hardie
 package client.ui.main_window.widgets;
 
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.paint.Color;
-import javafx.geometry.Pos;
 
 public class MessageTextBox extends Label {
 
@@ -26,6 +26,18 @@ public class MessageTextBox extends Label {
 		this.prefHeight(25.0);
 		this.maxHeight(Region.USE_PREF_SIZE);
 
+		this.setContextMenu(this.generateContextMenu());
+	}
+
+	private ContextMenu generateContextMenu() {
+		ContextMenu tmpContextMenu = new ContextMenu();
+		tmpContextMenu.getStyleClass().add("contextMenu");
+
+		// menu items
+		MenuItem copy = new MenuItem("copy text");
+		MenuItem delete = new MenuItem("delete message");
+
+		return tmpContextMenu;
 	}
 
 	public VBox getMsg() {
