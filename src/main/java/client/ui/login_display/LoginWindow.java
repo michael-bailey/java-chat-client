@@ -46,6 +46,8 @@ public class LoginWindow implements IWindow {
 
 	private VBox incorrectMsgVB = new VBox();
 
+	// event handlers
+
 
 	public LoginWindow(ILoginWindowController controller) throws IOException {
 		System.out.println(this);
@@ -57,11 +59,8 @@ public class LoginWindow implements IWindow {
 		// window properties
 		this.stage.setResizable(false);
 
-		this.stage.setOnCloseRequest(new EventHandler<WindowEvent>(){
-			@Override
-			public void handle(WindowEvent event) {
-				System.exit(1);
-			}
+		this.stage.setOnCloseRequest((event) -> {
+			System.exit(0);
 		});
 	}
 
