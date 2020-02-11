@@ -1,7 +1,6 @@
 package client;
 
 import client.classes.Account;
-import client.interfaces.controllers.ILoginWindowController;
 import client.interfaces.controllers.IMainWindowController;
 import client.interfaces.controllers.IPreferenceWindowController;
 import javafx.stage.Stage;
@@ -20,7 +19,7 @@ import java.util.HashMap;
  * @version 1.0
  * @since 1.0
  */
-public class ProgramController extends Application implements ILoginWindowController, IMainWindowController, IPreferenceWindowController {
+public class ProgramController extends Application implements  IMainWindowController, IPreferenceWindowController {
 
 
     // this section defines the windows that are in use
@@ -40,7 +39,15 @@ public class ProgramController extends Application implements ILoginWindowContro
     }
 
     public void start(Stage stage) throws Exception {
-        this.loginWindow = new LoginWindow(this);
+        this.loginWindow = new LoginWindow();
+
+        this.loginWindow.setOnRequestLogin(event -> {
+            this.LoginRequest(this.loginWindow.getUsername(), this.loginWindow.getPassword());
+        });
+
+        this.loginWindow.setOnRequestCreate(event -> {
+            this.LoginCreateUser(this.loginWindow.getUsername(), this.loginWindow.getPassword());
+        });
         this.dataManager = new DataManager();
 
         // TODO REMOVE THIS WHEN NOT NEEDED.
@@ -50,7 +57,6 @@ public class ProgramController extends Application implements ILoginWindowContro
         this.loginWindow.show();
     }
 
-    @Override
     public void LoginRequest(String username, String Password) {
         if (this.dataManager.unlock(username, Password)) {
             try {
@@ -68,11 +74,10 @@ public class ProgramController extends Application implements ILoginWindowContro
 
             }
         } else {
-            loginWindow.incorrectDetails(this.loginMsg);
+
         }
     }
 
-    @Override
     public void LoginCreateUser(String username, String Password) {
         if (this.dataManager.createNew(username, Password)) {
             this.loginWindow.hide();
@@ -82,7 +87,7 @@ public class ProgramController extends Application implements ILoginWindowContro
             this.preferences = new HashMap<>();
             this.dataManager.addObject("preferences", this.preferences);
             this.mainWindow.show();
-        }else{loginWindow.incorrectDetails(this.createAccountMsg);}
+        }else{}
     }
 
     @Override
