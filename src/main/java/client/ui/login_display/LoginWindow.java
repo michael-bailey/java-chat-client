@@ -29,7 +29,7 @@ public class LoginWindow implements IWindow {
 	private TextField usernameBox = new TextField();
 	private PasswordField passwordBox = new PasswordField();
 
-	private Text titleText = new Text("Login");
+	private Label titleText = new Label();
 
 	private Label usernameLabel = new Label("Username");
 	private Label passwordLabel = new Label("Password");
@@ -50,7 +50,7 @@ public class LoginWindow implements IWindow {
 		this.stage.setResizable(false);
 
 		this.stage.setOnCloseRequest((event) -> {
-			System.exit(0);
+
 		});
 
 		this.titleText.setFont(Font.font("Consolas",FontWeight.NORMAL,20));
@@ -78,7 +78,7 @@ public class LoginWindow implements IWindow {
 		AnchorPane.setLeftAnchor(usernameBox, 50.0);
 		AnchorPane.setLeftAnchor(passwordLabel, 50.0);
 		AnchorPane.setLeftAnchor(passwordBox, 50.0);
-		AnchorPane.setLeftAnchor(switchPageButton, 175.0);
+		AnchorPane.setLeftAnchor(switchPageButton, 177.0);
 		AnchorPane.setLeftAnchor(enterButton, 50.0);
 
 		AnchorPane.setRightAnchor(titleText, 50.0);
@@ -87,7 +87,7 @@ public class LoginWindow implements IWindow {
 		AnchorPane.setRightAnchor(passwordLabel, 50.0);
 		AnchorPane.setRightAnchor(passwordBox, 50.0);
 		AnchorPane.setRightAnchor(switchPageButton, 50.0);
-		AnchorPane.setRightAnchor(enterButton, 175.0);
+		AnchorPane.setRightAnchor(enterButton, 177.0);
 
 		// add them in order to the anchor pane
 		rootNode.getChildren().add(usernameLabel);
@@ -100,6 +100,15 @@ public class LoginWindow implements IWindow {
 
 		Scene tmpScene = new Scene(rootNode, 350, 260);
 		tmpScene.getStylesheets().add(cssPath);
+
+		// setting style classes
+
+		this.enterButton.getStyleClass().add("Button");
+		this.switchPageButton.getStyleClass().add("Button");
+		this.passwordBox.getStyleClass().add("TextBox");
+		this.usernameBox.getStyleClass().add("TextBox");
+		this.titleText.setStyle("-fx-text-fill: white;");
+		rootNode.getStyleClass().add("Root");
 
 		this.stage.setScene(tmpScene);
 	}
@@ -119,12 +128,16 @@ public class LoginWindow implements IWindow {
 
 		this.enterButton.setOnAction(event -> {
 			if (this.onRequestLogin != null) {
+				event.consume();
 				onRequestLogin.handle(event);
 			}
 		});
 
-		passwordBox.setOnKeyTyped(event -> {
-			if (this.onRequestCreate != null && event.getCode().equals(KeyCode.ENTER)) {
+		passwordBox.setOnAction(event -> {
+			System.out.println("1");
+			if (this.onRequestLogin != null) {
+				event.consume();
+				System.out.println("3");
 				onRequestLogin.handle(event);
 			}
 		});
@@ -145,12 +158,14 @@ public class LoginWindow implements IWindow {
 
 		this.enterButton.setOnAction(event -> {
 			if (this.onRequestLogin != null) {
+				event.consume();
 				onRequestCreate.handle(event);
 			}
 		});
 
-		passwordBox.setOnKeyTyped(event -> {
-			if (this.onRequestCreate != null && event.getCode().equals(KeyCode.ENTER)) {
+		passwordBox.setOnAction(event -> {
+			if (this.onRequestCreate != null) {
+				event.consume();
 				onRequestCreate.handle(event);
 			}
 		});
