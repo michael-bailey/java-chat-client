@@ -3,7 +3,7 @@ package client.ui.main_window;
 
 import client.interfaces.IWindow;
 import client.interfaces.controllers.IMainWindowController;
-import client.ui.main_window.widgets.ChatPane;
+import client.ui.main_window.chat_pane.ChatPane;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -34,6 +34,16 @@ import javafx.stage.Stage;
 public class MainWindow implements IWindow {
 	IMainWindowController controller;
 
+	// ui elements
+	private ChatPane chatPane = new ChatPane();
+
+
+	// event handlers
+	private EventHandler onRequestSendMessage;
+	private EventHandler onRequestDeleteMessage;
+	private EventHandler onRequestEditMessage;
+
+	// not sure about these
 	private Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 	private double width = Screen.getPrimary().getBounds().getWidth();
 	private double height = Screen.getPrimary().getBounds().getHeight();
@@ -51,21 +61,7 @@ public class MainWindow implements IWindow {
 	 * Initilizes the stage.
 	 * Assigns the stage attribute to a new stage.
 	 */
-	public MainWindow(IMainWindowController controller){
-
-		//setting up the stage.
-		this.stage = new Stage();
-		this.stage.setTitle("Application");
-		this.controller = controller;
-		this.stage.setMaxHeight(this.primaryScreenBounds.getHeight());
-		this.stage.setMaxWidth(this.primaryScreenBounds.getWidth());
-		this.stage.setMinWidth(625);
-		this.stage.setMinHeight(350);
-		this.stage.setScene(this.createWindow());
-
-	}
-
-	public MainWindow(IMainWindowController controller, int testversion) {
+	public MainWindow(IMainWindowController controller, int a) {
 
 		this.controller = controller;
 		//creating the stage.
@@ -75,6 +71,10 @@ public class MainWindow implements IWindow {
 		this.stage.setMaxWidth(this.primaryScreenBounds.getWidth());
 		this.stage.setMinWidth(675);
 		this.stage.setMinHeight(375);
+
+		this.chatPane.setOnMessageHandler(event -> {
+			this.onRequestSendMessage.handle(event);
+		});
 
 		// creating the main
 		GridPane mainGrid = new GridPane();
@@ -125,7 +125,7 @@ public class MainWindow implements IWindow {
 		mainGrid.add(new MainWindowMenuBar(),0,0,GridPane.REMAINING, 1);
 		mainGrid.add(serverFrame(),0,1);
 		mainGrid.add(friendFrame,1,1);
-		mainGrid.add(new ChatPane(),2,1);
+		mainGrid.add(this.chatPane,2,1);
 
 
 		// setting up the scene
@@ -134,9 +134,51 @@ public class MainWindow implements IWindow {
 		this.stage.setScene(scene);
 	}
 
+	public String getMessageBoxText() {
+		return this.chatPane.getMessageText();
+	}
+
+	public void addMessage(String messageText) {
+		this.chatPane.appendMessage(messageText, ChatPane.Left);
+	}
+
+	@Override
+	public void show() {
+		this.stage.show();
+	}
+
+	@Override
+	public void hide() {
+		this.stage.hide();
+	}
+
+	public EventHandler getOnRequestSendMessage() {
+		return onRequestSendMessage;
+	}
+
+	public void setOnRequestSendMessage(EventHandler onRequestSendMessage) {
+		this.onRequestSendMessage = onRequestSendMessage;
+	}
+
+	@Deprecated
+	public MainWindow(IMainWindowController controller){
+
+		//setting up the stage.
+		this.stage = new Stage();
+		this.stage.setTitle("Application");
+		this.controller = controller;
+		this.stage.setMaxHeight(this.primaryScreenBounds.getHeight());
+		this.stage.setMaxWidth(this.primaryScreenBounds.getWidth());
+		this.stage.setMinWidth(625);
+		this.stage.setMinHeight(350);
+		this.stage.setScene(this.createWindow());
+
+	}
+
 	/*
 	 * Event Handlers
 	 */
+	@Deprecated
 	private class MsgHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
@@ -145,6 +187,7 @@ public class MainWindow implements IWindow {
 		}
 	}
 
+	@Deprecated
 	private class LanWanHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
@@ -152,6 +195,7 @@ public class MainWindow implements IWindow {
 		}
 	}
 
+	@Deprecated
 	private class AddContact implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent event){
@@ -160,6 +204,7 @@ public class MainWindow implements IWindow {
 		}
 	}
 
+	@Deprecated
 	public Scene createWindow() {
 
 		GridPane mainGrid = new GridPane();
@@ -211,12 +256,14 @@ public class MainWindow implements IWindow {
 		return scene;
 	}
 
+	@Deprecated
 	public VBox serverFrame() {
 		VBox tmpBox = new VBox();
 		tmpBox.getStyleClass().add(".VBox");
 		return tmpBox;
 	}
 
+	@Deprecated
 	public GridPane FriendGrid() {
 
 		GridPane root = new GridPane();
@@ -268,6 +315,7 @@ public class MainWindow implements IWindow {
 		return root;
 	}
 
+	@Deprecated
 	public VBox chatFrame() {
 		chatFrame.setPrefWidth(this.width*0.90);
 		//chatFrame.setPrefHeight(this.height*0.95);
@@ -277,6 +325,7 @@ public class MainWindow implements IWindow {
 		return chatFrame;
 	}
 
+	@Deprecated
 	public GridPane MsgGrid() {
 		GridPane root = new GridPane();
 
@@ -342,6 +391,7 @@ public class MainWindow implements IWindow {
 	}
 
 	// get current message in text box
+	@Deprecated
 	public void displayMsg(VBox msg){
 		if (msgSent) {
 			chatFrame.setAlignment(Pos.BOTTOM_RIGHT);
@@ -350,15 +400,5 @@ public class MainWindow implements IWindow {
 			chatFrame.setAlignment(Pos.BOTTOM_LEFT);
 		}
 		chatFrame.getChildren().add(msg);
-	}
-
-	@Override
-	public void show() {
-		this.stage.show();
-	}
-
-	@Override
-	public void hide() {
-		this.stage.hide();
 	}
 }

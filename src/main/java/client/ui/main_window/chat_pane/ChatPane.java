@@ -1,26 +1,14 @@
-package client.ui.main_window.widgets;
+package client.ui.main_window.chat_pane;
 
-import client.ui.main_window.widgets.MessageTextBox;
-
-import com.sun.javafx.beans.event.AbstractNotifyListener;
-import javafx.application.Platform;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 
 public class ChatPane extends AnchorPane {
 
@@ -34,17 +22,9 @@ public class ChatPane extends AnchorPane {
     private int buttonHeight = 25;
 
     private Button sendButton;
-    private EventHandler<ActionEvent> SendButtonEventHandler;
-
-    private Button emojiButton;
-    private EventHandler<ActionEvent> EmojiButtonEventHandler;
-
+    private Button AdditionalItemsButton;
     private Button photoButton;
-    private EventHandler<ActionEvent> PhotoButtonEventHandler;
-
     private TextField messageBox;
-    private EventHandler<KeyEvent> enterPressed;
-
     private ListView<MessageTextBox> messageView;
 
     // event handlers
@@ -75,11 +55,11 @@ public class ChatPane extends AnchorPane {
         sendButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         sendButton.getStyleClass().add("sendButton");
 
-        emojiButton = new Button("+");
-        emojiButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        emojiButton.setPrefSize(this.buttonHeight, this.buttonHeight);
-        emojiButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        emojiButton.getStyleClass().add("emojiButton");
+        AdditionalItemsButton = new Button("+");
+        AdditionalItemsButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        AdditionalItemsButton.setPrefSize(this.buttonHeight, this.buttonHeight);
+        AdditionalItemsButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        AdditionalItemsButton.getStyleClass().add("emojiButton");
 
         photoButton = new Button("photo");
         sendButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -96,7 +76,7 @@ public class ChatPane extends AnchorPane {
         this.getChildren().add(messageView);
         this.getChildren().add(messageBox);
         this.getChildren().add(sendButton);
-        this.getChildren().add(emojiButton);
+        this.getChildren().add(AdditionalItemsButton);
         //this.getChildren().add(photoButton);
 
         // setting constraints to items
@@ -116,8 +96,8 @@ public class ChatPane extends AnchorPane {
         setBottomAnchor(sendButton, 4.0);
 
         //emoji button
-        setLeftAnchor(emojiButton, 4.0);
-        setBottomAnchor(emojiButton, 4.0);
+        setLeftAnchor(AdditionalItemsButton, 4.0);
+        setBottomAnchor(AdditionalItemsButton, 4.0);
 
         // set event handler
         this.sendButton.setOnAction((event) -> {
@@ -140,6 +120,10 @@ public class ChatPane extends AnchorPane {
         this.messageView.setContextMenu(this.getContextMenu());
     }
 
+    /**
+     * this creates a
+     * @return returns a new context menu
+     */
     private ContextMenu getContextMenu() {
         ContextMenu tmpContextMenu = new ContextMenu();
         tmpContextMenu.getStyleClass().add("contextMenu");
@@ -187,6 +171,11 @@ public class ChatPane extends AnchorPane {
         Collections.reverse(tmpArray);
         this.messageView.setItems(FXCollections.observableArrayList(tmpArray));
     }
+
+    public String getMessageText() {
+        return this.messageBox.getText();
+    }
+
 
     /**
      * this will set the event handler for when a message is to be sent

@@ -1,6 +1,8 @@
 //Created by Mitchell Hardie
-package client.ui.main_window.widgets;
+package client.ui.main_window.chat_pane;
 
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -15,8 +17,9 @@ public class MessageTextBox extends Label {
 	private Text msg;
 	private VBox msgVBox = new VBox();
 
-	public MessageTextBox(String msg) {
-		super(msg);
+	public MessageTextBox(String message) {
+		super(message);
+
 		this.getStyleClass().add(".message");
 		this.setFont(Font.font("Consolas",FontWeight.NORMAL,16));
 		this.getStyleClass().add("message");
@@ -40,11 +43,8 @@ public class MessageTextBox extends Label {
 		return tmpContextMenu;
 	}
 
+
 	public VBox getMsg() {
 		return msgVBox;
-	}
-
-	public double getMsgHeight() {
-		return msgVBox.getMaxHeight();
 	}
 }

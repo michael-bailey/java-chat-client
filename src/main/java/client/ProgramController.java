@@ -11,7 +11,10 @@ import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
 import baselib.managers.DataManager;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 /**
@@ -48,10 +51,8 @@ public class ProgramController extends Application implements  IMainWindowContro
         this.loginWindow.setOnRequestCreate(event -> {
             this.LoginCreateUser(this.loginWindow.getUsername(), this.loginWindow.getPassword());
         });
-        this.dataManager = new DataManager();
 
-        // TODO REMOVE THIS WHEN NOT NEEDED.
-        // LoginRequest("michael", "password");
+        this.dataManager = new DataManager();
 
         // show the login window
         this.loginWindow.show();
@@ -59,20 +60,21 @@ public class ProgramController extends Application implements  IMainWindowContro
 
     public void LoginRequest(String username, String Password) {
         if (this.dataManager.unlock(username, Password)) {
-            try {
-                this.loginWindow.hide();
 
-                // setting up windows that require a login to be complete.
-                this.mainWindow = new MainWindow(this, 1);
-                mainWindow.show();
-                this.preferenceWindow = new PreferenceWindow(this.dataManager);
+            this.loginWindow.hide();
 
-                this.account = (Account) this.dataManager.getObject("account");
+            // setting up windows that require a login to be complete.
+            this.mainWindow = new MainWindow(this, 1);
 
-                this.mainWindow.show();
-            } catch (IOException e) {
+            // set events for the main window
+            this.mainWindow.setOnRequestSendMessage(event -> {
+                this.mainWindow.addMessage(this.mainWindow.getMessageBoxText());
+            });
 
-            }
+
+            mainWindow.show();
+            this.account = (Account) this.dataManager.getObject("account");
+            this.mainWindow.show();
         } else {
 
         }
