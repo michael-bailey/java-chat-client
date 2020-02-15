@@ -88,3 +88,8 @@ GridPane {
     -fx-text-fill: #FFFFFF;
     -fx-background-radius: 4
 }
+
+.menuBar {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3c4042;
+}

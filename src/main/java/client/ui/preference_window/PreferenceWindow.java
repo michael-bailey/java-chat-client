@@ -1,13 +1,7 @@
 package client.ui.preference_window;
 
 import baselib.managers.DataManager;
-import client.classes.Account;
 import client.interfaces.IWindow;
-import client.interfaces.controllers.IPreferenceWindowController;
-import client.ui.preference_window.panes.AccountPaneController;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;

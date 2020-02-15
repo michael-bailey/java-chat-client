@@ -1,8 +1,7 @@
 package client;
 
 import client.classes.Account;
-import client.interfaces.controllers.IMainWindowController;
-import client.interfaces.controllers.IPreferenceWindowController;
+import client.interfaces.IWindow;
 import javafx.stage.Stage;
 import javafx.application.Application;
 
@@ -11,10 +10,6 @@ import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
 import baselib.managers.DataManager;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 /**
@@ -22,11 +17,10 @@ import java.util.HashMap;
  * @version 1.0
  * @since 1.0
  */
-public class ProgramController extends Application implements  IMainWindowController, IPreferenceWindowController {
+public class ProgramController extends Application {
 
 
     // this section defines the windows that are in use
-    PreferenceWindow preferenceWindow;
     MainWindow mainWindow;
     LoginWindow loginWindow;
 
@@ -64,7 +58,7 @@ public class ProgramController extends Application implements  IMainWindowContro
             this.loginWindow.hide();
 
             // setting up windows that require a login to be complete.
-            this.mainWindow = new MainWindow(this, 1);
+            this.mainWindow = new MainWindow(1);
 
             // set events for the main window
             this.mainWindow.setOnRequestSendMessage(event -> {
@@ -92,14 +86,5 @@ public class ProgramController extends Application implements  IMainWindowContro
         }else{}
     }
 
-    @Override
-    public boolean showPreferenceWindow() {
-        this.preferenceWindow.show();
-        return true;
-    }
 
-    @Override
-    public void requestToSendMessage() {
-
-    }
 }
