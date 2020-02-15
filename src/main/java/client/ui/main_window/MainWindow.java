@@ -2,7 +2,6 @@
 package client.ui.main_window;
 
 import client.interfaces.IWindow;
-import client.interfaces.controllers.IMainWindowController;
 import client.ui.main_window.chat_pane.ChatPane;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -32,11 +31,10 @@ import javafx.stage.Stage;
  * @since 1.0
  */
 public class MainWindow implements IWindow {
-	IMainWindowController controller;
 
 	// ui elements
 	private ChatPane chatPane = new ChatPane();
-
+	private MainWindowMenuBar menuBar= new MainWindowMenuBar();
 
 	// event handlers
 	private EventHandler onRequestSendMessage;
@@ -61,9 +59,7 @@ public class MainWindow implements IWindow {
 	 * Initilizes the stage.
 	 * Assigns the stage attribute to a new stage.
 	 */
-	public MainWindow(IMainWindowController controller, int a) {
-
-		this.controller = controller;
+	public MainWindow(int a) {
 		//creating the stage.
 		this.stage = new Stage();
 		this.stage.setTitle("chat window");
@@ -122,7 +118,7 @@ public class MainWindow implements IWindow {
 		mainGrid.getRowConstraints().add(row0);
 		mainGrid.getRowConstraints().add(row1);
 
-		mainGrid.add(new MainWindowMenuBar(),0,0,GridPane.REMAINING, 1);
+		mainGrid.add(this.menuBar,0,0,GridPane.REMAINING, 1);
 		mainGrid.add(serverFrame(),0,1);
 		mainGrid.add(friendFrame,1,1);
 		mainGrid.add(this.chatPane,2,1);
@@ -161,12 +157,12 @@ public class MainWindow implements IWindow {
 	}
 
 	@Deprecated
-	public MainWindow(IMainWindowController controller){
+	public MainWindow(){
 
 		//setting up the stage.
 		this.stage = new Stage();
 		this.stage.setTitle("Application");
-		this.controller = controller;
+
 		this.stage.setMaxHeight(this.primaryScreenBounds.getHeight());
 		this.stage.setMaxWidth(this.primaryScreenBounds.getWidth());
 		this.stage.setMinWidth(625);
