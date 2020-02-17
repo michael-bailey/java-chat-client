@@ -1,12 +1,13 @@
 package client.classes;
 
+import java.io.Serializable;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class Account {
+public class Account implements Serializable {
 
     // account details.
     String userID;
@@ -30,6 +31,7 @@ public class Account {
             KeyPair kp = kpg.genKeyPair();
             publicKey = kp.getPublic();
             privateKey = kp.getPrivate();
+
 
             // create a random number.
             SecureRandom rand = new SecureRandom();

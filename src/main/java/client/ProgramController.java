@@ -2,6 +2,7 @@ package client;
 
 import client.classes.Account;
 import client.interfaces.IWindow;
+import client.ui.main_window.chat_pane.MessageTextBox;
 import javafx.stage.Stage;
 import javafx.application.Application;
 
@@ -10,7 +11,9 @@ import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
 import baselib.managers.DataManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * @author michael-bailey
@@ -18,7 +21,6 @@ import java.util.HashMap;
  * @since 1.0
  */
 public class ProgramController extends Application {
-
 
     // this section defines the windows that are in use
     MainWindow mainWindow;
@@ -30,13 +32,17 @@ public class ProgramController extends Application {
     Account account;
     
     private String loginMsg = "Incorrect Login Details!", createAccountMsg = "Invalid Details! Please correct!";
+    private ArrayList<String> testMessages;
 
     public static void main(String[] args) throws Exception {
         launch(args);
     }
 
     public void start(Stage stage) throws Exception {
+        System.out.println(this);
+
         this.loginWindow = new LoginWindow();
+        this.mainWindow = new MainWindow(1);
 
         this.loginWindow.setOnRequestLogin(event -> {
             this.LoginRequest(this.loginWindow.getUsername(), this.loginWindow.getPassword());
@@ -46,31 +52,46 @@ public class ProgramController extends Application {
             this.LoginCreateUser(this.loginWindow.getUsername(), this.loginWindow.getPassword());
         });
 
+        this.mainWindow.setOnRequestClose(event -> {
+            this.RequestLogout();
+        });
+
+        this.mainWindow.setOnRequestSendMessage(event -> {
+            String a = this.mainWindow.getMessageBoxText();
+            this.testMessages.add(a);
+            this.mainWindow.addMessage(a);
+        });
+
         this.dataManager = new DataManager();
 
         // show the login window
         this.loginWindow.show();
     }
 
+    private void RequestLogout() {
+        this.dataManager.lock();
+        this.mainWindow.hide();
+        this.loginWindow.show();
+    }
+
     public void LoginRequest(String username, String Password) {
         if (this.dataManager.unlock(username, Password)) {
-
             this.loginWindow.hide();
 
-            // setting up windows that require a login to be complete.
-            this.mainWindow = new MainWindow(1);
+            this.testMessages = (ArrayList<String>) this.dataManager.getObject("TestMessages");
+
+            Iterator a = this.testMessages.iterator();
+            while (a.hasNext()) {
+                String tmp = (String) a.next();
+                this.mainWindow.addMessage(tmp);
+            }
 
             // set events for the main window
             this.mainWindow.setOnRequestSendMessage(event -> {
                 this.mainWindow.addMessage(this.mainWindow.getMessageBoxText());
             });
-
-
-            mainWindow.show();
             this.account = (Account) this.dataManager.getObject("account");
             this.mainWindow.show();
-        } else {
-
         }
     }
 
@@ -82,9 +103,18 @@ public class ProgramController extends Application {
             this.dataManager.addObject("account", this.account);
             this.preferences = new HashMap<>();
             this.dataManager.addObject("preferences", this.preferences);
+            this.testMessages = new ArrayList<String>();
+            this.dataManager.addObject( "TestMessages", this.testMessages);
             this.mainWindow.show();
-        }else{}
+        }
     }
 
-
+    private void shutdown() {
+        this.dataManager.lock();
+        try {
+            this.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

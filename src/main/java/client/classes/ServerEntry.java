@@ -1,6 +1,8 @@
 package client.classes;
 
-public class ServerEntry {
+import java.io.Serializable;
+
+public class ServerEntry implements Serializable {
     String ipAddress;
     String name;
 
