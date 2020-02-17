@@ -185,4 +185,8 @@ public class ChatPane extends AnchorPane {
         this.onSendMessage = handler;
     }
 
+    public void clearAll() {
+        this.messageView.getItems().clear();
+        this.messageBox.clear();
+    }
 }
