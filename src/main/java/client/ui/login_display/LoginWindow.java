@@ -174,6 +174,8 @@ public class LoginWindow implements IWindow {
 	@Override
 	public void show() {
 		this.loginDisplay();
+		this.usernameBox.clear();
+		this.passwordBox.clear();
 		this.stage.show();
 	}
 
