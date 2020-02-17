@@ -24,7 +24,7 @@ import java.security.spec.KeySpec;
  * @since 1.0
  * @author michael-bailey
  */
-public class DataManager {
+public class DataManager implements Closeable {
 
     private HashMap<String, Object> dataObject;
 
@@ -502,6 +502,11 @@ public class DataManager {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.lock();
     }
 }
 // these websites where used to kelp with the key generation
