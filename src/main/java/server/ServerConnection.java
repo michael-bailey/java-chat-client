@@ -62,22 +62,22 @@ public class ServerConnection{
 
 		@Override
 		public void run(){
+			System.out.println("Client Thread Created");
 			try{
 				while(!this.doStop){
-					System.out.println("Client Thread Created");
 					BufferedReader dataInput = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 					String str = dataInput.readLine();
 					System.out.println(str);
-					if(str=="quit"){
+					if(str.equals("quit")){
 						this.doStop();
 					}else{
-						for(int i=0;i<connectedUsers.size();i++){
+						/*for(int i=0;i<connectedUsers.size();i++){
 							if(this.socket!=connectedUsers.get(i)){
 								PrintWriter pr = new PrintWriter(connectedUsers.get(i).getOutputStream());
 								pr.println(str);
 								pr.flush();
 							}
-						}
+						}*/
 					}
 				}
 				this.socket.close();

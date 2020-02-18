@@ -1,5 +1,6 @@
-package baselib.managers;
+//package baselib.managers;
 
+import java.util.Scanner;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -8,9 +9,9 @@ import java.net.Socket;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import baselib.interfaces.INetworkManagerController;
+//import baselib.interfaces.INetworkManagerController;
 
-import javax.jmdns.*;
+//import javax.jmdns.*;
 
 /**
  * Network Manager
@@ -22,36 +23,39 @@ import javax.jmdns.*;
  * @since 1.0
  */
 
-public class NetworkManager {
-	private HashMap<> servers;
-	private String currentServerAddress;
-	private int currentServerPort;
+public class NetworkManager extends Thread{
+	//private HashMap<> servers;
+	private String currentServerAddress = "localhost", recipentAddress = "";
+	private int currentServerPort = 9806;
 	private Socket serverConnectionSocket, recipentSocket;
 	private PrintWriter serverSocketOutput, recipentSocketOutput;
+	private BufferedReader serverSocketInput, recipentSocketInput;
 	private ServerConnection[] connectionThreads = new ServerConnection[2];
-	private boolean appRunning = true, isConnected = false;
+	private boolean appRunning = true, isConnected = false, stopConnection = false;
 
-	public NetworkManager(HashMap<> servers){
+	public NetworkManager(/*HashMap<> servers*/){
 		System.out.println("Details Stored");
-		this.servers = servers;
+		//this.servers = servers;
 	}
 
-	public void startNetworkManager(){
+	@Override
+	public void run(){
 		while(appRunning){
 			if(connectionThreads[0]==null){
-				primary = this.createNewConnection();
-				primary.start();
+				System.out.println("primary connection created");
+				this.createNewConnection();
+				connectionThreads[0].start();
+				ClientConnection client = new ClientConnection
 			}
 		}
 	}
 
-	public ServerConnection createNewConnection(){
-		if(this.checkConnectionThreads){
-			connectionThreads[0].stop();
+	public void createNewConnection(){
+		if(this.checkConnectionThreads()){
+			connectionThreads[0].doStop();
 		}
 		ServerConnection primary = new ServerConnection();
 		connectionThreads[0] = primary;
-		return primary;
 	}
 
 	private boolean checkConnectionThreads(){
@@ -66,8 +70,7 @@ public class NetworkManager {
 	}
 	
 	private class ServerConnection extends Thread {
-		private boolean stopThread = false;
-		private ArrayList<Packet> messageQueue = new ArrayList<Packet>();
+		private ArrayList<String> messageQueue = new ArrayList<String>();//<Packet>
 
 		public ServerConnection(){
 		}
@@ -80,67 +83,122 @@ public class NetworkManager {
 			//while(isConnected):
 			//	retrieve all clients from server
 			//	wait 10 secs before checking again
-			while(!stopThread){
+			while(!stopConnection){
 				if(!isConnected){
-					this.connectToServer();
+					try{
+						this.connectToServer();
+					}catch(Exception e){}
 				}
-				if(messageQueue.size()>0){
-					Packet message = messageQueue.remove(0);
-					if(message.type==0){
-						this.sendServerMessage(message);
-					}else if(message.type==1){
-						this.sendClientMessage(message);
-					}else{System.out.println("Message is not in correct format");}
+				/*if(messageQueue.size()>0){
+					String message = messageQueue.remove(0);
+					//if(message.type==0){
+					this.sendServerMessage(message);
+					//}else if(message.type==1){
+					//	this.sendClientMessage(message);
+					//}else{System.out.println("Message is not in correct format");}
+					try{
+					System.out.println(serverSocketInput.readLine());
+					}catch(Exception e){}
+				}*/
+				short sh = 0;
+				if(recipentAddress.isEmpty()){
+					Scanner scan = new Scanner(System.in);
+					System.out.println("enter message > ");
+					sh = scan.nextShort();
+					//messageQueue.add(str);
+				}
+
+				if(sh==1){
+					this.sendServerMessage(sh);
+					recipentAddress = serverSocketInput.readLine()
+					try{
+						this.createRecipentSocket();
+					}catch(Exception e){
+						e.printTraceStack();
+					}
 				}
 			}
 		}
 
 		public void doStop(){
-			this.stopThread = true;
+			stopConnection = true;
 		}
 
 		public void connectToServer() throws Exception{
 			System.out.println("Client connection to server started");
 			serverConnectionSocket = new Socket(currentServerAddress, currentServerPort);//ip address of server, and port of appliaction
-			serverConnectionOutput = new PrintWriter(serverConnectionSocket.getOutputStream(), true);//true allows for immidete automatic flush of data eg gets sent.
+			serverSocketOutput = new PrintWriter(serverConnectionSocket.getOutputStream(), true);//true allows for immidete automatic flush of data eg gets sent.
+			serverSocketInput = new BufferedReader(new InputStreamReader(serverConnectionSocket.getInputStream()));
 			isConnected = true;
-		}
-
-		public void requestRecipentAddress(){
-			return;
 		}
 
 		public void createRecipentSocket() throws Exception{
 			if(!recipentAddress.isEmpty()){
-				recipentSocket = new Socket(recipentAddress,SERVER_PORT);
+				System.out.println("recipent address recieved");
+				recipentSocket = new Socket(recipentAddress, currentServerPort);
 				recipentSocketOutput = new PrintWriter(recipentSocket.getOutputStream(), true);//true allows for immidete automatic flush of data eg gets sent.
+				recipentSocketInput = new BufferedReader(new InputStreamReader(recipentSocket.getInputStream()));
 			}else{
 				System.out.println("There is currently no recipent address stored!");
 			}
 		}
 
+		public void sendServerMessage(short message){
+			serverSocketOutput.println(message);
+			if(message == 0){
+				appRunning = false;
+				this.doStop();
+			}
+		}
+		
 		public boolean checkServerConnection(){
-			return this.isConnected;
+			return isConnected;
 		}
-
-		public boolean checkRecipentConnection(){
-			return false;
-		}
-
-		public void sendServerMessage(String serverMessage){
-			serverSocketOutput.println(serverMessage);
-		}
-
-		public void sendClientMessage(String clientMessage){
-			//if(this.checkRecipentConnection){
-			recipentSocketOutput.println(clientMessage);
-			//}
-			//else{
-			//	System.out.println("Message could not be sent as no connection has been Established.");
-			//}
-		}
-
 	}
+
+	private class ClientConnection extends Thread {
+		private boolean isConnected = false;
+		private ServerSocket ss;
+		private Socket socket;
+
+		public ClientConnection(){
+			System.out.println("Client Thread Started");
+		}
+		
+		@Override
+		public void run(){
+			this.ss = new ServerSocket(currentServerPort);
+			System.out.println("Listening to client peer...");
+			while(!stopClientConnection){
+				if(!this.isConnected){
+					this.socket = this.ss.accept();
+					System.out.println("Connection Established");
+					this.isConnected = true;
+				}
+			}
+		}
+
+		public void doStop(){
+			stopClientConnection = true;
+		}
+	}
+
+	/*private class InboundMessages extends Thread {
+		public InboundMessages(){System.out.println("Inbound created...");}
+		
+		@Override
+		public void run(){
+			while(!stopThread){
+				try{
+					System.out.println("waiting for message...");
+					//System.out.println(serverSocketInput.readLine());
+				}catch(Exception e){
+					System.out.println("error in inbound messages thread\n");
+					e.printStackTrace();
+				}
+			}
+		}
+	}*/
 }
 // TODO SERVER CONNECTION THREAD - switch from one server to another
 /* checks to see if thread is running (network manager thread)
