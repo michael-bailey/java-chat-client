@@ -29,6 +29,7 @@ public class ContactPane extends AnchorPane {
     }
 
     void setContacts(ArrayList contacts) {
+
         this.listView.setItems(FXCollections.observableList(contacts));
     }
     public ArrayList getContacts() {

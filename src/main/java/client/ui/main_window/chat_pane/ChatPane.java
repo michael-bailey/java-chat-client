@@ -108,12 +108,10 @@ public class ChatPane extends AnchorPane {
             event.consume();
         });
 
-        this.messageBox.setOnKeyTyped(event -> {
+        this.messageBox.setOnAction(event -> {
             if (this.onSendMessage != null) {
-                if (event.getCode().equals(KeyCode.ENTER)) {
-                    this.onSendMessage.handle(event);
-                    this.messageBox.clear();
-                }
+                this.onSendMessage.handle(event);
+                this.messageBox.clear();
             }
         });
 
@@ -172,10 +170,13 @@ public class ChatPane extends AnchorPane {
         this.messageView.setItems(FXCollections.observableArrayList(tmpArray));
     }
 
+    /**
+     * this gets the text in the message box
+     * @return string of the message
+     */
     public String getMessageText() {
         return this.messageBox.getText();
     }
-
 
     /**
      * this will set the event handler for when a message is to be sent

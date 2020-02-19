@@ -1,21 +1,23 @@
 package client;
 
+import baselib.managers.DataManager;
 import client.classes.Account;
-import client.interfaces.IWindow;
-import client.ui.main_window.chat_pane.MessageTextBox;
-import javafx.stage.Stage;
-import javafx.application.Application;
-
-import client.ui.preference_window.PreferenceWindow;
 import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
-import baselib.managers.DataManager;
+import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
 /**
+ * Program Controller.
+ *
+ * This class manages all data and resources for the program.
+ * it has all interactions between windows and data models defined in this class.
+ *
  * @author michael-bailey
  * @version 1.0
  * @since 1.0
@@ -34,35 +36,33 @@ public class ProgramController extends Application {
     private String loginMsg = "Incorrect Login Details!", createAccountMsg = "Invalid Details! Please correct!";
     private ArrayList<String> testMessages;
 
+    // definign the functions of the
+    private EventHandler onRequestLogin = event -> { this.LoginRequest(this.loginWindow.getUsername(), this.loginWindow.getPassword()); };
+    private EventHandler onRequestCreate = event -> { this.LoginCreateUser(this.loginWindow.getUsername(), this.loginWindow.getPassword()); };
+    private EventHandler onRequestClose = event -> { this.RequestLogout(); };
+    private EventHandler onRequestSendMessage = event -> { String a = this.mainWindow.getMessageBoxText(); this.testMessages.add(a); this.mainWindow.addMessage(a); };
+
     public static void main(String[] args) throws Exception {
         launch(args);
     }
 
+    /**
+     * this is called after the application class has finished.
+     * @param stage the stage given to the function by application.
+     * @throws Exception any thing that could go wrong.
+     */
     public void start(Stage stage) throws Exception {
         System.out.println(this);
 
         this.loginWindow = new LoginWindow();
-        this.mainWindow = new MainWindow(1);
-
-        this.loginWindow.setOnRequestLogin(event -> {
-            this.LoginRequest(this.loginWindow.getUsername(), this.loginWindow.getPassword());
-        });
-
-        this.loginWindow.setOnRequestCreate(event -> {
-            this.LoginCreateUser(this.loginWindow.getUsername(), this.loginWindow.getPassword());
-        });
-
-        this.mainWindow.setOnRequestClose(event -> {
-            this.RequestLogout();
-        });
-
-        this.mainWindow.setOnRequestSendMessage(event -> {
-            String a = this.mainWindow.getMessageBoxText();
-            this.testMessages.add(a);
-            this.mainWindow.addMessage(a);
-        });
-
+        this.mainWindow = new MainWindow();
         this.dataManager = new DataManager();
+
+        this.loginWindow.setOnRequestLogin(onRequestLogin);
+        this.loginWindow.setOnRequestCreate(onRequestCreate);
+        this.mainWindow.setOnRequestClose(onRequestClose);
+        this.mainWindow.setOnRequestSendMessage(onRequestSendMessage);
+
 
         // show the login window
         this.loginWindow.show();
