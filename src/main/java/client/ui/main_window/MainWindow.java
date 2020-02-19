@@ -5,17 +5,14 @@ import client.interfaces.IWindow;
 import client.ui.main_window.chat_pane.ChatPane;
 import client.ui.main_window.chat_pane.MessageTextBox;
 import client.ui.main_window.contact_pane.ContactPane;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * Class is responsible for creating all components of the main appliactions interface.
@@ -53,7 +50,7 @@ public class MainWindow implements IWindow {
 	 * Initializes the stage.
 	 * Assigns the stage attribute to a new stage.
 	 */
-	public MainWindow(int a) {
+	public MainWindow() {
 		//creating the stage.
 		this.stage = new Stage();
 		this.stage.setTitle("chat window");

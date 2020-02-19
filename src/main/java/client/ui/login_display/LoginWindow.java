@@ -40,7 +40,7 @@ public class LoginWindow implements IWindow {
 	// event handlers
 	private EventHandler onRequestLogin;
 	private EventHandler onRequestCreate;
-
+	private EventHandler onRequestClose;
 
 	public LoginWindow() {
 		System.out.println(this);
@@ -48,11 +48,6 @@ public class LoginWindow implements IWindow {
 		// creating a new stage
 		this.stage = new Stage();
 		this.stage.setResizable(false);
-
-		this.stage.setOnCloseRequest((event) -> {
-
-		});
-
 		this.titleText.setFont(Font.font("Consolas",FontWeight.NORMAL,20));
 
 		// creating the scene
@@ -134,10 +129,8 @@ public class LoginWindow implements IWindow {
 		});
 
 		passwordBox.setOnAction(event -> {
-			System.out.println("1");
 			if (this.onRequestLogin != null) {
 				event.consume();
-				System.out.println("3");
 				onRequestLogin.handle(event);
 			}
 		});
@@ -198,5 +191,13 @@ public class LoginWindow implements IWindow {
 
 	public String getPassword() {
 		return this.passwordBox.getText();
+	}
+
+	public EventHandler getOnRequestClose() {
+		return onRequestClose;
+	}
+
+	public void setOnRequestClose(EventHandler onRequestClose) {
+		this.onRequestClose = onRequestClose;
 	}
 }

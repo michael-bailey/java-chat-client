@@ -15,11 +15,11 @@ import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 /**
- * <h1>Data Manager</h1>
- * <p>
+ * Data Manager
+ *
  *  this class privides a way to store objects using key value pairs 
  *  so that they can be stored securely in a file for later use.
- * </p>
+ *
  * @version 1.0
  * @since 1.0
  * @author michael-bailey
