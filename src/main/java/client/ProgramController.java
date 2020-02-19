@@ -86,10 +86,6 @@ public class ProgramController extends Application {
                 this.mainWindow.addMessage(tmp);
             }
 
-            // set events for the main window
-            this.mainWindow.setOnRequestSendMessage(event -> {
-                this.mainWindow.addMessage(this.mainWindow.getMessageBoxText());
-            });
             this.account = (Account) this.dataManager.getObject("account");
             this.mainWindow.show();
         }

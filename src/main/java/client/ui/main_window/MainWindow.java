@@ -145,13 +145,13 @@ public class MainWindow implements IWindow {
 
 	@Override
 	public void show() {
-		this.chatPane.clearAll();
 		this.stage.show();
 	}
 
 	@Override
 	public void hide() {
 		this.stage.hide();
+		this.chatPane.clearAll();
 	}
 
 	public EventHandler getOnRequestSendMessage() {
