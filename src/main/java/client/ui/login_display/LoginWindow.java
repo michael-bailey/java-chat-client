@@ -164,8 +164,7 @@ public class LoginWindow implements IWindow {
 		});
 
 		passwordBox.setOnAction(event -> {
-			if (this.onRequestCreate != null) {
-				event.consume();
+			if (this.onRequestLogin != null) {
 				onRequestCreate.handle(event);
 			}
 		});
@@ -174,14 +173,15 @@ public class LoginWindow implements IWindow {
 	@Override
 	public void show() {
 		this.loginDisplay();
-		this.usernameBox.clear();
-		this.passwordBox.clear();
+
 		this.stage.show();
 	}
 
 	@Override
 	public void hide() {
 		this.stage.hide();
+		this.usernameBox.clear();
+		this.passwordBox.clear();
 	}
 
 	public void setOnRequestLogin(EventHandler onRequestLogin) {
