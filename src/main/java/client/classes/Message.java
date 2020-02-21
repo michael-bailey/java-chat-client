@@ -22,11 +22,15 @@ public class Message extends Object implements Serializable {
     String message;
     String checkSum;
 
+
+    /**
+     *
+     * @param Message
+     */
     public Message(String Message) {
         recievedDate = LocalDate.now();
         recievedTime = LocalTime.now();
     }
-
 
     public String getCheckSum() {
         return checkSum;

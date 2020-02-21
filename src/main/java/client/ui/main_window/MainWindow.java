@@ -1,6 +1,7 @@
 // Created by Mitchell Hardie
 package client.ui.main_window;
 
+import client.enums.MessageAlignment;
 import client.interfaces.IWindow;
 import client.ui.main_window.chat_pane.ChatPane;
 import client.ui.main_window.chat_pane.MessageTextBox;
@@ -133,8 +134,8 @@ public class MainWindow implements IWindow {
 	public String getMessageBoxText() {
 		return this.chatPane.getMessageText();
 	}
-	public void addMessage(String messageText) {
-		this.chatPane.appendMessage(messageText, ChatPane.Left);
+	public void addMessage(String messageText, MessageAlignment alignment) {
+		this.chatPane.appendMessage(messageText, alignment);
 	}
 	public void loadMessages(ArrayList<MessageTextBox> messages) {
 		this.chatPane.loadMessages(messages);
