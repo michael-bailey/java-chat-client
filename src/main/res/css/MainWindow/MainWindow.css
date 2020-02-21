@@ -18,18 +18,6 @@ GridPane {
     -fx-background-radius: 12.5;
 }
 
-.messageLeft {
-    -fx-alignment: left;
-}
-
-.messageCenter {
-    -fx-alignment: center;
-}
-
-.messageRight {
-    -fx-alignment: right;
-}
-
 .sendButton {
     -fx-text-fill: #FFFFFF;
     -fx-background-color: #3c4042;

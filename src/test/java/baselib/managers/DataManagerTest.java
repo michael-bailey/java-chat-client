@@ -114,17 +114,39 @@ public class DataManagerTest {
     }
 
 
+
     @Test
     public void testLockingOfFile() {
+        int i = 0;
+        System.out.println(i++);
         new File("helloWorld.dat").delete();
+        System.out.println(i++);
         DataManager a = new DataManager();
+        System.out.println(i++);
         boolean d = a.createNew("helloWorld", "Password1234");
+        System.out.println(i++);
         assertTrue(d);
+        System.out.println(i++);
         a.addObject("testObject", "hello world");
+        System.out.println(i++);
         boolean b = a.lock();
+        System.out.println(i++);
         assertTrue(b);
+        System.out.println(i++);
         a.unlock("helloWorld", "Password1234");
+        System.out.println(i++);
         String c = (String) a.getObject("testObject");
+        System.out.println(i++);
+        assertTrue(c.equals("hello world"));
+        System.out.println(i++);
+        b = a.lock();
+        System.out.println(i++);
+        assertTrue(b);
+        System.out.println(i++);
+        a.unlock("helloWorld", "Password1234");
+        System.out.println(i++);
+        c = (String) a.getObject("testObject");
+        System.out.println(i++);
         assertTrue(c.equals("hello world"));
     }
 

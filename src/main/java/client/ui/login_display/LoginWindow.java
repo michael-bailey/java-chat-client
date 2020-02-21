@@ -2,6 +2,7 @@
 package client.ui.login_display;
 
 import client.interfaces.IWindow;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -40,7 +41,12 @@ public class LoginWindow implements IWindow {
 	// event handlers
 	private EventHandler onRequestLogin;
 	private EventHandler onRequestCreate;
+	private EventHandler onRequestClose;
 
+	private EventHandler loginActionHandler = event -> { if (this.onRequestLogin != null) { onRequestLogin.handle(event); } };
+	private EventHandler createActionHandler = event -> { if (this.onRequestLogin != null) { onRequestCreate.handle(event); } };
+	private EventHandler switchCreateHandler = event -> {this.CreateDisplay();};
+	private EventHandler switchLoginHandler = event -> { this.loginDisplay(); };
 
 	public LoginWindow() {
 		System.out.println(this);
@@ -48,11 +54,6 @@ public class LoginWindow implements IWindow {
 		// creating a new stage
 		this.stage = new Stage();
 		this.stage.setResizable(false);
-
-		this.stage.setOnCloseRequest((event) -> {
-
-		});
-
 		this.titleText.setFont(Font.font("Consolas",FontWeight.NORMAL,20));
 
 		// creating the scene
@@ -122,25 +123,11 @@ public class LoginWindow implements IWindow {
 		this.switchPageButton.setText("Create Account?");
 
 		// handling events in the window
-		this.switchPageButton.setOnAction(event -> {
-			this.CreateDisplay();
-		});
+		this.switchPageButton.setOnAction(switchCreateHandler);
 
-		this.enterButton.setOnAction(event -> {
-			if (this.onRequestLogin != null) {
-				event.consume();
-				onRequestLogin.handle(event);
-			}
-		});
+		this.enterButton.setOnAction(loginActionHandler);
 
-		passwordBox.setOnAction(event -> {
-			System.out.println("1");
-			if (this.onRequestLogin != null) {
-				event.consume();
-				System.out.println("3");
-				onRequestLogin.handle(event);
-			}
-		});
+		passwordBox.setOnAction(loginActionHandler);
 	}
 
 	private void CreateDisplay() {
@@ -152,34 +139,25 @@ public class LoginWindow implements IWindow {
 		this.switchPageButton.setText("Login?");
 
 		// handling events in the window
-		this.switchPageButton.setOnAction(event -> {
-			this.loginDisplay();
-		});
+		this.switchPageButton.setOnAction(switchLoginHandler);
 
-		this.enterButton.setOnAction(event -> {
-			if (this.onRequestLogin != null) {
-				event.consume();
-				onRequestCreate.handle(event);
-			}
-		});
+		this.enterButton.setOnAction(createActionHandler);
 
-		passwordBox.setOnAction(event -> {
-			if (this.onRequestCreate != null) {
-				event.consume();
-				onRequestCreate.handle(event);
-			}
-		});
+		passwordBox.setOnAction(createActionHandler);
 	}
 
 	@Override
 	public void show() {
 		this.loginDisplay();
+
 		this.stage.show();
 	}
 
 	@Override
 	public void hide() {
 		this.stage.hide();
+		this.usernameBox.clear();
+		this.passwordBox.clear();
 	}
 
 	public void setOnRequestLogin(EventHandler onRequestLogin) {
@@ -196,5 +174,13 @@ public class LoginWindow implements IWindow {
 
 	public String getPassword() {
 		return this.passwordBox.getText();
+	}
+
+	public EventHandler getOnRequestClose() {
+		return onRequestClose;
+	}
+
+	public void setOnRequestClose(EventHandler onRequestClose) {
+		this.onRequestClose = onRequestClose;
 	}
 }

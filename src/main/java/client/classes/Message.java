@@ -1,5 +1,6 @@
 package client.classes;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -11,7 +12,7 @@ import java.time.LocalTime;
  * @version 1.0
  * @since 1.0
  */
-public class Message extends Object {
+public class Message extends Object implements Serializable {
 
     // defining the date and time that the message was recieved
     LocalDate recievedDate;
@@ -21,11 +22,15 @@ public class Message extends Object {
     String message;
     String checkSum;
 
+
+    /**
+     *
+     * @param Message
+     */
     public Message(String Message) {
         recievedDate = LocalDate.now();
         recievedTime = LocalTime.now();
     }
-
 
     public String getCheckSum() {
         return checkSum;

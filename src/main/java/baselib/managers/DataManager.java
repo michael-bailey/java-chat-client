@@ -15,21 +15,21 @@ import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 /**
- * <h1>Data Manager</h1>
- * <p>
+ * Data Manager
+ *
  *  this class privides a way to store objects using key value pairs 
  *  so that they can be stored securely in a file for later use.
- * </p>
+ *
  * @version 1.0
  * @since 1.0
  * @author michael-bailey
  */
-public class DataManager {
+public class DataManager implements Closeable {
 
     private HashMap<String, Object> dataObject;
 
-    byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    IvParameterSpec ivspec = new IvParameterSpec(iv);
+    final byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    final IvParameterSpec ivspec = new IvParameterSpec(iv);
 
     /**
      * used to tell if data int he file is loaded.
@@ -56,13 +56,14 @@ public class DataManager {
      * this holds the thread used to autosave the data.
      */
     @Beta
-    private Thread autoSaverDaemon;
+    private final Thread autoSaverDaemon;
 
     /**
      * nulls all internal state on creation
      * @since 1.0
      */
     public DataManager() {
+        System.out.println(this);
 
         this.isLocked = true;
         this.secretKey = null;
@@ -102,11 +103,11 @@ public class DataManager {
 
                     // decode from base64.
                     byte[] dataArray = decoder.decode(dataStore.dataString);
-                    byte[] saltArray = decoder.decode(dataStore.salt);
+                    byte[] salt = decoder.decode(dataStore.salt);
                     byte[] checkSumArray = decoder.decode(dataStore.checkSum);
                     
                     // creating key.
-                    keySpec = new PBEKeySpec(password.toCharArray(), saltArray, 256, 256);
+                    keySpec = new PBEKeySpec(password.toCharArray(), salt, 256, 256);
                     this.secretKey = secretKeyFactory.generateSecret(keySpec);
                     this.secretKey = new SecretKeySpec(this.secretKey.getEncoded(), "AES"); // this is the key
 
@@ -121,10 +122,9 @@ public class DataManager {
 
                     // compare checksum
                     if (new String(checkSumOfData).equals(new String(checkSumArray))) {
-                        this.dataObject = (HashMap<String, Object>) new ObjectInputStream(
-                                new ByteArrayInputStream(decryptedDataArray)).readObject();
+                        this.dataObject = (HashMap<String, Object>) new ObjectInputStream(new ByteArrayInputStream(decryptedDataArray)).readObject();
+                        this.saltString = dataStore.salt;
                         this.isLocked = false;
-                        this.saltString = saltString;
                         return true;
                     } else {
                         System.out.println("checksum failed");
@@ -217,10 +217,9 @@ public class DataManager {
 
                 // encrypt the data
                 byte[] encryptedByteArray = cipher.doFinal(byteArrayOutputStream.toByteArray());
-                String encryptedDataString = encoder.encodeToString(encryptedByteArray);
 
                 // add then to the dataStore
-                dataStore.dataString = encryptedDataString;
+                dataStore.dataString = encoder.encodeToString(encryptedByteArray);
                 dataStore.checkSum = checkSumString;
                 dataStore.salt = this.saltString;
 
@@ -230,6 +229,9 @@ public class DataManager {
 
                 // set unlocked
                 this.isLocked = !this.isLocked;
+                this.dataObject = null;
+                this.saltString = null;
+                this.secretKey = null;
                 return true;
             } catch (NoSuchAlgorithmException e) {
                 System.out.println("class not found occurred");
@@ -292,110 +294,108 @@ public class DataManager {
 		    this.fileHandle = new File("./" + name + ".dat");
 
 		    if (!this.fileHandle.exists()) {
-			try {
-			    // creating objects
-			    this.dataObject = new HashMap<>();
-			    DataStore dataStore = new DataStore();
-			    byte[] salt = new byte[16];
+                try {
+                    // creating objects
+                    this.dataObject = new HashMap<>();
+                    DataStore dataStore = new DataStore();
+                    byte[] salt = new byte[16];
 
-			    // creating instances.
-			    SecureRandom sr = SecureRandom.getInstanceStrong();
-			    MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-			    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-			    SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-			    Base64.Encoder encoder = Base64.getEncoder();
+                    // creating instances.
+                    SecureRandom sr = SecureRandom.getInstanceStrong();
+                    MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+                    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+                    SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+                    Base64.Encoder encoder = Base64.getEncoder();
 
-			    // reserving names.
-			    KeySpec keySpec;
+                    // reserving names.
+                    KeySpec keySpec;
 
-			    // creating the salt
-			    sr.nextBytes(salt);
-			    String saltString = encoder.encodeToString(salt);
+                    // creating the salt
+                    sr.nextBytes(salt);
+                    this.saltString = encoder.encodeToString(salt);
 
-			    // assigning vars
-			    keySpec = new PBEKeySpec(password.toCharArray(), salt, 256, 256);
-			    this.secretKey = secretKeyFactory.generateSecret(keySpec);
-			    this.secretKey = new SecretKeySpec(this.secretKey.getEncoded(), "AES"); // this is the key
+                    // assigning vars
+                    keySpec = new PBEKeySpec(password.toCharArray(), salt, 256, 256);
+                    this.secretKey = secretKeyFactory.generateSecret(keySpec);
+                    this.secretKey = new SecretKeySpec(this.secretKey.getEncoded(), "AES"); // this is the key
 
-			    // initalise the cipher.
-			    cipher.init(Cipher.ENCRYPT_MODE, this.secretKey, ivspec);
+                    // initalise the cipher.
+                    cipher.init(Cipher.ENCRYPT_MODE, this.secretKey, ivspec);
 
-			    // write the object to a byte array
-			    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			    new ObjectOutputStream(byteArrayOutputStream).writeObject(this.dataObject);
+                    // write the object to a byte array
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    new ObjectOutputStream(byteArrayOutputStream).writeObject(this.dataObject);
 
-			    // generate the checksum
-			    byte[] checksum = messageDigest.digest(byteArrayOutputStream.toByteArray());
-			    String checkSumString = encoder.encodeToString(checksum);
+                    // generate the checksum
+                    byte[] checksum = messageDigest.digest(byteArrayOutputStream.toByteArray());
+                    String checkSumString = encoder.encodeToString(checksum);
 
-			    // encrypt the data
-			    byte[] encryptedByteArray = cipher.doFinal(byteArrayOutputStream.toByteArray());
-			    String encryptedDataString = encoder.encodeToString(encryptedByteArray);
+                    // encrypt the data
+                    byte[] encryptedByteArray = cipher.doFinal(byteArrayOutputStream.toByteArray());
 
-			    // add then to the dataStore
-			    dataStore.dataString = encryptedDataString;
-			    dataStore.checkSum = checkSumString;
-			    dataStore.salt = saltString;
+                    // add then to the dataStore
+                    dataStore.dataString = encoder.encodeToString(encryptedByteArray);
+                    dataStore.checkSum = checkSumString;
+                    dataStore.salt = encoder.encodeToString(salt);
 
-			    FileOutputStream tmpOut = new FileOutputStream(this.fileHandle);
-			    new ObjectOutputStream(tmpOut).writeObject(dataStore);
-			    tmpOut.close();
+                    FileOutputStream tmpOut = new FileOutputStream(this.fileHandle);
+                    new ObjectOutputStream(tmpOut).writeObject(dataStore);
+                    tmpOut.close();
 
-			    // set unlocked
-			    this.isLocked = !this.isLocked;
-			    return true;
+                    // set unlocked
+                    this.isLocked = !this.isLocked;
+                    return true;
 
-			} catch (NoSuchAlgorithmException e) {
-			    System.out.println("class not found occurred");
-			    System.out.println("=== Stack Trace ===");
-			    e.printStackTrace();
-			    return false;
-			} catch (InvalidKeyException e) {
-			    System.out.println("class not found occurred");
-			    System.out.println("=== Stack Trace ===");
-			    e.printStackTrace();
-			    return false;
-			} catch (NoSuchPaddingException e) {
-			    System.out.println("class not found occurred");
-			    System.out.println("=== Stack Trace ===");
-			    e.printStackTrace();
-			    return false;
-			} catch (IOException e) {
-			    System.out.println("class not found occurred");
-			    System.out.println("=== Stack Trace ===");
-			    e.printStackTrace();
-			    return false;
-			} catch (IllegalBlockSizeException e) {
-			    System.out.println("class not found occurred");
-			    System.out.println("=== Stack Trace ===");
-			    e.printStackTrace();
-			    return false;
-			} catch (BadPaddingException e) {
-			    System.out.println("class not found occurred");
-			    System.out.println("=== Stack Trace ===");
-			    e.printStackTrace();
-			    return false;
-			} catch (InvalidKeySpecException e) {
-			    System.out.println("class not found occurred");
-			    System.out.println("=== Stack Trace ===");
-			    e.printStackTrace();
-			    return false;
-			} catch (InvalidAlgorithmParameterException e) {
-			    System.out.println("class not found occurred");
-			    System.out.println("=== Stack Trace ===");
-			    e.printStackTrace();
-			    return false;
-			}
+                } catch (NoSuchAlgorithmException e) {
+                    System.out.println("class not found occurred");
+                    System.out.println("=== Stack Trace ===");
+                    e.printStackTrace();
+                    return false;
+                } catch (InvalidKeyException e) {
+                    System.out.println("class not found occurred");
+                    System.out.println("=== Stack Trace ===");
+                    e.printStackTrace();
+                    return false;
+                } catch (NoSuchPaddingException e) {
+                    System.out.println("class not found occurred");
+                    System.out.println("=== Stack Trace ===");
+                    e.printStackTrace();
+                    return false;
+                } catch (IOException e) {
+                    System.out.println("class not found occurred");
+                    System.out.println("=== Stack Trace ===");
+                    e.printStackTrace();
+                    return false;
+                } catch (IllegalBlockSizeException e) {
+                    System.out.println("class not found occurred");
+                    System.out.println("=== Stack Trace ===");
+                    e.printStackTrace();
+                    return false;
+                } catch (BadPaddingException e) {
+                    System.out.println("class not found occurred");
+                    System.out.println("=== Stack Trace ===");
+                    e.printStackTrace();
+                    return false;
+                } catch (InvalidKeySpecException e) {
+                    System.out.println("class not found occurred");
+                    System.out.println("=== Stack Trace ===");
+                    e.printStackTrace();
+                    return false;
+                } catch (InvalidAlgorithmParameterException e) {
+                    System.out.println("class not found occurred");
+                    System.out.println("=== Stack Trace ===");
+                    e.printStackTrace();
+                    return false;
+                }
 
 		    } else {
-			return false;
+			    return false;
 		    }
 		}
-		return false;
-	}else{
+    } else {
 		System.out.println("Invalid Details entered!");
-		return false;
-	}
+    }
+        return false;
     }
 
     /**
@@ -426,10 +426,9 @@ public class DataManager {
 
                 // encrypt the data
                 byte[] encryptedByteArray = cipher.doFinal(byteArrayOutputStream.toByteArray());
-                String encryptedDataString = encoder.encodeToString(encryptedByteArray);
 
                 // add then to the dataStore
-                dataStore.dataString = encryptedDataString;
+                dataStore.dataString = encoder.encodeToString(encryptedByteArray);
                 dataStore.checkSum = checkSumString;
                 dataStore.salt = this.saltString;
 
@@ -503,6 +502,11 @@ public class DataManager {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.lock();
     }
 }
 // these websites where used to kelp with the key generation
