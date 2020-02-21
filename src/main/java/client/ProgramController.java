@@ -1,10 +1,7 @@
 package client;
 
 import client.classes.Account;
-import client.interfaces.controllers.ILoginWindowController;
-import client.interfaces.controllers.IMainWindowController;
-import client.interfaces.controllers.IPreferenceWindowController;
-import javafx.fxml.FXMLLoader;
+import client.interfaces.IWindow;
 import javafx.stage.Stage;
 import javafx.application.Application;
 
@@ -20,11 +17,10 @@ import java.util.HashMap;
  * @version 1.0
  * @since 1.0
  */
-public class ProgramController extends Application implements ILoginWindowController, IMainWindowController, IPreferenceWindowController {
+public class ProgramController extends Application {
 
 
     // this section defines the windows that are in use
-    PreferenceWindow preferenceWindow;
     MainWindow mainWindow;
     LoginWindow loginWindow;
 
@@ -40,31 +36,44 @@ public class ProgramController extends Application implements ILoginWindowContro
     }
 
     public void start(Stage stage) throws Exception {
+        this.loginWindow = new LoginWindow();
 
-        // create windows in memory
-        this.mainWindow = new MainWindow(this);
-        this.loginWindow = new LoginWindow(this);
-        this.preferenceWindow = new PreferenceWindow(new HashMap<>());
+        this.loginWindow.setOnRequestLogin(event -> {
+            this.LoginRequest(this.loginWindow.getUsername(), this.loginWindow.getPassword());
+        });
+
+        this.loginWindow.setOnRequestCreate(event -> {
+            this.LoginCreateUser(this.loginWindow.getUsername(), this.loginWindow.getPassword());
+        });
 
         this.dataManager = new DataManager();
 
-        // show the Login window
+        // show the login window
         this.loginWindow.show();
-        this.preferenceWindow.show();
     }
 
-    @Override
     public void LoginRequest(String username, String Password) {
         if (this.dataManager.unlock(username, Password)) {
+
             this.loginWindow.hide();
+
+            // setting up windows that require a login to be complete.
+            this.mainWindow = new MainWindow(1);
+
+            // set events for the main window
+            this.mainWindow.setOnRequestSendMessage(event -> {
+                this.mainWindow.addMessage(this.mainWindow.getMessageBoxText());
+            });
+
+
+            mainWindow.show();
             this.account = (Account) this.dataManager.getObject("account");
-            this.preferences = (HashMap<String, Object>) this.dataManager.getObject("preferences");
-            // this.contacts
             this.mainWindow.show();
-        }else{loginWindow.incorrectDetails(this.loginMsg);}
+        } else {
+
+        }
     }
 
-    @Override
     public void LoginCreateUser(String username, String Password) {
         if (this.dataManager.createNew(username, Password)) {
             this.loginWindow.hide();
@@ -74,6 +83,8 @@ public class ProgramController extends Application implements ILoginWindowContro
             this.preferences = new HashMap<>();
             this.dataManager.addObject("preferences", this.preferences);
             this.mainWindow.show();
-        }else{loginWindow.incorrectDetails(this.createAccountMsg);}
+        }else{}
     }
+
+
 }

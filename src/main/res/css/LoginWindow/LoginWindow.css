@@ -1,0 +1,16 @@
+.Root, .Root Label {
+        -fx-background-color: #202124;
+        -fx-text-fill: #FFFFFF;
+}
+
+.TextBox {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3c4042;
+	-fx-background-radius: 12.5;
+}
+
+.Button {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3c4042;
+	-fx-background-radius: 12.5;
+}

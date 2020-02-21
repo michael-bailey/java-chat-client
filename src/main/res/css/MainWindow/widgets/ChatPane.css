@@ -1,9 +1,6 @@
-#sentMsg{
-	-fx-background-color: #0084FF;
-	-fx-background-radius: 8;
-}
-
 .message {
+    -fx.color: #FFFFFF;
     -fx-background-color: #0084FF;
     -fx-background-radius: 8;
+    -fx-label-padding: 4;
 }

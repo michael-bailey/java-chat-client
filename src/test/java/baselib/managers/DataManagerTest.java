@@ -120,7 +120,7 @@ public class DataManagerTest {
         DataManager a = new DataManager();
         boolean d = a.createNew("helloWorld", "Password1234");
         assertTrue(d);
-        a.addObject("testObject", new String("hello world"));
+        a.addObject("testObject", "hello world");
         boolean b = a.lock();
         assertTrue(b);
         a.unlock("helloWorld", "Password1234");

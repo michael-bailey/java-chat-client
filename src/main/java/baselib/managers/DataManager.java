@@ -79,9 +79,6 @@ public class DataManager {
      * @since 1.0
      */
     public boolean unlock(String name, String password) {
-        System.out.println(name);
-        System.out.println(password);
-
 		// check if the object is currently unlocked
         if (this.isLocked) {
             // create new file
@@ -508,6 +505,6 @@ public class DataManager {
         return false;
     }
 }
-// these websites where used to kelp with the keygeneration
+// these websites where used to kelp with the key generation
 // https://stackoverflow.com/questions/3451670/java-aes-and-using-my-own-key
 // https://javapapers.com/java/java-file-encryption-decryption-using-aes-password-based-encryption-pbe/

@@ -27,11 +27,11 @@ public class NetworkManager extends Thread{
 	//private HashMap<> servers;
 	private String currentServerAddress = "localhost", recipentAddress = "";
 	private int currentServerPort = 9806;
-	private Socket serverConnectionSocket, recipentSocket;
-	private PrintWriter serverSocketOutput, recipentSocketOutput;
-	private BufferedReader serverSocketInput, recipentSocketInput;
+	private Socket serverConnectionSocket;
+	private PrintWriter serverSocketOutput;
+	private BufferedReader serverSocketInput;
 	private ServerConnection[] connectionThreads = new ServerConnection[2];
-	private boolean appRunning = true, isConnected = false, stopConnection = false;
+	private boolean appRunning = true, isConnected = false, stopServerConnection = false, stopClientConnection=false, responseSuccessful = false;
 
 	public NetworkManager(/*HashMap<> servers*/){
 		System.out.println("Details Stored");
@@ -45,7 +45,11 @@ public class NetworkManager extends Thread{
 				System.out.println("primary connection created");
 				this.createNewConnection();
 				connectionThreads[0].start();
-				ClientConnection client = new ClientConnection
+				//ClientConnection client = new ClientConnection();
+			}
+			if(responseSuccessful){
+				ClientConnection client = new ClientConnection();
+				client.start();
 			}
 		}
 	}
@@ -77,51 +81,61 @@ public class NetworkManager extends Thread{
 
 		@Override
 		public void run(){
+			boolean tmp = true;
 			//set a boolean to true
 			//create a socket to the server - call connectToServer();
 			//perform handshake - encryption (diffie stuff)
 			//while(isConnected):
 			//	retrieve all clients from server
 			//	wait 10 secs before checking again
-			while(!stopConnection){
+			while(!stopServerConnection){
 				if(!isConnected){
 					try{
 						this.connectToServer();
 					}catch(Exception e){}
 				}
-				/*if(messageQueue.size()>0){
-					String message = messageQueue.remove(0);
-					//if(message.type==0){
-					this.sendServerMessage(message);
-					//}else if(message.type==1){
-					//	this.sendClientMessage(message);
-					//}else{System.out.println("Message is not in correct format");}
-					try{
-					System.out.println(serverSocketInput.readLine());
-					}catch(Exception e){}
-				}*/
+
 				short sh = 0;
-				if(recipentAddress.isEmpty()){
-					Scanner scan = new Scanner(System.in);
-					System.out.println("enter message > ");
-					sh = scan.nextShort();
-					//messageQueue.add(str);
+				if(recipentAddress.isEmpty()&&tmp){
+					Scanner test = new Scanner(System.in);
+					System.out.println("Do you want to talk to server(y/n)? ");
+					String ans = test.nextLine();
+					if(ans.equals("y")){
+						Scanner scan = new Scanner(System.in);
+						System.out.println("enter message > ");
+						sh = scan.nextShort();
+						//messageQueue.add(str);
+					}else{
+						tmp = false;
+					}
 				}
 
 				if(sh==1){
-					this.sendServerMessage(sh);
-					recipentAddress = serverSocketInput.readLine()
 					try{
-						this.createRecipentSocket();
-					}catch(Exception e){
-						e.printTraceStack();
+						this.sendServerMessage(sh);
+						recipentAddress = serverSocketInput.readLine();
+						//this.createRecipentSocket();
+						this.sendServerMessage(2);
+						short response = serverSocketInput.readShort();
+						if(response == 10){
+							responseSuccessful = true;
+						}else{
+							System.out.println("Failed to request chat")
+						}
+					}catch(Exception e){}
+				}
+				if(tmp==false){
+					short response = serverSocketInput.readShort();
+					if(response == 2){
+						this.sendServerMessage(10);
+						responseSuccessful = true;
 					}
 				}
 			}
 		}
 
 		public void doStop(){
-			stopConnection = true;
+			stopServerConnection = true;
 		}
 
 		public void connectToServer() throws Exception{
@@ -130,17 +144,6 @@ public class NetworkManager extends Thread{
 			serverSocketOutput = new PrintWriter(serverConnectionSocket.getOutputStream(), true);//true allows for immidete automatic flush of data eg gets sent.
 			serverSocketInput = new BufferedReader(new InputStreamReader(serverConnectionSocket.getInputStream()));
 			isConnected = true;
-		}
-
-		public void createRecipentSocket() throws Exception{
-			if(!recipentAddress.isEmpty()){
-				System.out.println("recipent address recieved");
-				recipentSocket = new Socket(recipentAddress, currentServerPort);
-				recipentSocketOutput = new PrintWriter(recipentSocket.getOutputStream(), true);//true allows for immidete automatic flush of data eg gets sent.
-				recipentSocketInput = new BufferedReader(new InputStreamReader(recipentSocket.getInputStream()));
-			}else{
-				System.out.println("There is currently no recipent address stored!");
-			}
 		}
 
 		public void sendServerMessage(short message){
@@ -159,7 +162,10 @@ public class NetworkManager extends Thread{
 	private class ClientConnection extends Thread {
 		private boolean isConnected = false;
 		private ServerSocket ss;
-		private Socket socket;
+		private Socket recipentSocket;
+		private PrintWriter recipentSocketOutput;
+		private BufferedReader recipentSocketInput;
+		private Scanner scan = new Scanner(System.in);
 
 		public ClientConnection(){
 			System.out.println("Client Thread Started");
@@ -167,38 +173,50 @@ public class NetworkManager extends Thread{
 		
 		@Override
 		public void run(){
-			this.ss = new ServerSocket(currentServerPort);
-			System.out.println("Listening to client peer...");
-			while(!stopClientConnection){
+			do{
 				if(!this.isConnected){
-					this.socket = this.ss.accept();
-					System.out.println("Connection Established");
-					this.isConnected = true;
+					if(recipentAddress.isEmpty()){
+						this.listenForConnection();
+					}else{
+						this.connectToRecipent();
+					}
 				}
-			}
+				//ask for user input message
+				System.out.print("Enter message to other client:\n>");
+				String message = scan.nextLine();
+				this.sendMessage(message);
+			}while(this.isConnected);
 		}
 
 		public void doStop(){
 			stopClientConnection = true;
 		}
-	}
 
-	/*private class InboundMessages extends Thread {
-		public InboundMessages(){System.out.println("Inbound created...");}
-		
-		@Override
-		public void run(){
-			while(!stopThread){
-				try{
-					System.out.println("waiting for message...");
-					//System.out.println(serverSocketInput.readLine());
-				}catch(Exception e){
-					System.out.println("error in inbound messages thread\n");
-					e.printStackTrace();
-				}
-			}
+		public void listenForConnection(){
+			try{
+				this.ss = new ServerSocket(currentServerPort);
+				System.out.println("Listening to client peer...");
+				this.recipentSocket = this.ss.accept();
+				System.out.println("Connection Established");
+				this.setConnectionState(true);
+			}catch(Exception e){}
 		}
-	}*/
+		
+		public void connectToRecipent() throws Exception{
+			System.out.println("creating recipent socket...");
+			this.recipentSocket = new Socket(recipentAddress, currentServerPort);
+			this.recipentSocketOutput = new PrintWriter(this.recipentSocket.getOutputStream(), true);//true allows for immidete automatic flush of data eg gets sent.
+			this.recipentSocketInput = new BufferedReader(new InputStreamReader(this.recipentSocket.getInputStream()));
+			this.setConnectionState(true);
+		}
+
+		private void sendMessage(String message){
+			recipentSocketOutput.println(message);
+		}
+
+		private void setConnectionState(boolean state){this.isConnected = state;}
+		public boolean endConnection(){return false;}
+	}
 }
 // TODO SERVER CONNECTION THREAD - switch from one server to another
 /* checks to see if thread is running (network manager thread)
