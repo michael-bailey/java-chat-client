@@ -2,8 +2,10 @@ package client;
 
 import baselib.managers.DataManager;
 import client.classes.Account;
+import client.enums.MessageAlignment;
 import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
+import client.ui.main_window.chat_pane.ChatPane;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
@@ -40,8 +42,13 @@ public class ProgramController extends Application {
     private EventHandler onRequestLogin = event -> { this.LoginRequest(this.loginWindow.getUsername(), this.loginWindow.getPassword()); };
     private EventHandler onRequestCreate = event -> { this.LoginCreateUser(this.loginWindow.getUsername(), this.loginWindow.getPassword()); };
     private EventHandler onRequestClose = event -> { this.RequestLogout(); };
-    private EventHandler onRequestSendMessage = event -> { String a = this.mainWindow.getMessageBoxText(); this.testMessages.add(a); this.mainWindow.addMessage(a); };
+    private EventHandler onRequestSendMessage = event -> { String a = this.mainWindow.getMessageBoxText(); this.testMessages.add(a); this.mainWindow.addMessage(a, MessageAlignment.sent); };
 
+    /**
+     * this is called by main
+     * @param args arguments passed from the command line
+     * @throws Exception any exception
+     */
     public static void main(String[] args) throws Exception {
         launch(args);
     }
@@ -68,12 +75,20 @@ public class ProgramController extends Application {
         this.loginWindow.show();
     }
 
+    /**
+     * this saves data and closes the program down
+     */
     private void RequestLogout() {
         this.dataManager.lock();
         this.mainWindow.hide();
         this.loginWindow.show();
     }
 
+    /**
+     * unlocks the users data and opens up the rest of the windows
+     * @param username the users username
+     * @param Password the users password
+     */
     public void LoginRequest(String username, String Password) {
         if (this.dataManager.unlock(username, Password)) {
             this.loginWindow.hide();
@@ -83,7 +98,7 @@ public class ProgramController extends Application {
             Iterator a = this.testMessages.iterator();
             while (a.hasNext()) {
                 String tmp = (String) a.next();
-                this.mainWindow.addMessage(tmp);
+                this.mainWindow.addMessage(tmp, MessageAlignment.recieved);
             }
 
             this.account = (Account) this.dataManager.getObject("account");

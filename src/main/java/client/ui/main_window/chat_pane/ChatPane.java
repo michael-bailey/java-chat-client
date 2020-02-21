@@ -1,21 +1,21 @@
 package client.ui.main_window.chat_pane;
 
+import client.enums.MessageAlignment;
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class ChatPane extends AnchorPane {
-
-    // static constants
-    public static String Left = ".left";
-    public static String Center = ".center";
-    public static String Right = ".center";
 
     // size constants
     private int buttonWidth = 50;
@@ -27,8 +27,12 @@ public class ChatPane extends AnchorPane {
     private TextField messageBox;
     private ListView<MessageTextBox> messageView;
 
+    private int i = 0;
+
     // event handlers
     private EventHandler onSendMessage;
+
+    private EventHandler scrollEvent = event -> {System.out.println("scrolling!!!" + i++);};
 
     /**
      * Constructor
@@ -45,8 +49,9 @@ public class ChatPane extends AnchorPane {
         // creating the message view.
         messageView = new ListView<>();
         messageView.setMinHeight(Region.USE_COMPUTED_SIZE);
-        messageView.setRotate(180);
+        messageView.setRotate(0);
         messageView.getStyleClass().add("messageView");
+        messageView.setOnScroll(this.scrollEvent);
 
         // creating objects for the tool row
         sendButton = new Button("send");
@@ -71,6 +76,17 @@ public class ChatPane extends AnchorPane {
         messageBox.setMaxWidth(Double.MAX_VALUE);
         messageBox.setMinWidth(200);
         messageBox.getStyleClass().add("messageBox");
+        ScrollBar scrollBar;
+        for ( Node a : messageView.lookupAll(".scroll-Bar")) {
+            if(a instanceof ScrollBar) {
+                scrollBar = (ScrollBar) a;
+                scrollBar.visibleProperty().addListener((observable, oldValue, newValue) -> {
+                    System.out.println(observable);
+                    System.out.println(oldValue);
+                    System.out.println(newValue);
+                });
+            }
+        }
 
         // adding to the anchor pane
         this.getChildren().add(messageView);
@@ -130,15 +146,7 @@ public class ChatPane extends AnchorPane {
         preset1.getStyleClass().add("contextMenuItem");
         preset1.setOnAction(event -> {
             ArrayList<MessageTextBox> tmpList = new ArrayList();
-            tmpList.add(new MessageTextBox("hi there"));
-            tmpList.add(new MessageTextBox("hi "));
-            tmpList.add(new MessageTextBox("hi there"));
-            tmpList.add(new MessageTextBox(" there"));
-            tmpList.add(new MessageTextBox("hi there"));
-            tmpList.add(new MessageTextBox("hi ghfgh"));
-            tmpList.add(new MessageTextBox("hi there"));
-            tmpList.add(new MessageTextBox("hi ghfghf"));
-            tmpList.add(new MessageTextBox("hi there"));
+            tmpList.add(new MessageTextBox("hi there", MessageAlignment.recieved));
             this.loadMessages(tmpList);
         });
 
@@ -151,12 +159,11 @@ public class ChatPane extends AnchorPane {
      * @param text a string showing what test should be put into the list
      * @param alignment where the text should be positioned
      */
-    public void appendMessage(String text, String alignment) {
+    public void appendMessage(String text, MessageAlignment alignment) {
         ObservableList tmplist = messageView.getItems();
         Collections.reverse(tmplist);
-        MessageTextBox tmpMessage = new MessageTextBox(text);
-        tmpMessage.getStyleClass().add(alignment);
-        tmplist.add(tmpMessage);
+        MessageTextBox tmpMessage = new MessageTextBox(text, alignment);
+        tmplist.add(0, tmpMessage);
         Collections.reverse(tmplist);
     }
 

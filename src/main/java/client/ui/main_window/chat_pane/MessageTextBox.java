@@ -1,35 +1,53 @@
 //Created by Mitchell Hardie
 package client.ui.main_window.chat_pane;
 
+import client.enums.MessageAlignment;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-public class MessageTextBox extends Label {
+public class MessageTextBox extends HBox {
 
-	private Text msg;
-	private VBox msgVBox = new VBox();
+	private Label msg;
 
-	public MessageTextBox(String message) {
-		super(message);
+	public MessageTextBox(String message, MessageAlignment type) {
+		super();
 
-		this.getStyleClass().add(".message");
-		this.setFont(Font.font("Consolas",FontWeight.NORMAL,16));
-		this.getStyleClass().add("message");
-		this.setRotate(180);
+		switch(type) {
+			case sent:
+				this.setAlignment(Pos.CENTER_RIGHT);
+				break;
 
-		this.minHeight(Region.USE_PREF_SIZE);
-		this.prefHeight(25.0);
-		this.maxHeight(Region.USE_PREF_SIZE);
+			case recieved:
+				this.setAlignment(Pos.CENTER_LEFT);
+				break;
 
-		this.setContextMenu(this.generateContextMenu());
+			default:
+				this.setAlignment(Pos.CENTER);
+				break;
+		}
+
+
+		this.msg = new Label(message);
+		this.msg.setFont(Font.font("Consolas",FontWeight.NORMAL,16));
+
+		this.msg.getStyleClass().add("message");
+		this.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+		this.setPrefSize(Region.USE_COMPUTED_SIZE, 25.0);
+		this.setMaxSize(Double.MAX_VALUE, Region.USE_PREF_SIZE);
+
+		this.msg.setContextMenu(this.generateContextMenu());
+
+		this.getChildren().add(this.msg);
 	}
 
 	private ContextMenu generateContextMenu() {
@@ -41,10 +59,5 @@ public class MessageTextBox extends Label {
 		MenuItem delete = new MenuItem("delete message");
 
 		return tmpContextMenu;
-	}
-
-
-	public VBox getMsg() {
-		return msgVBox;
 	}
 }

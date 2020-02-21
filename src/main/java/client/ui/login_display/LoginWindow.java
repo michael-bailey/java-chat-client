@@ -2,6 +2,7 @@
 package client.ui.login_display;
 
 import client.interfaces.IWindow;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -41,6 +42,11 @@ public class LoginWindow implements IWindow {
 	private EventHandler onRequestLogin;
 	private EventHandler onRequestCreate;
 	private EventHandler onRequestClose;
+
+	private EventHandler loginActionHandler = event -> { if (this.onRequestLogin != null) { onRequestLogin.handle(event); } };
+	private EventHandler createActionHandler = event -> { if (this.onRequestLogin != null) { onRequestCreate.handle(event); } };
+	private EventHandler switchCreateHandler = event -> {this.CreateDisplay();};
+	private EventHandler switchLoginHandler = event -> { this.loginDisplay(); };
 
 	public LoginWindow() {
 		System.out.println(this);
@@ -117,23 +123,11 @@ public class LoginWindow implements IWindow {
 		this.switchPageButton.setText("Create Account?");
 
 		// handling events in the window
-		this.switchPageButton.setOnAction(event -> {
-			this.CreateDisplay();
-		});
+		this.switchPageButton.setOnAction(switchCreateHandler);
 
-		this.enterButton.setOnAction(event -> {
-			if (this.onRequestLogin != null) {
-				event.consume();
-				onRequestLogin.handle(event);
-			}
-		});
+		this.enterButton.setOnAction(loginActionHandler);
 
-		passwordBox.setOnAction(event -> {
-			if (this.onRequestLogin != null) {
-				event.consume();
-				onRequestLogin.handle(event);
-			}
-		});
+		passwordBox.setOnAction(loginActionHandler);
 	}
 
 	private void CreateDisplay() {
@@ -145,22 +139,11 @@ public class LoginWindow implements IWindow {
 		this.switchPageButton.setText("Login?");
 
 		// handling events in the window
-		this.switchPageButton.setOnAction(event -> {
-			this.loginDisplay();
-		});
+		this.switchPageButton.setOnAction(switchLoginHandler);
 
-		this.enterButton.setOnAction(event -> {
-			if (this.onRequestLogin != null) {
-				event.consume();
-				onRequestCreate.handle(event);
-			}
-		});
+		this.enterButton.setOnAction(createActionHandler);
 
-		passwordBox.setOnAction(event -> {
-			if (this.onRequestLogin != null) {
-				onRequestCreate.handle(event);
-			}
-		});
+		passwordBox.setOnAction(createActionHandler);
 	}
 
 	@Override
