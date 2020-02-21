@@ -40,4 +40,9 @@ public class Message {
 	public double getMsgHeight() {
 		return msgVBox.getMaxHeight();
 	}
+
+	public void messageSent(){
+		msgVBox.setId("messageSent");
+		msgVBox.getStylesheets().add("css/cssMsg.css");
+	}
 }

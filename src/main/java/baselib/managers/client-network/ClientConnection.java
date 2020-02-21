@@ -1,4 +1,4 @@
-import java.net.Socket;
+/*import java.net.Socket;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -30,7 +30,6 @@ public class ClientConnection{
 
 	/*
 	 * Create recipent socket needs to be in a seperate class - a class for p2p
-	 */
 
 	public void createRecipentSocket() throws Exception{
 		if(!recipentAddress.isEmpty()){
@@ -60,5 +59,6 @@ public class ClientConnection{
 
 	/*public void requestRecipentAddress(){
 
-	}*/
+	}
 }
+*/

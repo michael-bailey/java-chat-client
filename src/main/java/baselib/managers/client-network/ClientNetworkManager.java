@@ -1,4 +1,4 @@
-public class ClientNetworkManager{
+/*public class ClientNetworkManager{
 	public static void main(String[] args){
 		ClientConnection client = new ClientConnection("0","localhost",9806,"0");
 		try{
@@ -7,4 +7,4 @@ public class ClientNetworkManager{
 		
 		client.sendMessage("This is a test to see if data gets sent");
 	}
-}
+}*/

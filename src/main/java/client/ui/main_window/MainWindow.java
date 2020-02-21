@@ -118,6 +118,8 @@ public class MainWindow implements IWindow {
 		mainGrid.getRowConstraints().add(row0);
 		mainGrid.getRowConstraints().add(row1);
 
+		friendFrame.getChildren().add(this.FriendGrid());
+
 		mainGrid.add(this.menuBar,0,0,GridPane.REMAINING, 1);
 		mainGrid.add(serverFrame(),0,1);
 		mainGrid.add(friendFrame,1,1);
@@ -232,7 +234,7 @@ public class MainWindow implements IWindow {
 		mainGrid.getColumnConstraints().add(column0);
 		mainGrid.getColumnConstraints().add(column1);
 		mainGrid.getColumnConstraints().add(column2);
-
+	
 		// height constraints
 		RowConstraints row0 = new RowConstraints();
 		row0.vgrowProperty().set(Priority.ALWAYS);
@@ -256,6 +258,11 @@ public class MainWindow implements IWindow {
 	public VBox serverFrame() {
 		VBox tmpBox = new VBox();
 		tmpBox.getStyleClass().add(".VBox");
+		
+		Button tmpButton = new Button("Add Server");
+		//tmpButton.setOnAction();
+		tmpBox.getChildren().add(tmpButton);
+		
 		return tmpBox;
 	}
 
