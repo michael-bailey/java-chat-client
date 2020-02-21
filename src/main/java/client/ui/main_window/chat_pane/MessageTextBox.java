@@ -1,6 +1,7 @@
 //Created by Mitchell Hardie
 package client.ui.main_window.chat_pane;
 
+import client.classes.Message;
 import client.enums.MessageAlignment;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,25 +20,16 @@ public class MessageTextBox extends HBox {
 
 	private Label msg;
 
-	public MessageTextBox(String message, MessageAlignment type) {
+	public MessageTextBox(Message message) {
 		super();
 
-		switch(type) {
-			case sent:
-				this.setAlignment(Pos.CENTER_RIGHT);
-				break;
-
-			case recieved:
-				this.setAlignment(Pos.CENTER_LEFT);
-				break;
-
-			default:
-				this.setAlignment(Pos.CENTER);
-				break;
+		if (message.isReceived()) {
+			this.setAlignment(Pos.CENTER_RIGHT);
+		} else {
+			this.setAlignment(Pos.CENTER_LEFT);
 		}
 
-
-		this.msg = new Label(message);
+		this.msg = new Label(message.getMessage());
 		this.msg.setFont(Font.font("Consolas",FontWeight.NORMAL,16));
 
 		this.msg.getStyleClass().add("message");

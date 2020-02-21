@@ -1,16 +1,14 @@
 package client.ui.main_window.chat_pane;
 
+import client.classes.Message;
 import client.enums.MessageAlignment;
-import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +30,7 @@ public class ChatPane extends AnchorPane {
     // event handlers
     private EventHandler onSendMessage;
 
-    private EventHandler scrollEvent = event -> {System.out.println("scrolling!!!" + i++);};
+    // private EventHandler scrollEvent = event -> {System.out.println("scrolling!!!" + i++);};
 
     /**
      * Constructor
@@ -51,7 +49,7 @@ public class ChatPane extends AnchorPane {
         messageView.setMinHeight(Region.USE_COMPUTED_SIZE);
         messageView.setRotate(0);
         messageView.getStyleClass().add("messageView");
-        messageView.setOnScroll(this.scrollEvent);
+        // messageView.setOnScroll(this.scrollEvent);
 
         // creating objects for the tool row
         sendButton = new Button("send");
@@ -146,7 +144,7 @@ public class ChatPane extends AnchorPane {
         preset1.getStyleClass().add("contextMenuItem");
         preset1.setOnAction(event -> {
             ArrayList<MessageTextBox> tmpList = new ArrayList();
-            tmpList.add(new MessageTextBox("hi there", MessageAlignment.recieved));
+            tmpList.add(new MessageTextBox(new Message("hello world", true)));
             this.loadMessages(tmpList);
         });
 
@@ -162,7 +160,7 @@ public class ChatPane extends AnchorPane {
     public void appendMessage(String text, MessageAlignment alignment) {
         ObservableList tmplist = messageView.getItems();
         Collections.reverse(tmplist);
-        MessageTextBox tmpMessage = new MessageTextBox(text, alignment);
+        MessageTextBox tmpMessage = new MessageTextBox(new Message(text, true));
         tmplist.add(0, tmpMessage);
         Collections.reverse(tmplist);
     }

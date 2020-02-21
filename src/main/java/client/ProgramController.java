@@ -8,11 +8,16 @@ import client.ui.main_window.MainWindow;
 import client.ui.main_window.chat_pane.ChatPane;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * Program Controller.
@@ -38,11 +43,12 @@ public class ProgramController extends Application {
     private String loginMsg = "Incorrect Login Details!", createAccountMsg = "Invalid Details! Please correct!";
     private ArrayList<String> testMessages;
 
-    // definign the functions of the
+    // defining the functions of the
     private EventHandler onRequestLogin = event -> { this.LoginRequest(this.loginWindow.getUsername(), this.loginWindow.getPassword()); };
     private EventHandler onRequestCreate = event -> { this.LoginCreateUser(this.loginWindow.getUsername(), this.loginWindow.getPassword()); };
     private EventHandler onRequestClose = event -> { this.RequestLogout(); };
     private EventHandler onRequestSendMessage = event -> { String a = this.mainWindow.getMessageBoxText(); this.testMessages.add(a); this.mainWindow.addMessage(a, MessageAlignment.sent); };
+    private EventHandler onSpam = event -> { Rectangle2D screenBounds = Screen.getPrimary().getBounds(); for(int i = 0; i < 100; i++) {Stage a = new Stage(); a.setScene(new Scene(new GridPane(), 100, 100)); a.setX(new Random().nextInt((int) screenBounds.getMaxX())); a.setY(new Random().nextInt((int) screenBounds.getMaxY())); a.show();}};
 
     /**
      * this is called by main
@@ -69,7 +75,7 @@ public class ProgramController extends Application {
         this.loginWindow.setOnRequestCreate(onRequestCreate);
         this.mainWindow.setOnRequestClose(onRequestClose);
         this.mainWindow.setOnRequestSendMessage(onRequestSendMessage);
-
+        this.mainWindow.setOnSpam(this.onSpam);
 
         // show the login window
         this.loginWindow.show();
