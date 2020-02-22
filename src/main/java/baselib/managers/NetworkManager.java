@@ -31,5 +31,4 @@ public class NetworkManager extends Object {
             e.printStackTrace();
         }
     }
-
 }

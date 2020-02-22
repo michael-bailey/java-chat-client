@@ -23,7 +23,7 @@ public class MessageTextBox extends HBox {
 	public MessageTextBox(Message message) {
 		super();
 
-		if (message.isReceived()) {
+		if (!message.isReceived()) {
 			this.setAlignment(Pos.CENTER_RIGHT);
 		} else {
 			this.setAlignment(Pos.CENTER_LEFT);

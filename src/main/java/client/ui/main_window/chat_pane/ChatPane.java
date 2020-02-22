@@ -143,9 +143,7 @@ public class ChatPane extends AnchorPane {
         MenuItem preset1 = new MenuItem("load preset 1");
         preset1.getStyleClass().add("contextMenuItem");
         preset1.setOnAction(event -> {
-            ArrayList<MessageTextBox> tmpList = new ArrayList();
-            tmpList.add(new MessageTextBox(new Message("hello world", true)));
-            this.loadMessages(tmpList);
+            this.appendMessage(new Message("context 1", true));
         });
 
         tmpContextMenu.getItems().add(preset1);
@@ -154,13 +152,12 @@ public class ChatPane extends AnchorPane {
 
     /**
      * this appends a message to the top (bottom) of the list by reversing it many times
-     * @param text a string showing what test should be put into the list
-     * @param alignment where the text should be positioned
+     * @param message the message object to be added
      */
-    public void appendMessage(String text, MessageAlignment alignment) {
+    public void appendMessage(Message message) {
         ObservableList tmplist = messageView.getItems();
         Collections.reverse(tmplist);
-        MessageTextBox tmpMessage = new MessageTextBox(new Message(text, true));
+        MessageTextBox tmpMessage = new MessageTextBox(message);
         tmplist.add(0, tmpMessage);
         Collections.reverse(tmplist);
     }

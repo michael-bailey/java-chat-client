@@ -2,6 +2,7 @@ package client;
 
 import baselib.managers.DataManager;
 import client.classes.Account;
+import client.classes.Message;
 import client.enums.MessageAlignment;
 import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
@@ -41,14 +42,39 @@ public class ProgramController extends Application {
     Account account;
     
     private String loginMsg = "Incorrect Login Details!", createAccountMsg = "Invalid Details! Please correct!";
-    private ArrayList<String> testMessages;
+    private ArrayList<Message> testMessages;
 
     // defining the functions of the
-    private EventHandler onRequestLogin = event -> { this.LoginRequest(this.loginWindow.getUsername(), this.loginWindow.getPassword()); };
-    private EventHandler onRequestCreate = event -> { this.LoginCreateUser(this.loginWindow.getUsername(), this.loginWindow.getPassword()); };
-    private EventHandler onRequestClose = event -> { this.RequestLogout(); };
-    private EventHandler onRequestSendMessage = event -> { String a = this.mainWindow.getMessageBoxText(); this.testMessages.add(a); this.mainWindow.addMessage(a, MessageAlignment.sent); };
-    private EventHandler onSpam = event -> { Rectangle2D screenBounds = Screen.getPrimary().getBounds(); for(int i = 0; i < 10000; i++) {Stage a = new Stage(); a.setScene(new Scene(new GridPane(), 100, 100)); a.setX(new Random().nextInt((int) screenBounds.getMaxX())); a.setY(new Random().nextInt((int) screenBounds.getMaxY())); a.show();}};
+    private EventHandler onRequestLogin = event -> {
+        this.LoginRequest(this.loginWindow.getUsername(), this.loginWindow.getPassword());
+    };
+
+    private EventHandler onRequestCreate = event -> {
+        this.LoginCreateUser(this.loginWindow.getUsername(), this.loginWindow.getPassword());
+    };
+
+    private EventHandler onRequestClose = event -> {
+        this.RequestLogout();
+    };
+
+    private EventHandler onRequestSendMessage = event -> {
+        Message a = new Message(this.mainWindow.getMessageBoxText(), false);
+        this.testMessages.add(a);
+        this.mainWindow.addMessage(a);
+    };
+
+    private EventHandler onSpam = event -> {
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        for(int i = 0; i < 100; i++) {
+            Stage a = new Stage();
+            a.setScene(new Scene(new GridPane(), 100, 100));
+            a.setX(new Random().nextInt((int) screenBounds.getMaxX()));
+            a.setY(new Random().nextInt((int) screenBounds.getMaxY()));
+            a.show();
+        }
+    };
+
+
 
     /**
      * this is called by main
@@ -99,12 +125,12 @@ public class ProgramController extends Application {
         if (this.dataManager.unlock(username, Password)) {
             this.loginWindow.hide();
 
-            this.testMessages = (ArrayList<String>) this.dataManager.getObject("TestMessages");
+            this.testMessages = (ArrayList<Message>) this.dataManager.getObject("TestMessages");
 
-            Iterator a = this.testMessages.iterator();
+            Iterator<Message> a = this.testMessages.iterator();
             while (a.hasNext()) {
-                String tmp = (String) a.next();
-                this.mainWindow.addMessage(tmp, MessageAlignment.recieved);
+                Message tmp = a.next();
+                this.mainWindow.addMessage(tmp);
             }
 
             this.account = (Account) this.dataManager.getObject("account");
@@ -120,7 +146,7 @@ public class ProgramController extends Application {
             this.dataManager.addObject("account", this.account);
             this.preferences = new HashMap<>();
             this.dataManager.addObject("preferences", this.preferences);
-            this.testMessages = new ArrayList<String>();
+            this.testMessages = new ArrayList<Message>();
             this.dataManager.addObject( "TestMessages", this.testMessages);
             this.mainWindow.show();
         }
