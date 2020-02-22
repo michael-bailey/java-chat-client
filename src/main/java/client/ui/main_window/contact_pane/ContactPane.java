@@ -15,7 +15,7 @@ public class ContactPane extends AnchorPane {
     public ContactPane() {
         System.out.println(this);
 
-        this.getStyleClass().add("ChatPane");
+        this.getStyleClass().add("ContactPane");
 
         this.setMinSize(Region.USE_PREF_SIZE,Region.USE_PREF_SIZE);
         this.setPrefSize(200,Region.USE_COMPUTED_SIZE);

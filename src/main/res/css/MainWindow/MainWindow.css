@@ -54,14 +54,8 @@ GridPane {
 
     -fx-focus-color: #2c3032;
     -fx-box-border: #000000;
-    /* -fx-control-inner-background: */
-
     -fx-background-insets: -1.4, 0, 1;
     -fx-background-radius: 1.4, 0, 0;
-
-    /* There is some oddness if padding is in em values rather than pixels,
-       in particular, the left border of the control doesn't show. /
-    -fx-padding: 1; / 0.083333em; */
 }
 
 .menuBar {
