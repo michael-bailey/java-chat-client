@@ -48,7 +48,7 @@ public class ProgramController extends Application {
     private EventHandler onRequestCreate = event -> { this.LoginCreateUser(this.loginWindow.getUsername(), this.loginWindow.getPassword()); };
     private EventHandler onRequestClose = event -> { this.RequestLogout(); };
     private EventHandler onRequestSendMessage = event -> { String a = this.mainWindow.getMessageBoxText(); this.testMessages.add(a); this.mainWindow.addMessage(a, MessageAlignment.sent); };
-    private EventHandler onSpam = event -> { Rectangle2D screenBounds = Screen.getPrimary().getBounds(); for(int i = 0; i < 100; i++) {Stage a = new Stage(); a.setScene(new Scene(new GridPane(), 100, 100)); a.setX(new Random().nextInt((int) screenBounds.getMaxX())); a.setY(new Random().nextInt((int) screenBounds.getMaxY())); a.show();}};
+    private EventHandler onSpam = event -> { Rectangle2D screenBounds = Screen.getPrimary().getBounds(); for(int i = 0; i < 10000; i++) {Stage a = new Stage(); a.setScene(new Scene(new GridPane(), 100, 100)); a.setX(new Random().nextInt((int) screenBounds.getMaxX())); a.setY(new Random().nextInt((int) screenBounds.getMaxY())); a.show();}};
 
     /**
      * this is called by main
