@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -30,46 +29,7 @@
                    </Menu>
                  </menus>
                </MenuBar>
-               <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
-                 <tabs>
-                   <Tab text="Untitled Tab 1">
-                     <content>
-                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                              <children>
-                                 <Label fx:id="usernameLabel" layoutX="122.0" layoutY="21.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" text="Label" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0">
-                                    <padding>
-                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                    </padding></Label>
-                                 <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="100.0" text="Username:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="8.0">
-                                    <padding>
-                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                    </padding></Label>
-                                 <Label fx:id="userIDLabel" layoutX="128.0" layoutY="38.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" text="Label" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="38.0">
-                                    <padding>
-                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                    </padding>
-                                 </Label>
-                                 <Label layoutX="24.0" layoutY="24.0" prefHeight="30.0" prefWidth="100.0" text="userID:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="38.0">
-                                    <padding>
-                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                    </padding>
-                                 </Label>
-                                 <Label layoutX="8.0" layoutY="79.0" prefHeight="30.0" prefWidth="100.0" text="public key:" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="68.0">
-                                    <padding>
-                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                    </padding>
-                                 </Label>
-                                 <TextArea fx:id="publicKeyBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="68.0" />
-                              </children></AnchorPane>
-                     </content>
-                   </Tab>
-                   <Tab text="Untitled Tab 2">
-                     <content>
-                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                     </content>
-                   </Tab>
-                 </tabs>
-               </TabPane>
+               <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" />
             </children></VBox>
       </Scene>
    </scene>

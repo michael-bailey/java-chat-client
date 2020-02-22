@@ -1,6 +1,7 @@
 // Created by Mitchell Hardie
 package client.ui.main_window;
 
+import client.classes.Message;
 import client.enums.MessageAlignment;
 import client.interfaces.IWindow;
 import client.ui.main_window.chat_pane.ChatPane;
@@ -134,6 +135,8 @@ public class MainWindow implements IWindow {
 		// setting up the scene
 		Scene scene = new Scene(mainGrid);
 		scene.getStylesheets().add("css/MainWindow/MainWindow.css");
+		scene.getStylesheets().add("css/MainWindow/ContactPane/ContactPane.css");
+		scene.getStylesheets().add("css/ContextMenu.css");
 		this.stage.setScene(scene);
 	}
 
@@ -141,8 +144,9 @@ public class MainWindow implements IWindow {
 	public String getMessageBoxText() {
 		return this.chatPane.getMessageText();
 	}
-	public void addMessage(String messageText, MessageAlignment alignment) {
-		this.chatPane.appendMessage(messageText, alignment);
+
+	public void addMessage(Message message) {
+		this.chatPane.appendMessage(message);
 	}
 	public void loadMessages(ArrayList<MessageTextBox> messages) {
 		this.chatPane.loadMessages(messages);

@@ -1,0 +1,6 @@
+.ChatPane {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #202124;
+    -fx-control-inner-background: #3c4042 ;
+    -fx-control-inner-background-alt: #3c4042;
+}

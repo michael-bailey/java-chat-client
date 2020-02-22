@@ -64,19 +64,6 @@ GridPane {
     -fx-padding: 1; / 0.083333em; */
 }
 
-.contextMenu {
-    -fx-text-fill: #FFFFFF;
-    -fx-background-color: #2c3032;
-
-    -fx-padding: 8;
-    -fx-background-radius: 8;
-}
-
-.contextMenuItem .label {
-    -fx-text-fill: #FFFFFF;
-    -fx-background-radius: 4
-}
-
 .menuBar {
     -fx-text-fill: #FFFFFF;
     -fx-background-color: #3c4042;
