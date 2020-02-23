@@ -3,10 +3,8 @@ package client;
 import baselib.managers.DataManager;
 import client.classes.Account;
 import client.classes.Message;
-import client.enums.MessageAlignment;
 import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
-import client.ui.main_window.chat_pane.ChatPane;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
@@ -14,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -57,11 +54,23 @@ public class ProgramController extends Application {
         this.RequestLogout();
     };
 
+    private EventHandler onRequestChangeServer = event -> { System.out.println(this + " this has not been implemented"); };
+
+    private EventHandler onRequestAddLocalContact = event -> { System.out.println(this + " this has not been implemented"); };
+
+    private EventHandler onRequestRemoveLocalContact = event -> { System.out.println(this + " this has not been implemented"); };
+
+    private EventHandler onRequestChangeLocalContact = event -> { System.out.println(this + " this has not been implemented"); };
+
+    private EventHandler onChangeTextChatGroup = event -> { System.out.println(this + " this has not been implemented"); };
+
     private EventHandler onRequestSendMessage = event -> {
         Message a = new Message(this.mainWindow.getMessageBoxText(), false);
         this.testMessages.add(a);
         this.mainWindow.addMessage(a);
     };
+
+    private EventHandler onDataReceivedFromServer = event -> { System.out.println(this + " this has not been implemented"); };
 
     private EventHandler onSpam = event -> {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -73,8 +82,6 @@ public class ProgramController extends Application {
             a.show();
         }
     };
-
-
 
     /**
      * this is called by main
