@@ -39,6 +39,9 @@ public class MainWindow implements IWindow {
 	private EventHandler onRequestDeleteMessage;
 	private EventHandler onRequestEditMessage;
 
+	//TMP HANDLER
+	private EventHandler tmpContact;
+
 	// window events
 	private EventHandler onRequestClose;
 
@@ -69,6 +72,13 @@ public class MainWindow implements IWindow {
 		this.chatPane.setOnMessageHandler(event -> {
 			if (this.onRequestSendMessage != null) {
 				this.onRequestSendMessage.handle(event);
+			}
+		});
+
+		//TMP EVENT
+		this.contactPane.setTmpContact(event -> {
+			if(this.tmpContact != null){
+				this.tmpContact.handle(event);
 			}
 		});
 
@@ -169,4 +179,6 @@ public class MainWindow implements IWindow {
 	public void setOnRequestClose(EventHandler onRequestClose) {
 		this.onRequestClose = onRequestClose;
 	}
+
+	public void setTmpContact(EventHandler tmp){this.tmpContact = tmp;}
 }

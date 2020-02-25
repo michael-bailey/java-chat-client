@@ -10,9 +10,19 @@ import java.util.List;
 
 public class ContactPane extends AnchorPane {
 
+    private Button tmp;
     private ListView<ContactBox> listView = new ListView<>();
+    
+
+    private EventHandler tmpContact;
 
     public ContactPane() {
+
+	this.tmp.setOnAction(event -> {
+		if(this.tmpContact != null){
+			this.tmpContact.handle(event);
+		}
+	});
         System.out.println(this);
 
         this.listView.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -35,4 +45,7 @@ public class ContactPane extends AnchorPane {
     public ArrayList getContacts() {
         return (ArrayList) this.listView.getItems();
     }
+
+    public Button getTmpContact(){return this.tmpContact;}
+    public void setTmpContact(EventHanlder tmp){this.tmpContact = tmp;}
 }
