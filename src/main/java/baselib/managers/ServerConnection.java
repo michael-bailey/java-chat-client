@@ -1,5 +1,3 @@
-//test
-
 public class ServerConnection extends Thread implements Node{
 	private String serverAddress, recipentAddress;
 	private int serverPort;
