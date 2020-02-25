@@ -24,6 +24,42 @@ import java.io.PrintWriter;
  */
 
 public class NetworkManager extends Thread{
+	private String serverAddress;
+	private int serverPort;
+	private List<Node> connections = new ArrayList<>();
+	boolean threadRunning = true;
+
+	public NetworkManager(){
+		connections.add(new ServerConnection("localhost",9806));
+		connections.get(0).start();
+	}
+
+	@Override
+	public void run(){
+		while(this.threadRunning){
+			if(connections.get(0).getListenForClient()==true){
+				connections.add(new ClientConnection(connections.get(0).getRecipentAddress(), 9806, connections.get(0).getListenForClient()));// recipent address is empty at this point
+				connections.get(1).start();
+				connections.get(0).setListenForClient(false);
+				connections.get(0).setRequestSuccessful(false);
+			}
+			if(connections.get(0).getRequestSuccessful()==true){
+				connections.add(new ClientConnection(connections.get(0).getRecipentAddress(), 9806, connections.get(0).getListenForClient()));// recipent address exists at this point
+				connections.get(1).start();
+				connections.get(0).setListenForClient(false);
+				connections.get(0).setRequestSuccessful(false);
+			}
+		}
+	}
+
+	public void doStop(){this.threadRunning = false;}
+
+	public ServerConnection getServer(){return connections.get(0);}
+
+	public ClientConnection getClient(){return connections.get(1);}
+}
+
+/*public class NetworkManager extends Thread{
 	//private HashMap<> servers;
 	private String currentServerAddress = "localhost", recipentAddress = "";
 	private int currentServerPort = 9806;
@@ -31,9 +67,10 @@ public class NetworkManager extends Thread{
 	private PrintWriter serverSocketOutput;
 	private BufferedReader serverSocketInput;
 	private ServerConnection[] connectionThreads = new ServerConnection[2];
+	private ClientConnection client;
 	private boolean appRunning = true, isConnected = false, stopServerConnection = false, stopClientConnection=false, responseSuccessful = false;
 
-	public NetworkManager(/*HashMap<> servers*/){
+	public NetworkManager(HashMap<> servers){
 		System.out.println("Details Stored");
 		//this.servers = servers;
 	}
@@ -48,8 +85,8 @@ public class NetworkManager extends Thread{
 				//ClientConnection client = new ClientConnection();
 			}
 			if(responseSuccessful){
-				ClientConnection client = new ClientConnection();
-				client.start();
+				this.client = new ClientConnection();
+				this.client.start();
 			}
 		}
 	}
@@ -72,9 +109,18 @@ public class NetworkManager extends Thread{
 	public void shutdownThreads(){
 		appRunning = false;
 	}
+
+	public ServerConnection getCurrentServer(){
+		return this.connectionThreads[0];
+	}
+	
+	public ClientConnection getCurrentClient(){
+		return this.client;
+	}
 	
 	private class ServerConnection extends Thread {
 		private ArrayList<String> messageQueue = new ArrayList<String>();//<Packet>
+		private boolean requestToChat = false;
 
 		public ServerConnection(){
 		}
@@ -95,12 +141,25 @@ public class NetworkManager extends Thread{
 					}catch(Exception e){}
 				}
 
-				short sh = 0;
+				//this part needs to be replaced with clicking on a user in the ui
+				if(this.requestToChat){
+					this.sendServerMessage(1);
+					recipentAddress = serverSocketInput.readLine();
+					this.sendServerMessage(2);
+					short response = serverSocketInput.readShort();
+					if(response == 10){
+						responseSuccessful = true;
+						this.requestToChat = false;
+					}else{
+						System.out.println("Server Response Failed");
+					}
+				}
+				/*short sh = 0;
 				if(recipentAddress.isEmpty()&&tmp){
-					Scanner test = new Scanner(System.in);
-					System.out.println("Do you want to talk to server(y/n)? ");
-					String ans = test.nextLine();
-					if(ans.equals("y")){
+					//Scanner test = new Scanner(System.in);
+					//System.out.println("Do you want to talk to server(y/n)? ");
+					//String ans = test.nextLine();
+					//if(ans.equals("y")){
 						Scanner scan = new Scanner(System.in);
 						System.out.println("enter message > ");
 						sh = scan.nextShort();
@@ -108,9 +167,9 @@ public class NetworkManager extends Thread{
 					}else{
 						tmp = false;
 					}
-				}
-
-				if(sh==1){
+				}*/
+				//getting clicked users details to create new client thread
+				/*if(sh==1){
 					try{
 						this.sendServerMessage(sh);
 						recipentAddress = serverSocketInput.readLine();
@@ -157,9 +216,18 @@ public class NetworkManager extends Thread{
 		public boolean checkServerConnection(){
 			return isConnected;
 		}
+
+		public void RequestToChat(){
+			this.requestToChat = true;
+		}
+
+		public void queueMessage(String message){
+			this.messageQueue.add(message);
+		}
 	}
 
 	private class ClientConnection extends Thread {
+		private ArrayList<String> messageQueue = new ArrayList<String>();//<Packet>
 		private boolean isConnected = false;
 		private ServerSocket ss;
 		private Socket recipentSocket;
@@ -209,6 +277,10 @@ public class NetworkManager extends Thread{
 			this.recipentSocketInput = new BufferedReader(new InputStreamReader(this.recipentSocket.getInputStream()));
 			this.setConnectionState(true);
 		}
+		
+		public void queueMessage(String message){
+			this.messageQueue.add(message);
+		}
 
 		private void sendMessage(String message){
 			recipentSocketOutput.println(message);
@@ -217,7 +289,7 @@ public class NetworkManager extends Thread{
 		private void setConnectionState(boolean state){this.isConnected = state;}
 		public boolean endConnection(){return false;}
 	}
-}
+}*/
 // TODO SERVER CONNECTION THREAD - switch from one server to another
 /* checks to see if thread is running (network manager thread)
  * if true:
