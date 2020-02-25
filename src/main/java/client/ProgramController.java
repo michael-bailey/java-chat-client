@@ -1,5 +1,6 @@
 package client;
 
+import baselib.managers.NetworkManager;
 import baselib.managers.DataManager;
 import client.classes.Account;
 import client.enums.MessageAlignment;
@@ -25,7 +26,8 @@ import java.util.Iterator;
  * @since 1.0
  */
 public class ProgramController extends Application {
-
+    // this section defines the network manager to be referenced throughout the program
+    NetworkManager networkManager = new NetworkManager();
     // this section defines the windows that are in use
     MainWindow mainWindow;
     LoginWindow loginWindow;
@@ -38,11 +40,14 @@ public class ProgramController extends Application {
     private String loginMsg = "Incorrect Login Details!", createAccountMsg = "Invalid Details! Please correct!";
     private ArrayList<String> testMessages;
 
-    // definign the functions of the
+    // defining the functions of the
     private EventHandler onRequestLogin = event -> { this.LoginRequest(this.loginWindow.getUsername(), this.loginWindow.getPassword()); };
     private EventHandler onRequestCreate = event -> { this.LoginCreateUser(this.loginWindow.getUsername(), this.loginWindow.getPassword()); };
     private EventHandler onRequestClose = event -> { this.RequestLogout(); };
-    private EventHandler onRequestSendMessage = event -> { String a = this.mainWindow.getMessageBoxText(); this.testMessages.add(a); this.mainWindow.addMessage(a, MessageAlignment.sent); };
+    private EventHandler onRequestSendMessage = event -> { String a = this.mainWindow.getMessageBoxText(); this.testMessages.add(a); this.mainWindow.addMessage(a, MessageAlignment.sent); this.networkManager.getCurrentClient().queueMessage(this.mainWindow.getMessageBoxText())};
+    
+    // TMP DELETE WHEN DONE
+    private EventHandler tmpContact = event -> { this.networkManager.getCurrentServer().setRequestToChat(true) };
 
     /**
      * this is called by main
@@ -59,6 +64,7 @@ public class ProgramController extends Application {
      * @throws Exception any thing that could go wrong.
      */
     public void start(Stage stage) throws Exception {
+	this.networkManager.start();
         System.out.println(this);
 
         this.loginWindow = new LoginWindow();
