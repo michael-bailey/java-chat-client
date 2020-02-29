@@ -39,6 +39,10 @@ public class ChatPane extends AnchorPane {
      * @since 1.0
      */
     public ChatPane() {
+        System.out.println(this);
+
+        this.getStylesheets().add("css/MainWindow/ChatPane/ChatPane.css");
+        this.getStyleClass().add("pane");
 
         this.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         this.setPrefSize(20, 20);
@@ -62,7 +66,7 @@ public class ChatPane extends AnchorPane {
         AdditionalItemsButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         AdditionalItemsButton.setPrefSize(this.buttonHeight, this.buttonHeight);
         AdditionalItemsButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        AdditionalItemsButton.getStyleClass().add("emojiButton");
+        AdditionalItemsButton.getStyleClass().add("drawerButton");
 
         photoButton = new Button("photo");
         sendButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -74,17 +78,6 @@ public class ChatPane extends AnchorPane {
         messageBox.setMaxWidth(Double.MAX_VALUE);
         messageBox.setMinWidth(200);
         messageBox.getStyleClass().add("messageBox");
-        ScrollBar scrollBar;
-        for ( Node a : messageView.lookupAll(".scroll-Bar")) {
-            if(a instanceof ScrollBar) {
-                scrollBar = (ScrollBar) a;
-                scrollBar.visibleProperty().addListener((observable, oldValue, newValue) -> {
-                    System.out.println(observable);
-                    System.out.println(oldValue);
-                    System.out.println(newValue);
-                });
-            }
-        }
 
         // adding to the anchor pane
         this.getChildren().add(messageView);
