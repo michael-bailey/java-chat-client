@@ -7,6 +7,13 @@
 
 .ContactPane:focused {
     -fx-focus-color: #2c3032;
+    -fx-background-color: #1c2022;
+    -fx-control-inner-background: #1c2022 ;
+    -fx-control-inner-background-alt: #1c2022;
+}
+
+.ContactPane:focused {
+    -fx-focus-color: #1c2022;
     -fx-box-border: #000000;
     -fx-background-insets: -1.4, 0, 1;
     -fx-background-radius: 1.4, 0, 0;

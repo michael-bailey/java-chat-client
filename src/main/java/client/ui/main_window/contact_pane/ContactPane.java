@@ -13,13 +13,16 @@ public class ContactPane extends AnchorPane {
     private ListView<ContactBox> listView = new ListView<>();
 
     public ContactPane() {
+
         System.out.println(this);
 
         this.getStyleClass().add("ContactPane");
 
         this.setMinSize(Region.USE_PREF_SIZE,Region.USE_PREF_SIZE);
         this.setPrefSize(200,Region.USE_COMPUTED_SIZE);
-        this.setMaxSize(Region.USE_PREF_SIZE,Region.USE_PREF_SIZE);
+
+        this.setMaxSize(Region.USE_PREF_SIZE,Double.MAX_VALUE);
+
 
         this.listView.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         this.listView.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
@@ -31,6 +34,7 @@ public class ContactPane extends AnchorPane {
         AnchorPane.setBottomAnchor(this.listView, 33.0);
 
         this.getChildren().add(this.listView);
+
 
     }
 
