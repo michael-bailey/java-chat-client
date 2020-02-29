@@ -133,20 +133,6 @@ public class ProgramController extends Application {
             this.loginWindow.hide();
 
             this.testMessages = (ArrayList<Message>) this.dataManager.getObject("TestMessages");
-
-            Iterator<Message> a = this.testMessages.iterator();
-            while (a.hasNext()) {
-                Message tmp = a.next();
-                this.mainWindow.addMessage(tmp);
-            }
-            // setting up windows that require a login to be complete.
-            this.mainWindow = new MainWindow(1);
-
-            // set events for the main window
-            this.mainWindow.setOnRequestSendMessage(event -> {
-                this.mainWindow.addMessage(this.mainWindow.getMessageBoxText());
-            });
-            this.testMessages = (ArrayList<Message>) this.dataManager.getObject("TestMessages");
             if (this.testMessages != null) {
                 Iterator<Message> a = this.testMessages.iterator();
                 while (a.hasNext()) {

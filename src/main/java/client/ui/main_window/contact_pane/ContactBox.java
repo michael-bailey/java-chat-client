@@ -1,5 +1,6 @@
 package client.ui.main_window.contact_pane;
 
+import client.classes.Contact;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +24,7 @@ public class ContactBox extends Node {
 
     EventHandler onClick;
 
-    public ContactBox() throws IOException {
+    public ContactBox(Contact contact) throws IOException {
         FXMLLoader tmpLoader = new FXMLLoader(fxmlUrl);
         tmpLoader.setController(this);
         this.root = tmpLoader.load();
@@ -31,6 +32,14 @@ public class ContactBox extends Node {
         this.setOnMouseClicked(event -> {
             this.onClick.handle(event);
         });
+    }
+
+    public String getName() {
+        return this.ContactName.getText();
+    }
+
+    public String getUserID() {
+        return this.ContactUserID.getText();
     }
 
     public EventHandler getOnClick() {
