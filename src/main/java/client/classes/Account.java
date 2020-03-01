@@ -8,7 +8,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class Account implements Serializable {
-
+    private static final long serialVersionUID = -7544412400442925489L;
+    
     // account details.
     String userID;
     String username;

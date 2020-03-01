@@ -21,7 +21,6 @@ public class ChatPane extends AnchorPane {
 
     private Button sendButton;
     private Button AdditionalItemsButton;
-    private Button photoButton;
     private TextField messageBox;
     private ListView<MessageTextBox> messageView;
 
@@ -67,11 +66,6 @@ public class ChatPane extends AnchorPane {
         AdditionalItemsButton.setPrefSize(this.buttonHeight, this.buttonHeight);
         AdditionalItemsButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         AdditionalItemsButton.getStyleClass().add("drawerButton");
-
-        photoButton = new Button("photo");
-        sendButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        sendButton.setPrefSize(this.buttonWidth, this.buttonHeight);
-        sendButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
         // creating the message entry box
         messageBox = new TextField();

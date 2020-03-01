@@ -1,6 +1,8 @@
 .pane {
     -fx-text-fill: #FFFFFF;
     -fx-background-color: #2c3032;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 .messageView {
@@ -8,6 +10,15 @@
     -fx-background-color: #003d33;
     -fx-control-inner-background: #2c3032;
     -fx-control-inner-background-alt: #2c3032;
+    -fx-faint-focus-color: transparent;
+}
+
+.messageView:focused {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #003d33;
+    -fx-control-inner-background: #2c3032;
+    -fx-control-inner-background-alt: #2c3032;
+    -fx-faint-focus-color: transparent;
 }
 
 .message {

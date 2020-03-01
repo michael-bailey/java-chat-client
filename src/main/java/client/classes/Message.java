@@ -1,7 +1,5 @@
 package client.classes;
 
-import client.enums.MessageAlignment;
-
 import java.io.Serializable;
 import java.security.*;
 import java.time.LocalDate;
@@ -16,7 +14,8 @@ import java.time.LocalTime;
  * @since 1.0
  */
 public class Message extends Object implements Serializable {
-
+    private static final long serialVersionUID = 1286698197022781409L;
+    
     // defining the date and time that the message was recieved
     LocalDate date;
     LocalTime time;
