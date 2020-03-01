@@ -1,5 +1,6 @@
 GridPane {
     -fx-background-color: #2c3032;
+    -fx-focus-color: transparent;
 }
 
 

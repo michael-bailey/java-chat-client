@@ -47,13 +47,13 @@ public class ContactPane extends AnchorPane {
 
         this.listView.getStyleClass().add("ContactPane");
 
-        this.setMinSize(Region.USE_PREF_SIZE,Region.USE_PREF_SIZE);
-        this.setPrefSize(200,Region.USE_COMPUTED_SIZE);
-        this.setMaxSize(Region.USE_PREF_SIZE,Double.MAX_VALUE);
+        this.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        this.setPrefSize(20, 20);
+        this.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
         this.listView.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        this.listView.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-        this.listView.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        this.listView.setPrefSize(20, 20);
+        this.listView.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_PREF_SIZE);
 
         this.addContactButton.getStyleClass().add("sendButton");
         this.searchBox.getStyleClass().add("messageBox");

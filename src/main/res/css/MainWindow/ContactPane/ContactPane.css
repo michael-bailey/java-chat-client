@@ -3,6 +3,8 @@
     -fx-background-color: #2c3032;
     -fx-control-inner-background: #3c4042 ;
     -fx-control-inner-background-alt: #3c4042;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 .ContactPane:focused {
