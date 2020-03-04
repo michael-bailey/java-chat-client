@@ -2,9 +2,11 @@ package client;
 
 import baselib.managers.DataManager;
 import client.classes.Account;
+import client.classes.Contact;
 import client.classes.Message;
 import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
+import client.ui.other.AddContactDialogue;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
@@ -32,10 +34,12 @@ public class ProgramController extends Application {
     // this section defines the windows that are in use
     MainWindow mainWindow;
     LoginWindow loginWindow;
+    AddContactDialogue addContactDialogue;
 
     //this defines all data objects that are in use
     DataManager dataManager;
     HashMap<String, Object> preferences;
+    ArrayList<Contact> contacts;
     Account account;
     
     private String loginMsg = "Incorrect Login Details!", createAccountMsg = "Invalid Details! Please correct!";
@@ -56,7 +60,7 @@ public class ProgramController extends Application {
 
     private EventHandler onRequestChangeServer = event -> { System.out.println(this + " this has not been implemented"); };
 
-    private EventHandler onRequestAddLocalContact = event -> { System.out.println(this + " this has not been implemented"); };
+    private EventHandler onRequestAddContact = event -> { this.addContactDialogue.show(); };
 
     private EventHandler onRequestRemoveLocalContact = event -> { System.out.println(this + " this has not been implemented"); };
 
@@ -83,6 +87,7 @@ public class ProgramController extends Application {
         }
     };
 
+
     /**
      * this is called by main
      * @param args arguments passed from the command line
@@ -103,6 +108,7 @@ public class ProgramController extends Application {
         this.loginWindow = new LoginWindow();
         this.mainWindow = new MainWindow();
         this.dataManager = new DataManager();
+        this.addContactDialogue = new AddContactDialogue();
 
         this.loginWindow.setOnRequestLogin(onRequestLogin);
         this.loginWindow.setOnRequestCreate(onRequestCreate);

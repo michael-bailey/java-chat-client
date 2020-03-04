@@ -41,6 +41,7 @@ public class ContactPane extends AnchorPane {
         this.listView.setItems(FXCollections.observableList(newContactList));
     };
 
+    private EventHandler onAddContact;
 
     public ContactPane() {
         System.out.println(this);
@@ -56,7 +57,14 @@ public class ContactPane extends AnchorPane {
         this.listView.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_PREF_SIZE);
 
         this.addContactButton.getStyleClass().add("sendButton");
+        this.addContactButton.setOnAction(event -> {
+            if (this.onAddContact != null) {
+                this.onAddContact.handle(event);
+            }
+        });
+
         this.searchBox.getStyleClass().add("messageBox");
+        this.searchBox.setOnKeyTyped(this.onKeyTypedHandler);
 
         AnchorPane.setTopAnchor(this.listView, 0.0);
         AnchorPane.setLeftAnchor(this.listView, 0.0);
@@ -83,5 +91,9 @@ public class ContactPane extends AnchorPane {
 
     public ArrayList getContacts() {
         return (ArrayList) this.listView.getItems();
+    }
+
+    public void setOnAddContact(EventHandler onAddContact) {
+        this.onAddContact = onAddContact;
     }
 }
