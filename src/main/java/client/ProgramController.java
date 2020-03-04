@@ -66,7 +66,7 @@ public class ProgramController extends Application {
 
     private EventHandler onRequestChangeLocalContact = event -> { System.out.println(this + " this has not been implemented"); };
 
-    private EventHandler onChangeTextChatGroup = event -> { System.out.println(this + " this has not been implemented"); };
+    private EventHandler onRequestChangeTextChatGroup = event -> { System.out.println(this + " this has not been implemented"); };
 
     private EventHandler onRequestSendMessage = event -> {
         Message a = new Message(this.mainWindow.getMessageBoxText(), false);
@@ -115,6 +115,7 @@ public class ProgramController extends Application {
         this.mainWindow.setOnRequestClose(onRequestClose);
         this.mainWindow.setOnRequestSendMessage(onRequestSendMessage);
         this.mainWindow.setOnSpam(this.onSpam);
+        this.mainWindow.setOnRequestAddContact(this.onRequestAddContact);
 
         // show the login window
         this.loginWindow.show();
