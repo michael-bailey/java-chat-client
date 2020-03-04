@@ -23,6 +23,7 @@ public class AddContactDialogue implements IWindow {
     @FXML TextField userIDField;
 
     public AddContactDialogue() {
+        System.out.println(this);
         try {
             FXMLLoader tmpLoader = new FXMLLoader(this.windowUrl);
             tmpLoader.setController(this);
