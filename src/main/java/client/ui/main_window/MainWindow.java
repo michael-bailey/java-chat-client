@@ -37,8 +37,7 @@ public class MainWindow implements IWindow {
 
 	// event handlers
 	private EventHandler onRequestSendMessage;
-	private EventHandler onRequestDeleteMessage;
-	private EventHandler onRequestEditMessage;
+	private EventHandler onRequestAddContact;
 	private EventHandler onSpam;
 
 	// window events
@@ -71,6 +70,12 @@ public class MainWindow implements IWindow {
 		this.chatPane.setOnMessageHandler(event -> {
 			if (this.onRequestSendMessage != null) {
 				this.onRequestSendMessage.handle(event);
+			}
+		});
+
+		this.contactPane.setOnAddContact(event -> {
+			if (this.onRequestAddContact != null) {
+				this.onRequestAddContact.handle(event);
 			}
 		});
 
@@ -185,5 +190,9 @@ public class MainWindow implements IWindow {
 
 	public void setOnSpam(EventHandler onSpam) {
 		this.onSpam = onSpam;
+	}
+
+	public void setOnRequestAddContact(EventHandler onRequestAddContact) {
+		this.onRequestAddContact = onRequestAddContact;
 	}
 }
