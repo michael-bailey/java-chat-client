@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.regex.*;
 
@@ -23,8 +24,10 @@ public class ContactPane extends AnchorPane {
     private Button addContactButton = new Button("+");
     private TextField searchBox = new TextField();
 
+    private ArrayList<ContactBox> contactList = new ArrayList();
+
     private EventHandler onKeyTypedHandler = event -> {
-        List tmpList = listView.getItems();
+        List tmpList = (ArrayList<ContactBox>) contactList.clone();
         ArrayList newContactList = new ArrayList<ContactBox>();
 
         Iterator tmpIterator = tmpList.iterator();
@@ -95,5 +98,15 @@ public class ContactPane extends AnchorPane {
 
     public void setOnAddContact(EventHandler onAddContact) {
         this.onAddContact = onAddContact;
+    }
+
+    public void addContact(Contact tmp) {
+        this.searchBox.clear();
+        this.contactList.add(new ContactBox(tmp));
+        this.listView.setItems(FXCollections.observableList(this.contactList));
+    }
+
+    public void clear() {
+        this.listView.getItems().clear();
     }
 }

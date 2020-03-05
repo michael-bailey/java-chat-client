@@ -25,6 +25,8 @@ import java.util.Random;
  * This class manages all data and resources for the program.
  * it has all interactions between windows and data models defined in this class.
  *
+ * it also contatins all event handlers that 
+ *
  * @author michael-bailey
  * @version 1.0
  * @since 1.0
@@ -60,7 +62,13 @@ public class ProgramController extends Application {
 
     private EventHandler onRequestChangeServer = event -> { System.out.println(this + " this has not been implemented"); };
 
-    private EventHandler onRequestAddContact = event -> { this.addContactDialogue.show(); };
+    private EventHandler onRequestShowAddContactDialogue = event -> { this.addContactDialogue.show(); };
+
+    private EventHandler onRequestAddContact = event -> {
+        Contact a  = new Contact(this.addContactDialogue.getNameText(),this.addContactDialogue.getUserIDText());
+        this.contacts.add(a);
+        this.mainWindow.addContact(a);
+    };
 
     private EventHandler onRequestRemoveLocalContact = event -> { System.out.println(this + " this has not been implemented"); };
 
@@ -86,7 +94,6 @@ public class ProgramController extends Application {
             a.show();
         }
     };
-
 
     /**
      * this is called by main
@@ -115,7 +122,8 @@ public class ProgramController extends Application {
         this.mainWindow.setOnRequestClose(onRequestClose);
         this.mainWindow.setOnRequestSendMessage(onRequestSendMessage);
         this.mainWindow.setOnSpam(this.onSpam);
-        this.mainWindow.setOnRequestAddContact(this.onRequestAddContact);
+        this.mainWindow.setOnRequestAddContact(this.onRequestShowAddContactDialogue);
+        this.addContactDialogue.setOnAddContact(this.onRequestAddContact);
 
         // show the login window
         this.loginWindow.show();
@@ -139,6 +147,8 @@ public class ProgramController extends Application {
         if (this.dataManager.unlock(username, Password)) {
             this.loginWindow.hide();
 
+
+            // load test messages
             this.testMessages = (ArrayList<Message>) this.dataManager.getObject("TestMessages");
             if (this.testMessages != null) {
                 Iterator<Message> a = this.testMessages.iterator();
@@ -150,6 +160,20 @@ public class ProgramController extends Application {
                 this.testMessages = new ArrayList<>();
                 this.dataManager.addObject("TestMessages", this.testMessages);
             }
+
+            // load contacts
+            this.contacts = (ArrayList<Contact>) this.dataManager.getObject("Contacts");
+            if (this.contacts != null) {
+                Iterator<Contact> a = this.contacts.iterator();
+                while (a.hasNext()) {
+                    Contact tmp = a.next();
+                    this.mainWindow.addContact(tmp);
+                }
+            } else {
+                this.contacts = new ArrayList<Contact>();
+                this.dataManager.addObject("Contacts", this.contacts);
+            }
+
 
             this.account = (Account) this.dataManager.getObject("account");
             this.mainWindow.show();

@@ -1,10 +1,11 @@
 package client.ui.other;
 
-
 import java.io.IOException;
 import java.net.URL;
 
 import client.interfaces.IWindow;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
@@ -21,6 +22,20 @@ public class AddContactDialogue implements IWindow {
 
     @FXML TextField nameField;
     @FXML TextField userIDField;
+
+    @FXML
+    private void onPressedAdd(Event event) {
+        if(this.onAddContact != null) {
+            this.onAddContact.handle(event);
+        }
+    }
+
+    @FXML
+    private void onPressedCancel(Event event) {
+        this.hide();
+    }
+
+    private EventHandler onAddContact;
 
     public AddContactDialogue() {
         System.out.println(this);
@@ -51,5 +66,9 @@ public class AddContactDialogue implements IWindow {
     @Override
     public void hide() {
         this.window.hide();
+    }
+
+    public void setOnAddContact(EventHandler onAddContact) {
+        this.onAddContact = onAddContact;
     }
 }
