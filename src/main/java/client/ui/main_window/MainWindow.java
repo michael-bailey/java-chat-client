@@ -1,6 +1,7 @@
 // Created by Mitchell Hardie
 package client.ui.main_window;
 
+import client.classes.Contact;
 import client.classes.Message;
 import client.enums.MessageAlignment;
 import client.interfaces.IWindow;
@@ -58,8 +59,8 @@ public class MainWindow implements IWindow {
 		this.stage.setTitle("chat window");
 		this.stage.setMaxHeight(this.primaryScreenBounds.getHeight());
 		this.stage.setMaxWidth(this.primaryScreenBounds.getWidth());
-		this.stage.setMinWidth(675);
-		this.stage.setMinHeight(375);
+		this.stage.setMinWidth(550);
+		this.stage.setMinHeight(400);
 
 		this.stage.setOnCloseRequest(event -> {
 			if (this.onRequestClose != null) {
@@ -90,7 +91,7 @@ public class MainWindow implements IWindow {
 		mainGrid.setGridLinesVisible(true);
 
 		mainGrid.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-		mainGrid.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+		mainGrid.setPrefSize(550, 400);
 		mainGrid.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
 		//setting Column constraints.
@@ -108,7 +109,7 @@ public class MainWindow implements IWindow {
 
 		ColumnConstraints column2 = new ColumnConstraints();
 		column2.hgrowProperty().set(Priority.ALWAYS);
-		column2.setMinWidth(350);
+		column2.setMinWidth(50);
 		column2.setMaxWidth(Double.MAX_VALUE);
 		column2.setPrefWidth(Region.USE_COMPUTED_SIZE);
 
@@ -131,10 +132,11 @@ public class MainWindow implements IWindow {
 		mainGrid.getRowConstraints().add(row0);
 		mainGrid.getRowConstraints().add(row1);
 
-		mainGrid.add(this.menuBar,0,0,GridPane.REMAINING, 1);
 		// TODO mainGrid.add(null, 0, 1);
 		mainGrid.add(this.contactPane, 1, 1);
 		mainGrid.add(this.chatPane,2,1);
+		mainGrid.add(this.menuBar,0,0,GridPane.REMAINING, 1);
+
 
 
 		// setting up the scene
@@ -153,9 +155,13 @@ public class MainWindow implements IWindow {
 	public void addMessage(Message message) {
 		this.chatPane.appendMessage(message);
 	}
+	public void addContact(Contact tmp) {
+		this.contactPane.addContact(tmp);
+	}
 	public void loadMessages(ArrayList<MessageTextBox> messages) {
 		this.chatPane.loadMessages(messages);
 	}
+
 
 	@Override
 	public void show() {
@@ -166,6 +172,7 @@ public class MainWindow implements IWindow {
 	public void hide() {
 		this.stage.hide();
 		this.chatPane.clearAll();
+		this.contactPane.clear();
 	}
 
 	public EventHandler getOnRequestSendMessage() {

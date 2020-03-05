@@ -7,7 +7,7 @@
 
 .messageView {
     -fx-text-fill: #FFFFFF;
-    -fx-background-color: #003d33;
+    -fx-background-color: transparent;
     -fx-control-inner-background: #2c3032;
     -fx-control-inner-background-alt: #2c3032;
     -fx-faint-focus-color: transparent;
@@ -15,7 +15,7 @@
 
 .messageView:focused {
     -fx-text-fill: #FFFFFF;
-    -fx-background-color: #003d33;
+    -fx-background-color: transparent;
     -fx-control-inner-background: #2c3032;
     -fx-control-inner-background-alt: #2c3032;
     -fx-faint-focus-color: transparent;

@@ -49,7 +49,12 @@ public class ChatPane extends AnchorPane {
 
         // creating the message view.
         messageView = new ListView<>();
-        messageView.setMinHeight(Region.USE_COMPUTED_SIZE);
+
+
+        messageView.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        messageView.setPrefSize(20, 20);
+        messageView.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
+
         messageView.setRotate(0);
         messageView.getStyleClass().add("messageView");
         // messageView.setOnScroll(this.scrollEvent);
@@ -70,7 +75,7 @@ public class ChatPane extends AnchorPane {
         // creating the message entry box
         messageBox = new TextField();
         messageBox.setMaxWidth(Double.MAX_VALUE);
-        messageBox.setMinWidth(200);
+        messageBox.setMinWidth(25);
         messageBox.getStyleClass().add("messageBox");
 
         // adding to the anchor pane
