@@ -25,7 +25,7 @@ import java.util.Random;
  * This class manages all data and resources for the program.
  * it has all interactions between windows and data models defined in this class.
  *
- * it also contatins all event handlers that 
+ * it also contatins all event handlers that
  *
  * @author michael-bailey
  * @version 1.0

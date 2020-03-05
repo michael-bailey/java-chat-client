@@ -155,9 +155,11 @@ public class MainWindow implements IWindow {
 	public void addMessage(Message message) {
 		this.chatPane.appendMessage(message);
 	}
+
 	public void addContact(Contact tmp) {
 		this.contactPane.addContact(tmp);
 	}
+
 	public void loadMessages(ArrayList<MessageTextBox> messages) {
 		this.chatPane.loadMessages(messages);
 	}

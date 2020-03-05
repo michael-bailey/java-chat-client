@@ -2,16 +2,14 @@ package client.ui.main_window.contact_pane;
 
 import client.classes.Contact;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 
-import java.io.IOException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.regex.*;
 
@@ -24,30 +22,14 @@ public class ContactPane extends AnchorPane {
     private Button addContactButton = new Button("+");
     private TextField searchBox = new TextField();
 
-    private ArrayList<ContactBox> contactList = new ArrayList();
-
-    private EventHandler onKeyTypedHandler = event -> {
-        List tmpList = (ArrayList<ContactBox>) contactList.clone();
-        ArrayList newContactList = new ArrayList<ContactBox>();
-
-        Iterator tmpIterator = tmpList.iterator();
-        while (tmpIterator.hasNext()) {
-            ContactBox tmpContactBox = (ContactBox) tmpIterator.next();
-
-            tmpContactBox.getName();
-
-            if (Pattern.compile(this.searchBox.getText() + "[a-zA-Z]*").matcher(tmpContactBox.getName()).matches()) {
-                newContactList.add(tmpContactBox);
-            }
-        }
-
-        this.listView.setItems(FXCollections.observableList(newContactList));
-    };
-
-    private EventHandler onAddContact;
+    private ArrayList<ContactBox> contactList;
 
     public ContactPane() {
         System.out.println(this);
+
+        this.getStylesheets().add("css/MainWindow/ContactPane/ContactPane.css");
+
+        this.contactList = new ArrayList<>();
 
         this.listView.getStyleClass().add("ContactPane");
 
@@ -59,14 +41,14 @@ public class ContactPane extends AnchorPane {
         this.listView.setPrefSize(20, 20);
         this.listView.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_PREF_SIZE);
 
-        this.addContactButton.getStyleClass().add("sendButton");
+        this.addContactButton.getStyleClass().add("AddButton");
         this.addContactButton.setOnAction(event -> {
             if (this.onAddContact != null) {
                 this.onAddContact.handle(event);
             }
         });
 
-        this.searchBox.getStyleClass().add("messageBox");
+        this.searchBox.getStyleClass().add("SearchBar");
         this.searchBox.setOnKeyTyped(this.onKeyTypedHandler);
 
         AnchorPane.setTopAnchor(this.listView, 0.0);
@@ -88,12 +70,32 @@ public class ContactPane extends AnchorPane {
 
     }
 
+    // search function
+    private EventHandler onKeyTypedHandler = event -> {
+        List newList = new ArrayList<ContactBox>();
+
+        Iterator tmpIterator = contactList.iterator();
+        while (tmpIterator.hasNext()) {
+            ContactBox tmpContactBox = (ContactBox) tmpIterator.next();
+            if (Pattern.compile(this.searchBox.getText() + "[a-zA-Z]*").matcher(tmpContactBox.getName()).matches()) {
+                newList.add(tmpContactBox);
+            }
+        }
+        this.listView.setItems(FXCollections.observableList(newList));
+    };
+
+    private EventHandler onAddContact;
+
+
+
     void setContacts(ArrayList contacts) {
-        this.listView.setItems(FXCollections.observableList(contacts));
+        for(Contact contact : ( ArrayList<Contact> )contacts) {
+            this.addContact(contact);
+        }
     }
 
     public ArrayList getContacts() {
-        return (ArrayList) this.listView.getItems();
+        return this.contactList;
     }
 
     public void setOnAddContact(EventHandler onAddContact) {
@@ -107,6 +109,7 @@ public class ContactPane extends AnchorPane {
     }
 
     public void clear() {
+        this.contactList.clear();
         this.listView.getItems().clear();
     }
 }
