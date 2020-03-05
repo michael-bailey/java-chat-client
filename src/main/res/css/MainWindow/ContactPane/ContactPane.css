@@ -13,3 +13,15 @@
     -fx-background-insets: -1.4, 0, 1;
     -fx-background-radius: 1.4, 0, 0;
 }
+
+.AddButton {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3c4042;
+	-fx-background-radius: 12.5;
+}
+
+.SearchBar {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3c4042;
+	-fx-background-radius: 12.5;
+}

@@ -64,6 +64,8 @@ public class ContactBox extends AnchorPane {
         this.getChildren().add(this.userImage);
         this.getChildren().add(this.contactName);
         this.getChildren().add(this.contactUserID);
+
+
     }
 
     public String getName() {
