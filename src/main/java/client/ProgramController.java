@@ -6,6 +6,7 @@ import client.classes.Contact;
 import client.classes.Message;
 import client.ui.login_display.LoginWindow;
 import client.ui.main_window.MainWindow;
+import client.ui.main_window.contact_pane.ContactBox;
 import client.ui.other.AddContactDialogue;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -34,20 +35,21 @@ import java.util.Random;
 public class ProgramController extends Application {
 
     // this section defines the windows that are in use
-    MainWindow mainWindow;
-    LoginWindow loginWindow;
-    AddContactDialogue addContactDialogue;
+    MainWindow mainWindow = new MainWindow();
+    LoginWindow loginWindow = new LoginWindow();
+    AddContactDialogue addContactDialogue = new AddContactDialogue();
 
     //this defines all data objects that are in use
-    DataManager dataManager;
-    HashMap<String, Object> preferences;
+    DataManager dataManager = new DataManager();
     ArrayList<Contact> contacts;
     Account account;
     
     private String loginMsg = "Incorrect Login Details!", createAccountMsg = "Invalid Details! Please correct!";
     private ArrayList<Message> testMessages;
 
-    // defining the functions of the
+    private Contact currentContact;
+
+
     private EventHandler onRequestLogin = event -> {
         this.LoginRequest(this.loginWindow.getUsername(), this.loginWindow.getPassword());
     };
@@ -60,8 +62,6 @@ public class ProgramController extends Application {
         this.RequestLogout();
     };
 
-    private EventHandler onRequestChangeServer = event -> { System.out.println(this + " this has not been implemented"); };
-
     private EventHandler onRequestShowAddContactDialogue = event -> { this.addContactDialogue.show(); };
 
     private EventHandler onRequestAddContact = event -> {
@@ -70,29 +70,17 @@ public class ProgramController extends Application {
         this.mainWindow.addContact(a);
     };
 
-    private EventHandler onRequestRemoveLocalContact = event -> { System.out.println(this + " this has not been implemented"); };
-
-    private EventHandler onRequestChangeLocalContact = event -> { System.out.println(this + " this has not been implemented"); };
-
-    private EventHandler onRequestChangeTextChatGroup = event -> { System.out.println(this + " this has not been implemented"); };
-
-    private EventHandler onRequestSendMessage = event -> {
-        Message a = new Message(this.mainWindow.getMessageBoxText(), false);
-        this.testMessages.add(a);
-        this.mainWindow.addMessage(a);
+    private EventHandler onRequestChangeContact = event -> {
+        Contact sourceContact = ((ContactBox) event.getSource()).getContact();
+        this.currentContact = sourceContact;
+        this.mainWindow.loadMessages(sourceContact.getMessages());
+        this.mainWindow.setChatPaneEnabled(true);
     };
 
-    private EventHandler onDataReceivedFromServer = event -> { System.out.println(this + " this has not been implemented"); };
-
-    private EventHandler onSpam = event -> {
-        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        for(int i = 0; i < 100; i++) {
-            Stage a = new Stage();
-            a.setScene(new Scene(new GridPane(), 100, 100));
-            a.setX(new Random().nextInt((int) screenBounds.getMaxX()));
-            a.setY(new Random().nextInt((int) screenBounds.getMaxY()));
-            a.show();
-        }
+    private EventHandler onRequestSendMessage = event -> {
+        Message newMessage = new Message(this.mainWindow.getMessageBoxText(), false);
+        this.currentContact.addMessage(newMessage);
+        this.mainWindow.addMessage(newMessage);
     };
 
     /**
@@ -112,18 +100,18 @@ public class ProgramController extends Application {
     public void start(Stage stage) throws Exception {
         System.out.println(this);
 
-        this.loginWindow = new LoginWindow();
-        this.mainWindow = new MainWindow();
-        this.dataManager = new DataManager();
-        this.addContactDialogue = new AddContactDialogue();
-
+        // setting the event handlers
         this.loginWindow.setOnRequestLogin(onRequestLogin);
         this.loginWindow.setOnRequestCreate(onRequestCreate);
+
         this.mainWindow.setOnRequestClose(onRequestClose);
         this.mainWindow.setOnRequestSendMessage(onRequestSendMessage);
-        this.mainWindow.setOnSpam(this.onSpam);
         this.mainWindow.setOnRequestAddContact(this.onRequestShowAddContactDialogue);
+        this.mainWindow.setOnRequestChangeContact(this.onRequestChangeContact);
+
         this.addContactDialogue.setOnAddContact(this.onRequestAddContact);
+
+        this.mainWindow.setChatPaneEnabled(false);
 
         // show the login window
         this.loginWindow.show();
@@ -147,7 +135,6 @@ public class ProgramController extends Application {
         if (this.dataManager.unlock(username, Password)) {
             this.loginWindow.hide();
 
-
             // load test messages
             this.testMessages = (ArrayList<Message>) this.dataManager.getObject("TestMessages");
             if (this.testMessages != null) {
@@ -164,11 +151,7 @@ public class ProgramController extends Application {
             // load contacts
             this.contacts = (ArrayList<Contact>) this.dataManager.getObject("Contacts");
             if (this.contacts != null) {
-                Iterator<Contact> a = this.contacts.iterator();
-                while (a.hasNext()) {
-                    Contact tmp = a.next();
-                    this.mainWindow.addContact(tmp);
-                }
+                this.mainWindow.loadContacts(this.contacts);
             } else {
                 this.contacts = new ArrayList<Contact>();
                 this.dataManager.addObject("Contacts", this.contacts);
@@ -186,8 +169,6 @@ public class ProgramController extends Application {
             // set up the basic account for the user.
             this.account = new Account(username);
             this.dataManager.addObject("account", this.account);
-            this.preferences = new HashMap<>();
-            this.dataManager.addObject("preferences", this.preferences);
             this.testMessages = new ArrayList<Message>();
             this.dataManager.addObject( "TestMessages", this.testMessages);
             this.mainWindow.show();

@@ -158,10 +158,15 @@ public class ChatPane extends AnchorPane {
      * this replaces the contents of the chat pane with a new set of messages
      * @param messages an ArrayList that contains the messagesto be displayed on the messageview
      */
-    public void loadMessages(ArrayList<MessageTextBox> messages) {
-        ArrayList tmpArray = (ArrayList) messages.clone();
-        Collections.reverse(tmpArray);
-        this.messageView.setItems(FXCollections.observableArrayList(tmpArray));
+    public void loadMessages(ArrayList<Message> messages) {
+        ArrayList<MessageTextBox> a = new ArrayList<>();
+        if(messages != null) {
+            for (Message i : messages) {
+                a.add(new MessageTextBox(i));
+            }
+            Collections.reverse(a);
+            this.messageView.setItems(FXCollections.observableArrayList(a));
+        }
     }
 
     /**

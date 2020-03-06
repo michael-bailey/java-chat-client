@@ -7,6 +7,7 @@ import client.enums.MessageAlignment;
 import client.interfaces.IWindow;
 import client.ui.main_window.chat_pane.ChatPane;
 import client.ui.main_window.chat_pane.MessageTextBox;
+import client.ui.main_window.contact_pane.ContactBox;
 import client.ui.main_window.contact_pane.ContactPane;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
@@ -39,9 +40,7 @@ public class MainWindow implements IWindow {
 	// event handlers
 	private EventHandler onRequestSendMessage;
 	private EventHandler onRequestAddContact;
-	private EventHandler onSpam;
-
-	// window events
+	private EventHandler onRequestChangeContact;
 	private EventHandler onRequestClose;
 
 	// not sure about these
@@ -80,9 +79,9 @@ public class MainWindow implements IWindow {
 			}
 		});
 
-		this.menuBar.setOnSpam(event -> {
-			if (this.onSpam != null) {
-				this.onSpam.handle(event);
+		this.contactPane.setOnChangeContact(event -> {
+			if(this.onRequestChangeContact != null) {
+				this.onRequestChangeContact.handle(event);
 			}
 		});
 
@@ -147,7 +146,6 @@ public class MainWindow implements IWindow {
 		this.stage.setScene(scene);
 	}
 
-
 	public String getMessageBoxText() {
 		return this.chatPane.getMessageText();
 	}
@@ -160,10 +158,33 @@ public class MainWindow implements IWindow {
 		this.contactPane.addContact(tmp);
 	}
 
-	public void loadMessages(ArrayList<MessageTextBox> messages) {
+	public ContactBox getSelectedContact() {
+		return this.contactPane.getSelected();
+	}
+
+	public void loadMessages(ArrayList<Message> messages) {
 		this.chatPane.loadMessages(messages);
 	}
 
+	public void loadContacts(ArrayList<Contact> contacts) {
+		this.contactPane.setContacts(contacts);
+	}
+
+	public void setOnRequestSendMessage(EventHandler onRequestSendMessage) {
+		this.onRequestSendMessage = onRequestSendMessage;
+	}
+
+	public void setOnRequestClose(EventHandler onRequestClose) {
+		this.onRequestClose = onRequestClose;
+	}
+
+	public void setOnRequestAddContact(EventHandler onRequestAddContact) {
+		this.onRequestAddContact = onRequestAddContact;
+	}
+
+	public void setOnRequestChangeContact(EventHandler onRequestChangeContact) {
+		this.onRequestChangeContact = onRequestChangeContact;
+	}
 
 	@Override
 	public void show() {
@@ -177,31 +198,8 @@ public class MainWindow implements IWindow {
 		this.contactPane.clear();
 	}
 
-	public EventHandler getOnRequestSendMessage() {
-		return onRequestSendMessage;
-	}
 
-	public void setOnRequestSendMessage(EventHandler onRequestSendMessage) {
-		this.onRequestSendMessage = onRequestSendMessage;
-	}
-
-	public EventHandler getOnRequestClose() {
-		return onRequestClose;
-	}
-
-	public void setOnRequestClose(EventHandler onRequestClose) {
-		this.onRequestClose = onRequestClose;
-	}
-
-	public EventHandler getOnSpam() {
-		return onSpam;
-	}
-
-	public void setOnSpam(EventHandler onSpam) {
-		this.onSpam = onSpam;
-	}
-
-	public void setOnRequestAddContact(EventHandler onRequestAddContact) {
-		this.onRequestAddContact = onRequestAddContact;
+	public void setChatPaneEnabled(boolean isEnabled) {
+		this.chatPane.setVisible(isEnabled);
 	}
 }
