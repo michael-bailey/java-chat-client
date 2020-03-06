@@ -22,7 +22,10 @@ public class ContactPane extends AnchorPane {
     private Button addContactButton = new Button("+");
     private TextField searchBox = new TextField();
 
+    private EventHandler onAddContact;
+
     private ArrayList<ContactBox> contactList;
+    private EventHandler onChangeContact;
 
     public ContactPane() {
         System.out.println(this);
@@ -84,11 +87,7 @@ public class ContactPane extends AnchorPane {
         this.listView.setItems(FXCollections.observableList(newList));
     };
 
-    private EventHandler onAddContact;
-
-
-
-    void setContacts(ArrayList contacts) {
+    public void setContacts(ArrayList contacts) {
         for(Contact contact : ( ArrayList<Contact> )contacts) {
             this.addContact(contact);
         }
@@ -103,13 +102,23 @@ public class ContactPane extends AnchorPane {
     }
 
     public void addContact(Contact tmp) {
+        ContactBox a = new ContactBox(tmp);
+        a.setOnMouseClicked(this.onChangeContact);
         this.searchBox.clear();
-        this.contactList.add(new ContactBox(tmp));
+        this.contactList.add(a);
         this.listView.setItems(FXCollections.observableList(this.contactList));
+    }
+
+    public ContactBox getSelected() {
+        return this.listView.getSelectionModel().getSelectedItem();
     }
 
     public void clear() {
         this.contactList.clear();
         this.listView.getItems().clear();
+    }
+
+    public void setOnChangeContact(EventHandler handler) {
+        this.onChangeContact = handler;
     }
 }

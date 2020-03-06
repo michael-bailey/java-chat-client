@@ -20,6 +20,8 @@ public class ContactBox extends AnchorPane {
     ImageView userImage;
     Label contactUserID;
 
+    Contact contact;
+
 
     URL fxmlUrl = getClass().getClassLoader().getResource("layouts/MainWindow/ContactPane/ContactBox.fxml");
 
@@ -28,6 +30,8 @@ public class ContactBox extends AnchorPane {
     public ContactBox(Contact contact) {
         super();
         System.out.println(this);
+
+        this.contact = contact;
 
         // setting up the box's properties
         this.setMinSize(100,50);
@@ -40,8 +44,8 @@ public class ContactBox extends AnchorPane {
             }
         });
 
-        this.contactName = new Label(contact.contactName);
-        this.contactUserID = new Label(contact.contactUserID);
+        this.contactName = new Label(this.contact.getContactName());
+        this.contactUserID = new Label(this.contact.getContactUserID());
 
         this.userImage = new ImageView();
         this.userImage.setImage(new Image("img/developer_board-24px.svg"));
@@ -76,8 +80,8 @@ public class ContactBox extends AnchorPane {
         return this.contactUserID.getText();
     }
 
-    public EventHandler getOnClick() {
-        return onClick;
+    public Contact getContact() {
+        return this.contact;
     }
 
     public void setOnClick(EventHandler onClick) {
