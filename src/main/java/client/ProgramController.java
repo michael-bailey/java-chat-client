@@ -65,7 +65,7 @@ public class ProgramController extends Application {
     private EventHandler onRequestShowAddContactDialogue = event -> { this.addContactDialogue.show(); };
 
     private EventHandler onRequestAddContact = event -> {
-        Contact a  = new Contact(this.addContactDialogue.getNameText(),this.addContactDialogue.getUserIDText());
+        Contact a = new Contact(this.addContactDialogue.getNameText(),this.addContactDialogue.getUserIDText());
         this.contacts.add(a);
         this.mainWindow.addContact(a);
     };
@@ -135,19 +135,6 @@ public class ProgramController extends Application {
         if (this.dataManager.unlock(username, Password)) {
             this.loginWindow.hide();
 
-            // load test messages
-            this.testMessages = (ArrayList<Message>) this.dataManager.getObject("TestMessages");
-            if (this.testMessages != null) {
-                Iterator<Message> a = this.testMessages.iterator();
-                while (a.hasNext()) {
-                    Message tmp = a.next();
-                    this.mainWindow.addMessage(tmp);
-                }
-            } else {
-                this.testMessages = new ArrayList<>();
-                this.dataManager.addObject("TestMessages", this.testMessages);
-            }
-
             // load contacts
             this.contacts = (ArrayList<Contact>) this.dataManager.getObject("Contacts");
             if (this.contacts != null) {
@@ -169,8 +156,8 @@ public class ProgramController extends Application {
             // set up the basic account for the user.
             this.account = new Account(username);
             this.dataManager.addObject("account", this.account);
-            this.testMessages = new ArrayList<Message>();
-            this.dataManager.addObject( "TestMessages", this.testMessages);
+            this.contacts = new ArrayList<>();
+            this.dataManager.addObject("Contacts", this.contacts);
             this.mainWindow.show();
         }
     }
