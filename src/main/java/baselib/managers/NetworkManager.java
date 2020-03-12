@@ -30,7 +30,7 @@ public class NetworkManager extends Thread{
 	boolean threadRunning = true;
 
 	public NetworkManager(){
-		connections.add(new ServerConnection("localhost",9806));
+		connections.add(new ServerConnection("127.0.0.1",6000));
 		connections.get(0).start();
 	}
 
@@ -38,25 +38,25 @@ public class NetworkManager extends Thread{
 	public void run(){
 		while(this.threadRunning){
 			if(connections.get(0).getListenForClient()==true){
-				connections.add(new ClientConnection(connections.get(0).getRecipentAddress(), 9806, connections.get(0).getListenForClient()));// recipent address is empty at this point
+				connections.add(new ClientConnection(connections.get(0).getRecipentAddress(), 6000, connections.get(0).getListenForClient());// recipent address is empty at this point
 				connections.get(1).start();
-				connections.get(0).setListenForClient(false);
-				connections.get(0).setRequestSuccessful(false);
+				//connections.get(0).setListenForClient(false);
+				//connections.get(0).setRequestSuccessful(false);
 			}
 			if(connections.get(0).getRequestSuccessful()==true){
-				connections.add(new ClientConnection(connections.get(0).getRecipentAddress(), 9806, connections.get(0).getListenForClient()));// recipent address exists at this point
+				connections.add(new ClientConnection(connections.get(0).getRecipentAddress(), 6000, this));// recipent address exists at this point
 				connections.get(1).start();
-				connections.get(0).setListenForClient(false);
-				connections.get(0).setRequestSuccessful(false);
+				//connections.get(0).setListenForClient(false);
+				//connections.get(0).setRequestSuccessful(false);
 			}
 		}
 	}
 
 	public void doStop(){this.threadRunning = false;}
 
-	public ServerConnection getServer(){return connections.get(0);}
+	public ServerConnection getCurrentServer(){return connections.get(0);}
 
-	public ClientConnection getClient(){return connections.get(1);}
+	public ClientConnection getCurrentClient(){return connections.get(1);}
 }
 
 /*public class NetworkManager extends Thread{
