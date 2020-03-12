@@ -8,6 +8,11 @@ const LOCAL &str = "127.0.0.1:6000";
 //buffer size of messages
 const MSG_SIZE: usize = 32;
 
+//allows the thread to sleep while its not reciving messages
+fn sleep(){
+    thread::sleep(::std::time::Duration::from_millis(100));
+}
+
 fn main(){
     let server = TcpListener::bind(LOCAL).except("Listener failed to build");
     
@@ -44,9 +49,28 @@ fn main(){
                         println!("{}: {:?}", addr, msg);
                         //send our message from our transmitter to our reciver
                         tx.send(msg).except("failed to send msg to rx");
+                    },
+                    Err(ref err) if err.kind() = ErrorKind::WouldBlock => (),
+                    Err(_) => {
+                        println("closing connection with: {}", addr);
+                        break;
                     }
                 }
-            })
+                //thread sleep
+                sleep();
+            });
         }
+        // when server recives a message
+        if let Ok(msg) = rx.try_recv(){
+            clients = clients.into_iter().filter_map(|mut client|{
+                let mut buff = msg.clone().into_bytes();
+                buff.resize(MSG_SIZE,0);
+
+                //send whole buffer back to client
+                client.write_all(&buff).map(|_| client).ok()
+            }).collect::<Vec<_>>();
+        }
+        //thread sleep
+        sleep();
     }
-}
+} 
