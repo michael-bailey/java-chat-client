@@ -17,3 +17,4 @@ java-chat-client.iml
 .vscode/
 User.dat
 .DS_Store
+.project
