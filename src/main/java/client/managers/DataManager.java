@@ -1,4 +1,4 @@
-package baselib.managers;
+package client.managers;
 
 import java.io.*;
 import java.util.Base64;
@@ -8,7 +8,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import baselib.classes.DataStore;
+import client.classes.DataStore;
 import com.google.common.annotations.Beta;
 
 import java.security.*;

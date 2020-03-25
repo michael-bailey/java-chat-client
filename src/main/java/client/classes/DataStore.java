@@ -1,4 +1,4 @@
-package baselib.classes;
+package client.classes;
 
 import java.io.Serializable;
 

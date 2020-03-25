@@ -1,4 +1,4 @@
-package baselib.managers;
+package client.managers;
 
 import org.junit.Test;
 
@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import baselib.classes.DataStore;
+import client.classes.DataStore;
 
 public class DataManagerTest {
 

@@ -1,4 +1,4 @@
-package baselib.managers;
+package client.managers;
 
 import java.io.IOException;
 import java.net.ServerSocket;
