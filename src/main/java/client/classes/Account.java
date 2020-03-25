@@ -6,12 +6,13 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.UUID;
 
 public class Account implements Serializable {
     private static final long serialVersionUID = -7544412400442925489L;
     
     // account details.
-    String userID;
+    UUID uuid;
     String username;
 
     // encryption keys
@@ -33,16 +34,8 @@ public class Account implements Serializable {
             publicKey = kp.getPublic();
             privateKey = kp.getPrivate();
 
-
-            // create a random number.
-            SecureRandom rand = new SecureRandom();
-            StringBuilder tmp = new StringBuilder();
-            for (int i = 0; i < 5; i++) {
-                tmp.append(rand.nextInt());
-            }
-
-            // create the userID
-            this.userID = username + "@" + tmp.toString();
+            //creating a uuid
+            this.uuid = UUID.randomUUID();
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -62,8 +55,8 @@ public class Account implements Serializable {
         return true;
     }
 
-    public String getUserID() {
-        return userID;
+    public UUID getuuid() {
+        return uuid;
     }
 
     public Key getPublicKey() {

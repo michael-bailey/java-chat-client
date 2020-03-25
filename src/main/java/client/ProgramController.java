@@ -1,24 +1,22 @@
 package client;
 
-import baselib.managers.DataManager;
+import client.controllers.login_display.LoginWindowController;
+import client.managers.DataManager;
+import client.managers.NetworkManager;
 import client.classes.Account;
 import client.classes.Contact;
 import client.classes.Message;
-import client.ui.login_display.LoginWindow;
-import client.ui.main_window.MainWindow;
-import client.ui.main_window.contact_pane.ContactBox;
-import client.ui.other.AddContactDialogue;
+import client.classes.Server;
+import client.views.main_window.MainWindow;
+import client.views.other.AddContactDialogue;
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Screen;
+import javafx.beans.property.BooleanProperty;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Random;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Program Controller.
@@ -35,53 +33,12 @@ import java.util.Random;
 public class ProgramController extends Application {
 
     // this section defines the windows that are in use
-    MainWindow mainWindow = new MainWindow();
-    LoginWindow loginWindow = new LoginWindow();
-    AddContactDialogue addContactDialogue = new AddContactDialogue();
 
-    //this defines all data objects that are in use
-    DataManager dataManager = new DataManager();
-    ArrayList<Contact> contacts;
-    Account account;
-    
-    private String loginMsg = "Incorrect Login Details!", createAccountMsg = "Invalid Details! Please correct!";
-    private ArrayList<Message> testMessages;
+    private LoginWindowController loginWindow;
 
-    private Contact currentContact;
+    private BooleanProperty dataManagerLocked;
 
-
-    private EventHandler onRequestLogin = event -> {
-        this.LoginRequest(this.loginWindow.getUsername(), this.loginWindow.getPassword());
-    };
-
-    private EventHandler onRequestCreate = event -> {
-        this.LoginCreateUser(this.loginWindow.getUsername(), this.loginWindow.getPassword());
-    };
-
-    private EventHandler onRequestClose = event -> {
-        this.RequestLogout();
-    };
-
-    private EventHandler onRequestShowAddContactDialogue = event -> { this.addContactDialogue.show(); };
-
-    private EventHandler onRequestAddContact = event -> {
-        Contact a = new Contact(this.addContactDialogue.getNameText(),this.addContactDialogue.getUserIDText());
-        this.contacts.add(a);
-        this.mainWindow.addContact(a);
-    };
-
-    private EventHandler onRequestChangeContact = event -> {
-        Contact sourceContact = ((ContactBox) event.getSource()).getContact();
-        this.currentContact = sourceContact;
-        this.mainWindow.loadMessages(sourceContact.getMessages());
-        this.mainWindow.setChatPaneEnabled(true);
-    };
-
-    private EventHandler onRequestSendMessage = event -> {
-        Message newMessage = new Message(this.mainWindow.getMessageBoxText(), false);
-        this.currentContact.addMessage(newMessage);
-        this.mainWindow.addMessage(newMessage);
-    };
+    private Account account;
 
     /**
      * this is called by main
@@ -98,76 +55,14 @@ public class ProgramController extends Application {
      * @throws Exception any thing that could go wrong.
      */
     public void start(Stage stage) throws Exception {
-        System.out.println(this);
+        System.out.println(getClass().getClassLoader().getResource("layouts/LoginWindow/LoginWindow.fxml"));
+        FXMLLoader tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/LoginWindow/LoginWindow.fxml"));
+        tmpFxmlLoader.load();
+        this.loginWindow = tmpFxmlLoader.getController();
 
-        // setting the event handlers
-        this.loginWindow.setOnRequestLogin(onRequestLogin);
-        this.loginWindow.setOnRequestCreate(onRequestCreate);
-
-        this.mainWindow.setOnRequestClose(onRequestClose);
-        this.mainWindow.setOnRequestSendMessage(onRequestSendMessage);
-        this.mainWindow.setOnRequestAddContact(this.onRequestShowAddContactDialogue);
-        this.mainWindow.setOnRequestChangeContact(this.onRequestChangeContact);
-
-        this.addContactDialogue.setOnAddContact(this.onRequestAddContact);
-
-        this.mainWindow.setChatPaneEnabled(false);
 
         // show the login window
-        this.loginWindow.show();
+        this.loginWindow.showView();
     }
 
-    /**
-     * this saves data and closes the program down
-     */
-    private void RequestLogout() {
-        this.dataManager.lock();
-        this.mainWindow.hide();
-        this.loginWindow.show();
-    }
-
-    /**
-     * unlocks the users data and opens up the rest of the windows
-     * @param username the users username
-     * @param Password the users password
-     */
-    public void LoginRequest(String username, String Password) {
-        if (this.dataManager.unlock(username, Password)) {
-            this.loginWindow.hide();
-
-            // load contacts
-            this.contacts = (ArrayList<Contact>) this.dataManager.getObject("Contacts");
-            if (this.contacts != null) {
-                this.mainWindow.loadContacts(this.contacts);
-            } else {
-                this.contacts = new ArrayList<Contact>();
-                this.dataManager.addObject("Contacts", this.contacts);
-            }
-
-
-            this.account = (Account) this.dataManager.getObject("account");
-            this.mainWindow.show();
-        }
-    }
-
-    public void LoginCreateUser(String username, String Password) {
-        if (this.dataManager.createNew(username, Password)) {
-            this.loginWindow.hide();
-            // set up the basic account for the user.
-            this.account = new Account(username);
-            this.dataManager.addObject("account", this.account);
-            this.contacts = new ArrayList<>();
-            this.dataManager.addObject("Contacts", this.contacts);
-            this.mainWindow.show();
-        }
-    }
-
-    private void shutdown() {
-        this.dataManager.lock();
-        try {
-            this.stop();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

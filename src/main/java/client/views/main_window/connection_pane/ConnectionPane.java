@@ -1,4 +1,4 @@
-package client.ui.main_window.connection_pane;
+package client.views.main_window.connection_pane;
 
 import javafx.scene.layout.AnchorPane;
 

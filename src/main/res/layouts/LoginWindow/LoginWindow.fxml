@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.stage.Stage?>
+
+<Stage fx:id="stage" resizable="false" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.login_display.LoginWindowController">
+   <scene>
+      <Scene fx:id="scene" stylesheets="@../../css/LoginWindow/LoginWindow.css">
+         <root>
+            <AnchorPane id="root" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="301.0" prefWidth="225.0" styleClass="Root">
+               <children>
+                  <Label alignment="CENTER" layoutX="142.0" layoutY="240.0" text="Login" textFill="TRANSPARENT" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
+                     <font>
+                        <Font size="28.0" />
+                     </font></Label>
+                  <Label alignment="CENTER" layoutX="50.0" layoutY="103.0" text="Username" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="75.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <PasswordField fx:id="passwordField" layoutX="59.0" layoutY="286.0" styleClass="TextBox" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="185.0" />
+                  <Label alignment="CENTER" layoutX="59.0" layoutY="206.0" text="Password" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="150.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="cancelButton" layoutX="25.0" layoutY="247.0" mnemonicParsing="false" onAction="#cancel" prefHeight="27.0" prefWidth="80.0" styleClass="Button" text="cancel" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="247.0" />
+                  <Button fx:id="loginButton" layoutX="120.0" layoutY="247.0" mnemonicParsing="false" onAction="#Login" prefHeight="27.0" prefWidth="80.0" styleClass="Button" text="login" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="247.0" />
+                  <TextField fx:id="UsernameField" layoutX="50.0" layoutY="183.0" styleClass="TextBox" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="110.0"  />
+               </children>
+            </AnchorPane>
+         </root>
+      </Scene>
+   </scene>
+</Stage>

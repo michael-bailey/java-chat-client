@@ -1,9 +1,8 @@
-package client.ui.other;
+package client.views.other;
 
 import java.io.IOException;
 import java.net.URL;
 
-import client.interfaces.IWindow;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,7 +13,7 @@ import javafx.stage.Stage;
 /**
  * AddTempContactDialogue
  */
-public class AddContactDialogue implements IWindow {
+public class AddContactDialogue {
 
     private Stage window;
 
@@ -56,14 +55,12 @@ public class AddContactDialogue implements IWindow {
         return this.userIDField.getText();
     }
 
-    @Override
     public void show() {
         this.nameField.setText("");
         this.userIDField.setText("");
         this.window.show();
     }
 
-    @Override
     public void hide() {
         this.window.hide();
     }

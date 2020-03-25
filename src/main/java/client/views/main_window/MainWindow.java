@@ -1,22 +1,11 @@
 // Created by Mitchell Hardie
-package client.ui.main_window;
-
-import client.classes.Contact;
-import client.classes.Message;
-import client.enums.MessageAlignment;
-import client.interfaces.IWindow;
-import client.ui.main_window.chat_pane.ChatPane;
-import client.ui.main_window.chat_pane.MessageTextBox;
-import client.ui.main_window.contact_pane.ContactBox;
-import client.ui.main_window.contact_pane.ContactPane;
-import javafx.event.EventHandler;
+package client.views.main_window;
+import client.views.main_window.chat_pane.ChatPane;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
 
 /**
  * Class is responsible for creating all components of the main appliactions interface.
@@ -30,60 +19,28 @@ import java.util.ArrayList;
  * @version 1.0
  * @since 1.0
  */
-public class MainWindow implements IWindow {
+public class MainWindow extends Stage {
 
 	// ui elements
-	private ContactPane contactPane = new ContactPane();
+
 	private ChatPane chatPane = new ChatPane();
 	private MainWindowMenuBar menuBar = new MainWindowMenuBar();
 
-	// event handlers
-	private EventHandler onRequestSendMessage;
-	private EventHandler onRequestAddContact;
-	private EventHandler onRequestChangeContact;
-	private EventHandler onRequestClose;
-
-	// not sure about these
+	// gets screen bounds
 	private Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-	private Stage stage;
 
-	/*
+	/**
 	 * Constructors
 	 * Initializes the stage.
 	 * Assigns the stage attribute to a new stage.
 	 */
 	public MainWindow() {
 		//creating the stage.
-		this.stage = new Stage();
-		this.stage.setTitle("chat window");
-		this.stage.setMaxHeight(this.primaryScreenBounds.getHeight());
-		this.stage.setMaxWidth(this.primaryScreenBounds.getWidth());
-		this.stage.setMinWidth(550);
-		this.stage.setMinHeight(400);
-
-		this.stage.setOnCloseRequest(event -> {
-			if (this.onRequestClose != null) {
-				this.onRequestClose.handle(event);
-			}
-		});
-
-		this.chatPane.setOnMessageHandler(event -> {
-			if (this.onRequestSendMessage != null) {
-				this.onRequestSendMessage.handle(event);
-			}
-		});
-
-		this.contactPane.setOnAddContact(event -> {
-			if (this.onRequestAddContact != null) {
-				this.onRequestAddContact.handle(event);
-			}
-		});
-
-		this.contactPane.setOnChangeContact(event -> {
-			if(this.onRequestChangeContact != null) {
-				this.onRequestChangeContact.handle(event);
-			}
-		});
+		this.setTitle("chat window");
+		this.setMaxHeight(this.primaryScreenBounds.getHeight());
+		this.setMaxWidth(this.primaryScreenBounds.getWidth());
+		this.setMinWidth(550);
+		this.setMinHeight(400);
 
 		// creating the main
 		GridPane mainGrid = new GridPane();
@@ -132,7 +89,7 @@ public class MainWindow implements IWindow {
 		mainGrid.getRowConstraints().add(row1);
 
 		// TODO mainGrid.add(null, 0, 1);
-		mainGrid.add(this.contactPane, 1, 1);
+		// TODO mainGrid.add(, 1, 1);
 		mainGrid.add(this.chatPane,2,1);
 		mainGrid.add(this.menuBar,0,0,GridPane.REMAINING, 1);
 
@@ -143,63 +100,6 @@ public class MainWindow implements IWindow {
 		scene.getStylesheets().add("css/MainWindow/MainWindow.css");
 		scene.getStylesheets().add("css/MainWindow/ContactPane/ContactPane.css");
 		scene.getStylesheets().add("css/ContextMenu.css");
-		this.stage.setScene(scene);
-	}
-
-	public String getMessageBoxText() {
-		return this.chatPane.getMessageText();
-	}
-
-	public void addMessage(Message message) {
-		this.chatPane.appendMessage(message);
-	}
-
-	public void addContact(Contact tmp) {
-		this.contactPane.addContact(tmp);
-	}
-
-	public ContactBox getSelectedContact() {
-		return this.contactPane.getSelected();
-	}
-
-	public void loadMessages(ArrayList<Message> messages) {
-		this.chatPane.loadMessages(messages);
-	}
-
-	public void loadContacts(ArrayList<Contact> contacts) {
-		this.contactPane.setContacts(contacts);
-	}
-
-	public void setOnRequestSendMessage(EventHandler onRequestSendMessage) {
-		this.onRequestSendMessage = onRequestSendMessage;
-	}
-
-	public void setOnRequestClose(EventHandler onRequestClose) {
-		this.onRequestClose = onRequestClose;
-	}
-
-	public void setOnRequestAddContact(EventHandler onRequestAddContact) {
-		this.onRequestAddContact = onRequestAddContact;
-	}
-
-	public void setOnRequestChangeContact(EventHandler onRequestChangeContact) {
-		this.onRequestChangeContact = onRequestChangeContact;
-	}
-
-	@Override
-	public void show() {
-		this.stage.show();
-	}
-
-	@Override
-	public void hide() {
-		this.stage.hide();
-		this.chatPane.clearAll();
-		this.contactPane.clear();
-	}
-
-
-	public void setChatPaneEnabled(boolean isEnabled) {
-		this.chatPane.setVisible(isEnabled);
+		this.setScene(scene);
 	}
 }

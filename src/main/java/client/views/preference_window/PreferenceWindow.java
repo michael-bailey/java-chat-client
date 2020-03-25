@@ -1,7 +1,7 @@
-package client.ui.preference_window;
+package client.views.preference_window;
 
-import baselib.managers.DataManager;
-import client.interfaces.IWindow;
+import client.managers.DataManager;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
@@ -10,12 +10,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 
 /**
  * this class 
  */
-public class PreferenceWindow implements IWindow {
+public class PreferenceWindow {
 
     Stage stage;
     URL mainSceneURL = getClass().getClassLoader().getResource("layouts/PreferenceWindow/PreferenceWindow.fxml");
@@ -35,12 +34,12 @@ public class PreferenceWindow implements IWindow {
 
     }
 
-    @Override
+
     public void show() {
         this.stage.show();
     }
 
-    @Override
+
     public void hide() {
         this.stage.hide();
     }

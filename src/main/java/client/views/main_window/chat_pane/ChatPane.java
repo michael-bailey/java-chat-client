@@ -1,17 +1,12 @@
-package client.ui.main_window.chat_pane;
+package client.views.main_window.chat_pane;
 
 import client.classes.Message;
-import client.enums.MessageAlignment;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
-
-import java.util.ArrayList;
-import java.util.Collections;
+import javafx.util.Callback;
 
 public class ChatPane extends AnchorPane {
 
@@ -22,7 +17,7 @@ public class ChatPane extends AnchorPane {
     private Button sendButton;
     private Button AdditionalItemsButton;
     private TextField messageBox;
-    private ListView<MessageTextBox> messageView;
+    private ListView<Message> messageView;
 
     private int i = 0;
 
@@ -49,6 +44,12 @@ public class ChatPane extends AnchorPane {
 
         // creating the message view.
         messageView = new ListView<>();
+        messageView.setCellFactory(new Callback<ListView<Message>, ListCell<Message>>() {
+            @Override
+            public ListCell<Message> call(ListView<Message> messageListView) {
+                return new MessageCell();
+            }
+        });
 
 
         messageView.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -120,73 +121,21 @@ public class ChatPane extends AnchorPane {
                 this.messageBox.clear();
             }
         });
-
-        this.messageView.setContextMenu(this.getContextMenu());
     }
 
-    /**
-     * this creates a
-     * @return returns a new context menu
-     */
-    private ContextMenu getContextMenu() {
-        ContextMenu tmpContextMenu = new ContextMenu();
-        tmpContextMenu.getStyleClass().add("contextMenu");
-
-        MenuItem preset1 = new MenuItem("load preset 1");
-        preset1.getStyleClass().add("contextMenuItem");
-        preset1.setOnAction(event -> {
-            this.appendMessage(new Message("context 1", true));
-        });
-
-        tmpContextMenu.getItems().add(preset1);
-        return tmpContextMenu;
+    public Button getSendButton() {
+        return sendButton;
     }
 
-    /**
-     * this appends a message to the top (bottom) of the list by reversing it many times
-     * @param message the message object to be added
-     */
-    public void appendMessage(Message message) {
-        ObservableList tmplist = messageView.getItems();
-        Collections.reverse(tmplist);
-        MessageTextBox tmpMessage = new MessageTextBox(message);
-        tmplist.add(0, tmpMessage);
-        Collections.reverse(tmplist);
+    public Button getAdditionalItemsButton() {
+        return AdditionalItemsButton;
     }
 
-    /**
-     * this replaces the contents of the chat pane with a new set of messages
-     * @param messages an ArrayList that contains the messagesto be displayed on the messageview
-     */
-    public void loadMessages(ArrayList<Message> messages) {
-        ArrayList<MessageTextBox> a = new ArrayList<>();
-        if(messages != null) {
-            for (Message i : messages) {
-                a.add(new MessageTextBox(i));
-            }
-            Collections.reverse(a);
-            this.messageView.setItems(FXCollections.observableArrayList(a));
-        }
+    public TextField getMessageBox() {
+        return messageBox;
     }
 
-    /**
-     * this gets the text in the message box
-     * @return string of the message
-     */
-    public String getMessageText() {
-        return this.messageBox.getText();
-    }
-
-    /**
-     * this will set the event handler for when a message is to be sent
-     * @param handler An Event handler that will be called when send or enter is pressed/typed
-     */
-    public void setOnMessageHandler(EventHandler handler) {
-        this.onSendMessage = handler;
-    }
-
-    public void clearAll() {
-        this.messageView.getItems().clear();
-        this.messageBox.clear();
+    public void setItems(ObservableList<Message> list) {
+        this.messageView.setItems(list);
     }
 }

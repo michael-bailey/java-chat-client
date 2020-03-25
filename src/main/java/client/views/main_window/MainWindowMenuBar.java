@@ -1,8 +1,7 @@
-package client.ui.main_window;
+package client.views.main_window;
 
 
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
