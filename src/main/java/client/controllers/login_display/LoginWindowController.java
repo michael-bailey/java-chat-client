@@ -1,11 +1,8 @@
 package client.controllers.login_display;
 
-import client.ProgramController;
 import client.models.ApplicationModel;
-import com.sun.glass.ui.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -40,7 +37,7 @@ public class LoginWindowController {
     }
 
     @FXML void Login(ActionEvent event) {
-        this.model.unlockDataManager(this.UsernameField.getText(), this.passwordField.getText());
+        this.model.login(this.UsernameField.getText(), this.passwordField.getText());
     }
 
     @FXML void cancel(ActionEvent event) {

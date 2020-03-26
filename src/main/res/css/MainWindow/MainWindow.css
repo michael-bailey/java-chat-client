@@ -3,8 +3,7 @@ GridPane {
     -fx-focus-color: transparent;
 }
 
-
-.menuBar {
-    -fx-text-fill: #FFFFFF;
-    -fx-background-color: #3c4042;
+SendButton {
+	-fx-background-color: black;
+	-fx-border-radius: 12.5;
 }

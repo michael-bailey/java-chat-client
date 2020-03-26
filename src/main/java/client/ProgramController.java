@@ -1,22 +1,17 @@
 package client;
 
-import client.controllers.login_display.LoginWindowController;
-import client.managers.DataManager;
-import client.managers.NetworkManager;
 import client.classes.Account;
-import client.classes.Contact;
-import client.classes.Message;
-import client.classes.Server;
-import client.views.main_window.MainWindow;
-import client.views.other.AddContactDialogue;
+import client.controllers.login_display.LoginWindowController;
+import client.controllers.main_window.MainWindowController;
+import client.models.ApplicationModel;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.util.List;
+import java.awt.Desktop;
 
 /**
  * Program Controller.
@@ -39,6 +34,7 @@ public class ProgramController extends Application {
     private BooleanProperty dataManagerLocked;
 
     private Account account;
+    private MainWindowController mainWindow;
 
     /**
      * this is called by main
@@ -55,14 +51,29 @@ public class ProgramController extends Application {
      * @throws Exception any thing that could go wrong.
      */
     public void start(Stage stage) throws Exception {
-        System.out.println(getClass().getClassLoader().getResource("layouts/LoginWindow/LoginWindow.fxml"));
-        FXMLLoader tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/LoginWindow/LoginWindow.fxml"));
+        Platform.setImplicitExit(false);
+
+        FXMLLoader tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/MainMenu.fxml"));
+        MenuBar tmpmenu = tmpFxmlLoader.load();
+        stage.setScene(new Scene(tmpmenu));
+
+        tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/LoginWindow/LoginWindow.fxml"));
         tmpFxmlLoader.load();
         this.loginWindow = tmpFxmlLoader.getController();
+
+        tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/MainWindow/MainWindow.fxml"));
+        tmpFxmlLoader.load();
+        this.mainWindow = tmpFxmlLoader.getController();
+
 
 
         // show the login window
         this.loginWindow.showView();
+    }
+
+    public void quitApplication() {
+        ApplicationModel.getInstance().save();
+        Platform.exit();
     }
 
 }

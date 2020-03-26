@@ -8,6 +8,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.stage.Stage?>
+<?import client.views.MenuBarController?>
+
 
 <Stage fx:id="stage" resizable="false" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.login_display.LoginWindowController">
    <scene>
@@ -15,6 +17,7 @@
          <root>
             <AnchorPane id="root" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="301.0" prefWidth="225.0" styleClass="Root">
                <children>
+                  <fx:include source="../MainMenu.fxml" />
                   <Label alignment="CENTER" layoutX="142.0" layoutY="240.0" text="Login" textFill="TRANSPARENT" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
                      <font>
                         <Font size="28.0" />

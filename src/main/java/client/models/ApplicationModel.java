@@ -10,9 +10,12 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 
 import java.io.File;
 import java.security.Key;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,11 +52,20 @@ public class ApplicationModel {
         return ApplicationModel.instance;
     }
 
-    public void unlockDataManager(String username, String password) {
+    public void save() {
+        this.dataManager.Save();
+    }
+
+    public void login(String username, String password) {
         if (this.dataManager.unlock(username, password)) {
             // unpack the data
             this.contactList = new SimpleListProperty<Contact>(FXCollections.observableList((List<Contact>) this.dataManager.getObject("Contacts")));
             this.serverList = new SimpleListProperty<Server>(FXCollections.observableList((List<Server>) this.dataManager.getObject("Servers")));
+
+            this.name = new SimpleStringProperty();
+            this.uuid = new SimpleObjectProperty<>();
+            this.publicKey = new SimpleObjectProperty<>();
+            this.privateKey = new SimpleObjectProperty<>();
 
             Account account = (Account) this.dataManager.getObject("Account");
             this.name.set(account.getUsername());
@@ -71,7 +83,31 @@ public class ApplicationModel {
                 // create a new file
                 this.dataManager.createNew(username, password);
 
-                // populate the new file and the model
+                // create the new data
+                List<Contact> contactList = new ArrayList<Contact>();
+                List<Server> serverList = new ArrayList<Server>();
+                Account account = new Account(username);
+
+                // implement it in the model
+                this.contactList = new SimpleListProperty<Contact>(FXCollections.observableList(contactList));
+                this.serverList = new SimpleListProperty<Server>(FXCollections.observableList(serverList));
+
+                this.name = new SimpleStringProperty();
+                this.uuid = new SimpleObjectProperty<>();
+                this.publicKey = new SimpleObjectProperty<>();
+                this.privateKey = new SimpleObjectProperty<>();
+
+                this.name.set(account.getUsername());
+                this.uuid.set(account.getuuid());
+                this.publicKey.set(account.getPublicKey());
+                this.privateKey.set(account.getPrivateKey());
+
+                // add to the dataManager
+                this.dataManager.addObject("Contacts", contactList);
+                this.dataManager.addObject("Servers", serverList);
+                this.dataManager.addObject("Account", account);
+
+                this.dataManager.Save();
 
                 // set property
                 this.loginStatus.set(true);
@@ -79,7 +115,7 @@ public class ApplicationModel {
         }
     }
 
-    public void lockDataManager() {
+    public void logout() {
         this.dataManager.lock();
 
         this.contactList.set(null);
@@ -89,6 +125,8 @@ public class ApplicationModel {
         this.uuid.set(null);
         this.publicKey.set(null);
         this.privateKey.set(null);
+
+        this.loginStatus.set(false);
     }
 
     public String getName() {
