@@ -57,6 +57,9 @@ public class ApplicationModel {
     }
 
     public void login(String username, String password) {
+        if (username.length() < 4 || password.length() < 8) {
+            return;
+        }
         if (this.dataManager.unlock(username, password)) {
             // unpack the data
             this.contactList = new SimpleListProperty<Contact>(FXCollections.observableList((List<Contact>) this.dataManager.getObject("Contacts")));

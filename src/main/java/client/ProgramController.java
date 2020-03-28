@@ -51,13 +51,11 @@ public class ProgramController extends Application {
      * @throws Exception any thing that could go wrong.
      */
     public void start(Stage stage) throws Exception {
+        System.out.println(this);
+
         Platform.setImplicitExit(false);
 
-        FXMLLoader tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/MainMenu.fxml"));
-        MenuBar tmpmenu = tmpFxmlLoader.load();
-        stage.setScene(new Scene(tmpmenu));
-
-        tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/LoginWindow/LoginWindow.fxml"));
+        FXMLLoader tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/LoginWindow/LoginWindow.fxml"));
         tmpFxmlLoader.load();
         this.loginWindow = tmpFxmlLoader.getController();
 

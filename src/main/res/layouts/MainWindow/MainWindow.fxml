@@ -4,50 +4,47 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.BoxBlur?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.stage.Stage?>
 
-<Stage fx:id="stage" onCloseRequest="#windowClose" title="chat client" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.main_window.MainWindowController">
+<Stage fx:id="stage" minHeight="250.0" minWidth="475.0" onCloseRequest="#windowClose" title="chat client" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.main_window.MainWindowController">
     <scene>
         <Scene stylesheets="@../../css/MainWindow/MainWindow.css">
-         <GridPane prefHeight="217.0" prefWidth="331.0">
-            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" />
-               <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
-               <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="200.0" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-               <AnchorPane prefHeight="50.0" prefWidth="50.0">
-                  <children>
-                     <Button mnemonicParsing="false" text="+" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-                  </children>
-               </AnchorPane>
-               <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
-                  <children>
-                     <ListView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     <TextField maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="35.0" />
-                     <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-                  </children>
-               </AnchorPane>
-               <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
-                  <children>
-                     <ListView fx:id="messageListView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     <TextField fx:id="messageBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="160.0" onAction="#sendMessage" prefHeight="25.0" promptText="Message..." style="-fx-border-radius: 12.5;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="35.0" />
-                     <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendMessage" prefHeight="25.0" prefWidth="25.0" styleClass="SendButton" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-                  </children>
-                  <effect>
-                     <BoxBlur height="10.0" iterations="2" width="10.0" />
-                  </effect>
-               </AnchorPane>
-            </children>
-         </GridPane>
+            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="250.0" minWidth="475.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="75.0" />
+                    <ColumnConstraints fx:id="secondPaneGrid" hgrow="ALWAYS" maxWidth="-Infinity" minWidth="150.0" prefWidth="200.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="250.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <children>
+                    <fx:include source="../MainMenu.fxml" />
+                    <AnchorPane prefHeight="50.0" prefWidth="50.0" GridPane.hgrow="NEVER">
+                         <children>
+                             <ListView prefHeight="200.0" prefWidth="200.0" styleClass="MessageListView" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                         </children>
+                    </AnchorPane>
+                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                        <children>
+                            <ListView fx:id="contactListView" prefHeight="200.0" prefWidth="200.0" styleClass="MessageListView" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                            <TextField fx:id="searchBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" promptText="Search..." styleClass="MessageField" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="35.0" />
+                            <Button fx:id="addContactbutton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="SendButton" text="+" textOverrun="CLIP" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                        </children>
+                    </AnchorPane>
+                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+                        <children>
+                            <ListView fx:id="messageListView" prefHeight="200.0" prefWidth="200.0" styleClass="MessageListView" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                            <TextField fx:id="messageBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="160.0" onAction="#sendMessage" prefHeight="25.0" promptText="Message..." styleClass="MessageField" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="35.0" />
+                            <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendMessage" prefHeight="25.0" prefWidth="25.0" styleClass="SendButton" text="&gt;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                        </children>
+                    </AnchorPane>
+                </children>
+            </GridPane>
         </Scene>
     </scene>
 </Stage>

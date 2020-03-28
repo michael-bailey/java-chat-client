@@ -1,4 +1,4 @@
-package client.views;
+package client.controllers;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -19,7 +19,7 @@ public class MenuBarController implements Initializable {
     private MenuItem quitItem;
 
     public MenuBarController() {
-
+        System.out.println(this);
     }
 
     @FXML
