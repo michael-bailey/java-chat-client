@@ -2,31 +2,24 @@ package client.controllers.main_window;
 
 import client.classes.Contact;
 import client.classes.Message;
-import client.controllers.main_window.message_view.MessageCellController;
-import client.enums.MessageAlignment;
 import client.models.ApplicationModel;
 import client.models.mainWindow.MainWindowModel;
 import client.views.main_window.MessageListCell;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.regex.*;
-
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 public class MainWindowController implements Initializable {
 
