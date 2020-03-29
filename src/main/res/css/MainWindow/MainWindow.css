@@ -90,3 +90,12 @@ GridPane {
      -fx-background-radius: 8;
      -fx-border-radius: 8;
 }
+
+.AddServerButton {
+    -fx-background-color: #353940;
+    -fx-background-radius: 12.5;
+    -fx-border-radius: 12.5;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #555555;
+    -fx-border-radius: 12.5;
+}

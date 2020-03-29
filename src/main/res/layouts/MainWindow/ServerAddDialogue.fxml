@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.stage.*?>
+
+<Stage xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.main_window.ServerAddDialogue">
+    <scene>
+        <Scene>
+            <AnchorPane>
+            <children>
+               <Button mnemonicParsing="false" text="Button" />
+               <Button mnemonicParsing="false" text="Button" />
+            </children></AnchorPane>
+        </Scene>
+    </scene>
+</Stage>
