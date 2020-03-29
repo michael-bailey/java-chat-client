@@ -3,6 +3,7 @@ package client.classes;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+//TODO implement the UUID as the Contact user id
 public class Contact implements Serializable {
     private static final long serialVersionUID = 365392247250419493L;
     

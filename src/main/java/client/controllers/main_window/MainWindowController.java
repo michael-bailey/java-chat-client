@@ -4,6 +4,7 @@ import client.classes.Contact;
 import client.classes.Message;
 import client.models.ApplicationModel;
 import client.models.mainWindow.MainWindowModel;
+import client.views.main_window.ContactListCell;
 import client.views.main_window.MessageListCell;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -60,6 +61,13 @@ public class MainWindowController implements Initializable {
         }
     };
 
+    Callback contactCellFactory = new Callback<ListView<Contact>, ContactListCell>() {
+        @Override
+        public ContactListCell call(ListView<Contact> studentListView) {
+            return new ContactListCell();
+        }
+    };
+
     ApplicationModel applicationModel = ApplicationModel.getInstance();
     MainWindowModel model = new MainWindowModel();
 
@@ -72,6 +80,8 @@ public class MainWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // cell factorys
         this.messageListView.setCellFactory(this.messageCellFactory);
+        this.contactListView.setCellFactory(this.contactCellFactory);
+
 
         // property bindings
         this.model.contactViewListProperty().bindBidirectional(this.contactListView.itemsProperty());
@@ -93,6 +103,10 @@ public class MainWindowController implements Initializable {
         this.messageBox.clear();
     }
 
+    public void addContact(ActionEvent actionEvent) {
+        this.model.contactViewListProperty().add(new Contact("Helloworld", "dgdfdgf"));
+    }
+
     @FXML
     void windowClose(ActionEvent event) {
         this.applicationModel.logout();
@@ -102,5 +116,6 @@ public class MainWindowController implements Initializable {
     void windowClose(WindowEvent event) {
         this.applicationModel.logout();
     }
+
 
 }
