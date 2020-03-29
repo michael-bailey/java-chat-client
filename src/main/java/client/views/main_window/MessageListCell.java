@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,9 +42,10 @@ public class MessageListCell extends ListCell<Message> {
                 setGraphic(root);
             } catch (IOException e) {
                 e.printStackTrace();
+                setText("");
             }
         } else {
-            setText("Empty");
+            setText("");
         }
     }
 
