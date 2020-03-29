@@ -10,12 +10,10 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ListView;
 
 import java.io.File;
 import java.security.Key;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -130,6 +128,15 @@ public class ApplicationModel {
         this.privateKey.set(null);
 
         this.loginStatus.set(false);
+    }
+
+    public Contact getContactByUUID(UUID uuid) {
+        for (Contact i : this.contactList) {
+            if (i.getUUID().equals(uuid)) {
+                return i;
+            }
+        }
+        return null;
     }
 
     public String getName() {

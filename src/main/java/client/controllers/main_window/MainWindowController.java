@@ -45,10 +45,12 @@ public class MainWindowController implements Initializable {
 
     // implementing the search function
     ChangeListener<? super String> searchChangeListener = (observable, oldValue, newValue) -> {
+
         this.model.contactViewListProperty().clear();
-        Pattern regex = Pattern.compile(newValue + "[a-zA-z0-9]");
+
+        Pattern regex = Pattern.compile(newValue + "[a-zA-z0-9]*");
         for (Contact i : this.applicationModel.getContactList()) {
-            if (regex.matcher(i.getContactName()).matches()) {
+            if (regex.matcher(i.getUsername()).matches()) {
                 this.model.contactViewListProperty().add(i);
             }
         }
@@ -82,6 +84,8 @@ public class MainWindowController implements Initializable {
         this.messageListView.setCellFactory(this.messageCellFactory);
         this.contactListView.setCellFactory(this.contactCellFactory);
 
+        this.contactSearchBox.textProperty().addListener(this.searchChangeListener);
+
 
         // property bindings
         this.model.contactViewListProperty().bindBidirectional(this.contactListView.itemsProperty());
@@ -104,7 +108,12 @@ public class MainWindowController implements Initializable {
     }
 
     public void addContact(ActionEvent actionEvent) {
-        this.model.contactViewListProperty().add(new Contact("Helloworld", "dgdfdgf"));
+        this.contactSearchBox.clear();
+
+        Contact tmp = new Contact("user1");
+
+        this.model.contactViewListProperty().add(tmp);
+        this.applicationModel.contactListProperty().add(tmp);
     }
 
     @FXML

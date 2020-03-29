@@ -32,8 +32,8 @@
                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                         <children>
                             <ListView fx:id="contactListView" prefHeight="200.0" prefWidth="200.0" styleClass="MessageListView" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-                            <TextField fx:id="searchBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" promptText="Search..." styleClass="MessageField" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="35.0" />
-                            <Button fx:id="addContactbutton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="SendButton" text="+" textOverrun="CLIP" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" onAction="#addContact" />
+                            <TextField fx:id="contactSearchBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" promptText="Search..." styleClass="MessageField" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="35.0" />
+                            <Button fx:id="addContactButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addContact" prefHeight="25.0" prefWidth="25.0" styleClass="SendButton" text="+" textOverrun="CLIP" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
                         </children>
                     </AnchorPane>
                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">

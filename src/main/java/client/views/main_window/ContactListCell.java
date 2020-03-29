@@ -4,12 +4,13 @@ import client.classes.Contact;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
+import javax.tools.Tool;
 import java.io.IOException;
 import java.net.URL;
 
@@ -40,8 +41,12 @@ public class ContactListCell extends ListCell<Contact> {
                 loader.setController(this);
                 loader.load();
 
-                Username.setText(item.getContactName());
-                UUID.setText(item.getContactUserID());
+                Username.setText(item.getUsername());
+                UUID.setText(item.getUUID().toString());
+
+                Tooltip t = new Tooltip();
+                t.setText(item.getUUID().toString());
+                UUID.setTooltip(t);
 
                 setGraphic(root);
             } catch (IOException e) {

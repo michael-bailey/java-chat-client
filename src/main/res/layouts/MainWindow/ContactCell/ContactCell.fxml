@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane fx:id="root" maxHeight="50.0" minHeight="50.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="root" maxHeight="50.0" minHeight="50.0" minWidth="100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fx:id="profileImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <viewport>
             <Rectangle2D height="50.0" width="50.0" />
          </viewport>
       </ImageView>
-      <Label fx:id="Username" style="-fx-text-fill: #ffffff;" text="Label" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-      <Label fx:id="UUID" style="-fx-text-fill: #ffffff;" text="Label" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="5.0" />
+      <Label fx:id="Username" maxWidth="68.0" style="-fx-text-fill: #ffffff;" text="Label" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+      <Label fx:id="UUID" maxWidth="68.0" style="-fx-text-fill: #ffffff;" text="Label" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="5.0" />
    </children>
+   <opaqueInsets>
+      <Insets bottom="5.0" top="5.0" />
+   </opaqueInsets>
 </AnchorPane>
