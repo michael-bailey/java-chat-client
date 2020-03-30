@@ -107,13 +107,17 @@ public class MainWindowController implements Initializable {
         this.messageBox.clear();
     }
 
-    public void addContact(ActionEvent actionEvent) {
+    @FXML void addContact(ActionEvent actionEvent) {
         this.contactSearchBox.clear();
 
         Contact tmp = new Contact("user1");
 
         this.model.contactViewListProperty().add(tmp);
         this.applicationModel.contactListProperty().add(tmp);
+    }
+
+    @FXML void addServer(ActionEvent actionEvent) {
+
     }
 
     @FXML
