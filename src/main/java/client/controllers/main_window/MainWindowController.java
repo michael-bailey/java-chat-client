@@ -2,19 +2,23 @@ package client.controllers.main_window;
 
 import client.classes.Contact;
 import client.classes.Message;
+import client.classes.Server;
 import client.models.ApplicationModel;
 import client.models.mainWindow.MainWindowModel;
 import client.views.main_window.ContactListCell;
 import client.views.main_window.MessageListCell;
+import client.views.main_window.ServerListCell;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
@@ -28,9 +32,19 @@ public class MainWindowController implements Initializable {
     @FXML private ListView<Message> messageListView;
     @FXML private TextField messageBox;
     @FXML private Button sendButton;
+
+    // contact pane
     @FXML private ListView<Contact> contactListView;
     @FXML private TextField contactSearchBox;
     @FXML private Button addContactButton;
+
+    // server Pane
+    @FXML private Button addServerButton;
+    @FXML private ListView<Server> serverListView;
+
+    // other menus
+    URL addServerDialogueURL = getClass().getClassLoader().getResource("layouts/MainWindow/ServerAddDialogue.fxml");
+    private ServerAddDialogue serverAddDialogue;
 
     // change listeners
     ChangeListener<? super Boolean> loginStatusChange = (observable, oldValue, newValue) -> {
@@ -68,6 +82,13 @@ public class MainWindowController implements Initializable {
         }
     };
 
+    Callback serverCellFactory = new Callback<ListView<Server>, ServerListCell>() {
+        @Override
+        public ServerListCell call(ListView<Server> studentListView) {
+            return new ServerListCell();
+        }
+    };
+
     ApplicationModel applicationModel = ApplicationModel.getInstance();
     MainWindowModel model = new MainWindowModel();
 
@@ -86,17 +107,31 @@ public class MainWindowController implements Initializable {
         }
         */
 
-        // cell factorys
+        // create windows
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(addServerDialogueURL);
+            fxmlLoader.load();
+            this.serverAddDialogue = fxmlLoader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // cell factories
         this.messageListView.setCellFactory(this.messageCellFactory);
         this.contactListView.setCellFactory(this.contactCellFactory);
+        this.serverListView.setCellFactory(this.serverCellFactory);
 
         this.contactSearchBox.textProperty().addListener(this.searchChangeListener);
 
 
         // property bindings
+        //TODO bind to acctual values
+        
         this.model.contactViewListProperty().bindBidirectional(this.contactListView.itemsProperty());
         //this.model.contactViewListProperty().bindBidirectional(this.applicationModel.contactListProperty());
         this.model.messagesViewListProperty().bindBidirectional(this.messageListView.itemsProperty());
+        this.serverAddDialogue.getModel().serverListProperty().bindBidirectional(this.serverListView.itemsProperty());
+        this.model.serverViewListProperty().bindBidirectional(this.serverListView.itemsProperty());
 
         // property listeners
         this.applicationModel.loginStatusProperty().addListener(this.loginStatusChange);
@@ -123,16 +158,18 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML void addServer(ActionEvent actionEvent) {
-
+        this.serverAddDialogue.showView();
     }
 
     @FXML
     void windowClose(ActionEvent event) {
+        this.serverAddDialogue.hideView();
         this.applicationModel.logout();
     }
 
     @FXML
     void windowClose(WindowEvent event) {
+        this.serverAddDialogue.hideView();
         this.applicationModel.logout();
     }
 
