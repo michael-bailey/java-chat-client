@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.stage.Stage?>
 
-<Stage fx:id="stage" minHeight="210.0" minWidth="500.0" onCloseRequest="#windowClose" title="chat client" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.main_window.MainWindowController">
+<Stage fx:id="stage" minHeight="315.0" minWidth="500.0" onCloseRequest="#windowClose" title="chat client" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.main_window.MainWindowController">
     <scene>
         <Scene stylesheets="@../../css/MainWindow/MainWindow.css">
          <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="250.0" minWidth="475.0">
