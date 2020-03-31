@@ -4,7 +4,7 @@ use std::sync::mpsc;
 use std::thread;
 
 //ip and port
-const LOCAL &str = "127.0.0.1:6000";
+const LOCAL: &str = "127.0.0.1:6000";
 //buffer size of messages
 const MSG_SIZE: usize = 32;
 
@@ -14,10 +14,10 @@ fn sleep(){
 }
 
 fn main(){
-    let server = TcpListener::bind(LOCAL).except("Listener failed to build");
+    let server = TcpListener::bind(LOCAL).expect("Listener failed to build");
     
     //non-blocking mode allows server to constantly check for messages
-    server.set_nonblocking(true).except("failed to initialize non-blocking mode");
+    server.set_nonblocking(true).expect("failed to initialize non-blocking mode");
 
     //muteable vector to store and allow for multiple clients to connect at once
     let mut clients = vec![];
@@ -31,7 +31,7 @@ fn main(){
             
             //socket is being cloned here so it can be pushed into our thread
             let tx = tx.clone();
-            clients.push(socket.try_clone().except("Failed to clone client"));
+            clients.push(socket.try_clone().expect("Failed to clone client"));
             
             thread::spawn(move || loop {
                 let mut buff = vec![0; MSG_SIZE];
@@ -43,16 +43,16 @@ fn main(){
                         //take all characters that are not whitespace and place inside vector
                         let msg = buff.into_iter().take_while(|&x| x != 0).collect::<Vec<_>>();
                         //convert slice of strings into an actual string
-                        let msg = String::from_utf8(msg).except("Invalid utf8 message");
+                        let msg = String::from_utf8(msg).expect("Invalid utf8 message");
                         
                         //debug flag added
                         println!("{}: {:?}", addr, msg);
                         //send our message from our transmitter to our reciver
-                        tx.send(msg).except("failed to send msg to rx");
+                        tx.send(msg).expect("failed to send msg to rx");
                     },
-                    Err(ref err) if err.kind() = ErrorKind::WouldBlock => (),
+                    Err(ref err) if err.kind() == ErrorKind::WouldBlock => (),
                     Err(_) => {
-                        println("closing connection with: {}", addr);
+                        println!("closing connection with: {}", addr);
                         break;
                     }
                 }
