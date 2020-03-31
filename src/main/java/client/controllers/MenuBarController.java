@@ -29,6 +29,6 @@ public class MenuBarController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.MainMenu.setUseSystemMenuBar(true);
+        //TODO this.MainMenu.setUseSystemMenuBar(true);
     }
 }

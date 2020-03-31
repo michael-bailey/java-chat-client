@@ -10,10 +10,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
@@ -27,6 +24,7 @@ public class MainWindowController implements Initializable {
     @FXML private Stage stage;
 
     // message pane
+    @FXML private MenuBar menuBar;
     @FXML private ListView<Message> messageListView;
     @FXML private TextField messageBox;
     @FXML private Button sendButton;
@@ -80,6 +78,14 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        // menu bar controls
+        /*
+        if (System.getProperty("os.name").equals("Mac OS X")) {
+            this.menuBar.useSystemMenuBarProperty().set(true);
+        }
+        */
+
         // cell factorys
         this.messageListView.setCellFactory(this.messageCellFactory);
         this.contactListView.setCellFactory(this.contactCellFactory);

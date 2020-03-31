@@ -42,6 +42,7 @@ public class ProgramController extends Application {
      * @throws Exception any exception
      */
     public static void main(String[] args) throws Exception {
+        System.out.println(System.getProperty("os.name"));
         launch(args);
     }
 

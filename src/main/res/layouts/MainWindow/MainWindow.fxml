@@ -55,7 +55,7 @@
                   </GridPane>
             </center>
             <top>
-                    <fx:include source="../MainMenu.fxml" />
+                    <fx:include fx:id="menuBar" source="../MainMenu.fxml" />
             </top>
          </BorderPane>
         </Scene>
