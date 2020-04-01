@@ -9,6 +9,7 @@ import client.views.main_window.ContactListCell;
 import client.views.main_window.MessageListCell;
 import client.views.main_window.ServerListCell;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,6 +54,10 @@ public class MainWindowController implements Initializable {
         } else {
             this.stage.hide();
         }
+    };
+
+    ChangeListener<Contact> currentContactChange = (observable, oldValue, newValue) -> {
+        this.model.messagesViewListProperty().set(FXCollections.observableList(newValue.getMessages()));
     };
 
     // implementing the search function
@@ -125,21 +130,28 @@ public class MainWindowController implements Initializable {
 
 
         // property bindings
-        //TODO bind to acctual values
         
         this.model.contactViewListProperty().bindBidirectional(this.contactListView.itemsProperty());
-        //this.model.contactViewListProperty().bindBidirectional(this.applicationModel.contactListProperty());
         this.model.messagesViewListProperty().bindBidirectional(this.messageListView.itemsProperty());
-        this.serverAddDialogue.getModel().serverListProperty().bindBidirectional(this.serverListView.itemsProperty());
         this.model.serverViewListProperty().bindBidirectional(this.serverListView.itemsProperty());
+        this.serverAddDialogue.serverListPropertyProperty().bindBidirectional(this.model.serverViewListProperty());
 
-        // property listeners
-        this.applicationModel.loginStatusProperty().addListener(this.loginStatusChange);
+        // main window property listeners
         this.model.searchStringProperty().addListener(this.searchChangeListener);
+
+        // application property listeners
+        this.applicationModel.loginStatusProperty().addListener(this.loginStatusChange);
+        // this.applicationModel.currentContactProperty().addListener(this.);
+
 
         // event bindings
     }
 
+    public MainWindowModel getModel() {
+        return model;
+    }
+
+    // TODO implement the messageing system to reflect current state.
     @FXML
     void sendMessage(ActionEvent event) {
         if (!messageBox.getText().isEmpty()) {
@@ -148,6 +160,7 @@ public class MainWindowController implements Initializable {
         this.messageBox.clear();
     }
 
+    // TODO depreceate this as it will mo longer be needed.
     @FXML void addContact(ActionEvent actionEvent) {
         this.contactSearchBox.clear();
 
@@ -156,6 +169,7 @@ public class MainWindowController implements Initializable {
         this.model.contactViewListProperty().add(tmp);
         this.applicationModel.contactListProperty().add(tmp);
     }
+
 
     @FXML void addServer(ActionEvent actionEvent) {
         this.serverAddDialogue.showView();

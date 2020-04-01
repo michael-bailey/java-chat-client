@@ -5,6 +5,7 @@ import client.classes.Server;
 import client.models.ApplicationModel;
 import client.models.mainWindow.AddServerDialogueModel;
 import javafx.beans.property.SimpleListProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,8 +23,7 @@ public class ServerAddDialogue implements Initializable {
     @FXML private Button cancelButton;
     @FXML private Button addButton;
 
-    private ApplicationModel applicationModel = ApplicationModel.getInstance();
-    private AddServerDialogueModel model = new AddServerDialogueModel();
+    private SimpleListProperty<Server> serverListProperty = new SimpleListProperty<>();
 
     public ServerAddDialogue() {
 
@@ -34,10 +34,20 @@ public class ServerAddDialogue implements Initializable {
 
     }
 
+    public ObservableList<Server> getServerListProperty() {
+        return serverListProperty.get();
+    }
+
+    public SimpleListProperty<Server> serverListPropertyProperty() {
+        return serverListProperty;
+    }
+
     @FXML void onEnter(ActionEvent actionEvent) {
         //TODO add logic to ensure the ipaddress is correct
         System.out.println("ADDSERVER");
-        this.model.serverListProperty().add(new Server(this.IPAddressBox.getText(), "BOB"));
+        if (this.serverListProperty.get() != null) {
+            this.serverListProperty.add(new Server(this.IPAddressBox.getText(), "BOB"));
+        }
     }
 
     @FXML void onCancel(ActionEvent actionEvent) {
@@ -50,9 +60,5 @@ public class ServerAddDialogue implements Initializable {
 
     public void hideView() {
         this.stage.hide();
-    }
-
-    public AddServerDialogueModel getModel() {
-        return model;
     }
 }
