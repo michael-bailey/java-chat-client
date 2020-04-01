@@ -69,11 +69,20 @@ public class MainWindowController implements Initializable {
         }
     };
 
+    ChangeListener<? super Boolean> loginStateListener = (observableValue, oldValue, newValue) -> {
+        if (newValue) {
+            this.stage.show();
+        } else {
+            this.stage.hide();
+        }
+    };
+
     ApplicationModel applicationModel = ApplicationModel.getInstance();
     MainWindowModel model = new MainWindowModel();
 
     public MainWindowController() {
         System.out.println(this);
+        ApplicationModel.getInstance().loginStatusProperty().addListener(this.loginStateListener);
     }
 
     @Override
@@ -120,9 +129,6 @@ public class MainWindowController implements Initializable {
 
     }
 
-
-
-
     @FXML
     void windowClose(ActionEvent event) {
         this.serverAddDialogue.hideView();
@@ -134,6 +140,4 @@ public class MainWindowController implements Initializable {
         this.serverAddDialogue.hideView();
         this.applicationModel.logout();
     }
-
-
 }

@@ -136,12 +136,12 @@ public class ApplicationModel {
         return serverList;
     }
 
-    public ObservableMap<UUID, Contact> getContactList() {
-        return contactHashMap.get();
-    }
-
     public SimpleBooleanProperty loginStatusProperty() {
         return loginStatus;
+    }
+
+    public SimpleListProperty<Contact> getOnlineContactList() {
+        return this.onlineContactList;
     }
 
 }
