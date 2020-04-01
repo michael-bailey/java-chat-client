@@ -6,18 +6,14 @@ import client.classes.Message;
 import client.classes.Server;
 import client.managers.DataManager;
 import client.managers.NetworkManager;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 
 import java.io.File;
 import java.security.Key;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ApplicationModel {
 
@@ -33,7 +29,7 @@ public class ApplicationModel {
     SimpleObjectProperty<Key> privateKey;
 
     SimpleListProperty<Server> serverList;
-    SimpleListProperty<Contact> contactList;
+    SimpleMapProperty<UUID, Contact> contactHashMap;
 
     SimpleListProperty<Contact> onlineContactList;
     SimpleListProperty<Message> currentMessageList;
@@ -66,7 +62,7 @@ public class ApplicationModel {
         }
         if (this.dataManager.unlock(username, password)) {
             // unpack the data
-            this.contactList = new SimpleListProperty<Contact>(FXCollections.observableList((List<Contact>) this.dataManager.getObject("Contacts")));
+            this.contactHashMap = new SimpleMapProperty<UUID, Contact>(FXCollections.observableMap((Map<UUID, Contact>) this.dataManager.getObject("Contacts")));
             this.serverList = new SimpleListProperty<Server>(FXCollections.observableList((List<Server>) this.dataManager.getObject("Servers")));
 
             this.name = new SimpleStringProperty();
@@ -91,12 +87,12 @@ public class ApplicationModel {
                 this.dataManager.createNew(username, password);
 
                 // create the new data
-                List<Contact> contactList = new ArrayList<Contact>();
+                Map<UUID, Contact> contactList = new HashMap<UUID, Contact>();
                 List<Server> serverList = new ArrayList<Server>();
                 Account account = new Account(username);
 
                 // implement it in the model
-                this.contactList = new SimpleListProperty<Contact>(FXCollections.observableList(contactList));
+                this.contactHashMap = new SimpleMapProperty<UUID, Contact>(FXCollections.observableMap(contactList));
                 this.serverList = new SimpleListProperty<Server>(FXCollections.observableList(serverList));
 
                 this.name = new SimpleStringProperty();
@@ -125,7 +121,7 @@ public class ApplicationModel {
     public void logout() {
         this.dataManager.lock();
 
-        this.contactList.set(null);
+        this.contactHashMap.set(null);
         this.serverList.set(null);
         
         this.name.set(null);
@@ -140,8 +136,8 @@ public class ApplicationModel {
         return serverList;
     }
 
-    public ObservableList<Contact> getContactList() {
-        return contactList.get();
+    public ObservableMap<UUID, Contact> getContactList() {
+        return contactHashMap.get();
     }
 
     public SimpleBooleanProperty loginStatusProperty() {
