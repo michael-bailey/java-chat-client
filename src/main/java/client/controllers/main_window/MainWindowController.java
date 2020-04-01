@@ -47,32 +47,7 @@ public class MainWindowController implements Initializable {
     URL addServerDialogueURL = getClass().getClassLoader().getResource("layouts/MainWindow/ServerAddDialogue.fxml");
     private ServerAddDialogue serverAddDialogue;
 
-    // change listeners
-    ChangeListener<? super Boolean> loginStatusChange = (observable, oldValue, newValue) -> {
-        if (newValue.equals(true)) {
-            this.stage.show();
-        } else {
-            this.stage.hide();
-        }
-    };
-
-    ChangeListener<Contact> currentContactChange = (observable, oldValue, newValue) -> {
-        this.model.messagesViewListProperty().set(FXCollections.observableList(newValue.getMessages()));
-    };
-
-    // implementing the search function
-    ChangeListener<? super String> searchChangeListener = (observable, oldValue, newValue) -> {
-
-        this.model.contactViewListProperty().clear();
-
-        Pattern regex = Pattern.compile(newValue + "[a-zA-z0-9]*");
-        for (Contact i : this.applicationModel.getContactList()) {
-            if (regex.matcher(i.getUsername()).matches()) {
-                this.model.contactViewListProperty().add(i);
-            }
-        }
-    };
-
+    // list view factories
     Callback messageCellFactory = new Callback<ListView<Message>, ListCell<Message>>() {
         @Override
         public ListCell<Message> call(ListView<Message> studentListView) {
@@ -97,20 +72,12 @@ public class MainWindowController implements Initializable {
     ApplicationModel applicationModel = ApplicationModel.getInstance();
     MainWindowModel model = new MainWindowModel();
 
-
     public MainWindowController() {
         System.out.println(this);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        // menu bar controls
-        /*
-        if (System.getProperty("os.name").equals("Mac OS X")) {
-            this.menuBar.useSystemMenuBarProperty().set(true);
-        }
-        */
 
         // create windows
         try {
@@ -126,54 +93,35 @@ public class MainWindowController implements Initializable {
         this.contactListView.setCellFactory(this.contactCellFactory);
         this.serverListView.setCellFactory(this.serverCellFactory);
 
-        this.contactSearchBox.textProperty().addListener(this.searchChangeListener);
-
-
-        // property bindings
-        
+        // model-view bindings
+        this.serverListView.selectionModelProperty().bindBidirectional(this.model.selectionModelProperty());
         this.model.contactViewListProperty().bindBidirectional(this.contactListView.itemsProperty());
-        this.model.messagesViewListProperty().bindBidirectional(this.messageListView.itemsProperty());
-        this.model.serverViewListProperty().bindBidirectional(this.serverListView.itemsProperty());
-        this.serverAddDialogue.serverListPropertyProperty().bindBidirectional(this.model.serverViewListProperty());
-
-        // main window property listeners
-        this.model.searchStringProperty().addListener(this.searchChangeListener);
-
-        // application property listeners
-        this.applicationModel.loginStatusProperty().addListener(this.loginStatusChange);
-        // this.applicationModel.currentContactProperty().addListener(this.);
-
-
-        // event bindings
+        this.model.messageViewListProperty().bindBidirectional(this.messageListView.itemsProperty());
     }
 
     public MainWindowModel getModel() {
         return model;
     }
 
-    // TODO implement the messageing system to reflect current state.
-    @FXML
-    void sendMessage(ActionEvent event) {
-        if (!messageBox.getText().isEmpty()) {
-            this.model.messagesViewListProperty().add(new Message(messageBox.getText(), false));
-        }
-        this.messageBox.clear();
-    }
-
-    // TODO depreceate this as it will mo longer be needed.
-    @FXML void addContact(ActionEvent actionEvent) {
-        this.contactSearchBox.clear();
-
-        Contact tmp = new Contact("user1");
-
-        this.model.contactViewListProperty().add(tmp);
-        this.applicationModel.contactListProperty().add(tmp);
-    }
-
-
     @FXML void addServer(ActionEvent actionEvent) {
         this.serverAddDialogue.showView();
     }
+
+    // TODO implement the messageing system to reflect current state.
+    @FXML
+    void sendMessage(ActionEvent event) {
+
+        this.messageBox.clear();
+    }
+
+    //TODO remove this
+    @Deprecated
+    @FXML void addContact(ActionEvent actionEvent) {
+
+    }
+
+
+
 
     @FXML
     void windowClose(ActionEvent event) {

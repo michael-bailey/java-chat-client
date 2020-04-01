@@ -34,19 +34,17 @@ public class ServerAddDialogue implements Initializable {
 
     }
 
-    public ObservableList<Server> getServerListProperty() {
-        return serverListProperty.get();
-    }
-
-    public SimpleListProperty<Server> serverListPropertyProperty() {
-        return serverListProperty;
-    }
-
     @FXML void onEnter(ActionEvent actionEvent) {
         //TODO add logic to ensure the ipaddress is correct
-        System.out.println("ADDSERVER");
+        String host = this.IPAddressBox.getText();
+
+        System.out.println("host: " + host);
+
+        // download server configuration
+
+
         if (this.serverListProperty.get() != null) {
-            this.serverListProperty.add(new Server(this.IPAddressBox.getText(), "BOB"));
+            ApplicationModel.getInstance().serverListProperty().add(new Server(this.IPAddressBox.getText(), "BOB"));
         }
     }
 

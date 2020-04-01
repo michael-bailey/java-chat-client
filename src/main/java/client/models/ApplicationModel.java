@@ -2,8 +2,10 @@ package client.models;
 
 import client.classes.Account;
 import client.classes.Contact;
+import client.classes.Message;
 import client.classes.Server;
 import client.managers.DataManager;
+import client.managers.NetworkManager;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -33,11 +35,15 @@ public class ApplicationModel {
     SimpleListProperty<Server> serverList;
     SimpleListProperty<Contact> contactList;
 
+    SimpleListProperty<Contact> onlineContactList;
+    SimpleListProperty<Message> currentMessageList;
+
     // volatile variables
     SimpleObjectProperty<Contact> currentContact;
     SimpleObjectProperty<Server> currentServer;
 
     DataManager dataManager = new DataManager();
+    NetworkManager networkManager = new NetworkManager();
 
     public ApplicationModel() {
         loginStatus = new SimpleBooleanProperty(false);
@@ -120,59 +126,14 @@ public class ApplicationModel {
         this.dataManager.lock();
 
         this.contactList.set(null);
-        this.contactList.set(null);
-
+        this.serverList.set(null);
+        
         this.name.set(null);
         this.uuid.set(null);
         this.publicKey.set(null);
         this.privateKey.set(null);
 
         this.loginStatus.set(false);
-    }
-
-    public Contact getContactByUUID(UUID uuid) {
-        for (Contact i : this.contactList) {
-            if (i.getUUID().equals(uuid)) {
-                return i;
-            }
-        }
-        return null;
-    }
-
-    public String getName() {
-        return name.get();
-    }
-
-    public SimpleStringProperty nameProperty() {
-        return name;
-    }
-
-    public UUID getUuid() {
-        return uuid.get();
-    }
-
-    public SimpleObjectProperty<UUID> uuidProperty() {
-        return uuid;
-    }
-
-    public Key getPublicKey() {
-        return publicKey.get();
-    }
-
-    public SimpleObjectProperty<Key> publicKeyProperty() {
-        return publicKey;
-    }
-
-    public Key getPrivateKey() {
-        return privateKey.get();
-    }
-
-    public SimpleObjectProperty<Key> privateKeyProperty() {
-        return privateKey;
-    }
-
-    public ObservableList<Server> getServerList() {
-        return serverList.get();
     }
 
     public SimpleListProperty<Server> serverListProperty() {
@@ -183,33 +144,8 @@ public class ApplicationModel {
         return contactList.get();
     }
 
-    public SimpleListProperty<Contact> contactListProperty() {
-        return contactList;
-    }
-
-    public boolean getLoginStatus() {
-        return loginStatus.get();
-    }
-
     public SimpleBooleanProperty loginStatusProperty() {
         return loginStatus;
     }
-
-    public Contact getCurrentContact() {
-        return currentContact.get();
-    }
-
-    public SimpleObjectProperty<Contact> currentContactProperty() {
-        return currentContact;
-    }
-
-    public Server getCurrentServer() {
-        return currentServer.get();
-    }
-
-    public SimpleObjectProperty<Server> currentServerProperty() {
-        return currentServer;
-    }
-
 
 }

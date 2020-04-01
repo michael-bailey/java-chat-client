@@ -3,46 +3,64 @@ package client.models.mainWindow;
 import client.classes.Contact;
 import client.classes.Message;
 import client.classes.Server;
+import client.models.ApplicationModel;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.ObservableList;
+import javafx.beans.value.ChangeListener;
+import javafx.scene.control.MultipleSelectionModel;
+
+import java.util.regex.Pattern;
 
 public class MainWindowModel {
-    SimpleStringProperty searchString = new SimpleStringProperty();
-    SimpleListProperty<Contact> contactViewList = new SimpleListProperty();
-    SimpleListProperty<Message> messagesViewList = new SimpleListProperty();
-    SimpleListProperty<Server> serverViewList = new SimpleListProperty();
 
-    public String getSearchString() {
-        return searchString.get();
+    // changeListeners
+    ChangeListener<? super String> searchChangeListener = (observable, oldValue, newValue) -> {
+        this.contactViewListProperty().clear();
+        Pattern regex = Pattern.compile(newValue + "[a-zA-z0-9]*");
+        for (Contact i : ApplicationModel.getInstance().getContactList()) {
+            if (regex.matcher(i.getUsername()).matches()) {
+                this.contactViewListProperty().add(i);
+            }
+        }
+    };
+
+    ChangeListener<Server> serverChangeListener = (observable, oldValue, newValue) -> {
+
+    };
+
+    ChangeListener<Contact> contactChangeListener = (observable, oldValue, newValue) -> {
+
+    };
+
+    private SimpleStringProperty searchString = new SimpleStringProperty();
+    private SimpleListProperty<Contact> contactViewList = new SimpleListProperty();
+    private SimpleListProperty<Message> messageViewList = new SimpleListProperty();
+    SimpleObjectProperty<MultipleSelectionModel<Server>> selectionModel = new SimpleObjectProperty<MultipleSelectionModel<Server>>();
+
+
+
+    public MainWindowModel() {
+        // change listener
+        this.searchStringProperty().addListener(this.searchChangeListener);
+
     }
 
     public SimpleStringProperty searchStringProperty() {
         return searchString;
     }
 
-    public ObservableList<Contact> getContactViewList() {
-        return contactViewList.get();
-    }
-
     public SimpleListProperty<Contact> contactViewListProperty() {
         return contactViewList;
     }
 
-    public ObservableList<Message> getMessagesViewList() {
-        return messagesViewList.get();
+    public SimpleListProperty<Message> messageViewListProperty() {
+        return this.messageViewList;
     }
 
-    public SimpleListProperty<Message> messagesViewListProperty() {
-        return messagesViewList;
+    public SimpleObjectProperty<MultipleSelectionModel<Server>> selectionModelProperty() {
+        return selectionModel;
     }
 
-    public ObservableList<Server> getServerViewList() {
-        return serverViewList.get();
-    }
 
-    public SimpleListProperty<Server> serverViewListProperty() {
-        return serverViewList;
-    }
 }

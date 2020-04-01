@@ -28,12 +28,7 @@ import java.awt.Desktop;
 public class ProgramController extends Application {
 
     // this section defines the windows that are in use
-
     private LoginWindowController loginWindow;
-
-    private BooleanProperty dataManagerLocked;
-
-    private Account account;
     private MainWindowController mainWindow;
 
     /**

@@ -1,18 +1,10 @@
 
 // gradle plugins we use to build and package our program
 plugins {
-    // Apply the java plugin to add support for Java
     id 'java'
-
-    // Apply the application plugin to allow quick running of the program
     id 'application'
-
     id 'eclipse'
-
-    // Apply the javafx plugin to add support for building a gui application.
     id 'org.openjfx.javafxplugin' version '0.0.8'
-
-    // Apply the shadow jar plugin to package all dependecies into a single jar 
     id "com.github.johnrengelman.shadow" version "5.2.0"
 }
 
@@ -27,34 +19,22 @@ repositories {
 
 // defines dependencies
 dependencies {
-
-
-    // Use JUnit test framework for unit testing.
     testImplementation 'junit:junit:4.12'
-
-    // Google dependencies
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.guava:guava:28.1-jre'
-
-    // Am mdns implementation. 
     compile group: 'javax.jmdns', name: 'jmdns', version: '3.4.1'
-
-    // Javafx cross platform dependencies.
     compile "org.openjfx:javafx-graphics:11.0.1:win"
     compile "org.openjfx:javafx-graphics:11.0.1:linux"
     compile "org.openjfx:javafx-graphics:11.0.1:mac"
 }
 
-// defines the main class
 application {
   mainClassName "Main"
 }
 
-// configures the javafx modules we use.
 javafx {
     version = "13"
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.base', 'javafx.graphics', 'javafx.media' ]
-    
 }
 
 // defines other sources
