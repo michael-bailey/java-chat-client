@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.stage.*?>
+
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.chart.BubbleChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<Stage fx:id="stage" title="stage" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.console.Console">
+   <scene>
+      <Scene>
+         <root>
+            <AnchorPane prefHeight="400.0" prefWidth="600.0">
+                <TextArea fx:id="output" AnchorPane.topAnchor="5" AnchorPane.bottomAnchor="35" AnchorPane.leftAnchor="5" AnchorPane.rightAnchor="5" />
+                <Button fx:id="enterButton" AnchorPane.rightAnchor="5" AnchorPane.bottomAnchor="5" onAction="#onEnter" >enter</Button>
+                <TextField fx:id="commandBox" AnchorPane.rightAnchor="100" AnchorPane.bottomAnchor="5" AnchorPane.leftAnchor="5" promptText="command..." onAction="#onEnter" />
+            </AnchorPane>
+         </root>
+      </Scene>
+   </scene>
+</Stage>

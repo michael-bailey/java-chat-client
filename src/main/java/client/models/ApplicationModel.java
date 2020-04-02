@@ -29,7 +29,7 @@ public class ApplicationModel {
     SimpleObjectProperty<Key> privateKey = new SimpleObjectProperty<>();
 
     SimpleListProperty<Server> serverList = new SimpleListProperty<>();
-    SimpleListProperty<Contact> contactList = new SimpleListProperty<>();
+    SimpleMapProperty<UUID, Contact> contactHashMap = new SimpleMapProperty<>();
 
     SimpleListProperty<Contact> onlineContactList = new SimpleListProperty<>();
     SimpleListProperty<Message> currentMessageList = new SimpleListProperty<>();

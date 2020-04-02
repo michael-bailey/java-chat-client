@@ -8,6 +8,7 @@ import client.models.mainWindow.MainWindowModel;
 import client.views.main_window.ContactListCell;
 import client.views.main_window.MessageListCell;
 import client.views.main_window.ServerListCell;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -80,7 +81,7 @@ public class MainWindowController implements Initializable {
 
     public MainWindowController() {
         System.out.println(this);
-        ApplicationModel.getInstance().loginStatusProperty().addListener(this.loginStateListener);
+        ApplicationModel.getInstance().loginStatusProperty().addListener(this.loginStatusListener);
     }
 
     @Override
@@ -103,7 +104,9 @@ public class MainWindowController implements Initializable {
         this.serverListView.setCellFactory(this.serverCellFactory);
 
         // model-view bindings
-        this.serverListView.selectionModelProperty().bindBidirectional(this.model.serverSelectionModelProperty());
+        this.model.serverSelectionModelProperty().bindBidirectional(this.serverListView.selectionModelProperty());
+
+        this.model.serverViewListProperty().bindBidirectional(this.serverListView.itemsProperty());
         this.model.contactViewListProperty().bindBidirectional(this.contactListView.itemsProperty());
         this.model.messageViewListProperty().bindBidirectional(this.messageListView.itemsProperty());
     }

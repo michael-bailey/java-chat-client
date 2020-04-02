@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.control.MultipleSelectionModel;
 
 import java.util.regex.Pattern;
@@ -85,6 +86,10 @@ public class MainWindowModel {
 
     public SimpleObjectProperty<MultipleSelectionModel<Message>> messageSelectionModelProperty() {
         return messageSelectionModel;
+    }
+
+    public SimpleListProperty<Server> serverViewListProperty() {
+        return serverViewList;
     }
 
     public void logout() {

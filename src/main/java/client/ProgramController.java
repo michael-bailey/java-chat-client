@@ -1,6 +1,7 @@
 package client;
 
 import client.classes.Account;
+import client.controllers.console.Console;
 import client.controllers.login_display.LoginWindowController;
 import client.controllers.main_window.MainWindowController;
 import client.models.ApplicationModel;
@@ -30,6 +31,7 @@ public class ProgramController extends Application {
     // this section defines the windows that are in use
     private LoginWindowController loginWindow;
     private MainWindowController mainWindow;
+    private Console console;
 
     /**
      * this is called by main
@@ -58,6 +60,11 @@ public class ProgramController extends Application {
         tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/MainWindow/MainWindow.fxml"));
         tmpFxmlLoader.load();
         this.mainWindow = tmpFxmlLoader.getController();
+
+        tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/ConsoleWindow/Console.fxml"));
+        tmpFxmlLoader.load();
+        this.console = tmpFxmlLoader.getController();
+        this.console.show();
 
         // show the login window
         this.loginWindow.showView();
