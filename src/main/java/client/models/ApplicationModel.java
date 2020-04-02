@@ -26,21 +26,21 @@ public class ApplicationModel {
     // persistent variables
     SimpleBooleanProperty loginStatus;
 
-    SimpleStringProperty name;
-    SimpleObjectProperty<UUID> uuid;
+    SimpleStringProperty name = new SimpleStringProperty();
+    SimpleObjectProperty<UUID> uuid = new SimpleObjectProperty<>();
 
-    SimpleObjectProperty<Key> publicKey;
-    SimpleObjectProperty<Key> privateKey;
+    SimpleObjectProperty<Key> publicKey = new SimpleObjectProperty<>();
+    SimpleObjectProperty<Key> privateKey = new SimpleObjectProperty<>();
 
-    SimpleListProperty<Server> serverList;
-    SimpleListProperty<Contact> contactList;
+    SimpleListProperty<Server> serverList = new SimpleListProperty<>();
+    SimpleListProperty<Contact> contactList = new SimpleListProperty<>();
 
-    SimpleListProperty<Contact> onlineContactList;
-    SimpleListProperty<Message> currentMessageList;
+    SimpleListProperty<Contact> onlineContactList = new SimpleListProperty<>();
+    SimpleListProperty<Message> currentMessageList = new SimpleListProperty<>();
 
     // volatile variables
-    SimpleObjectProperty<Contact> currentContact;
-    SimpleObjectProperty<Server> currentServer;
+    SimpleObjectProperty<Contact> currentContact = new SimpleObjectProperty<>();
+    SimpleObjectProperty<Server> currentServer = new SimpleObjectProperty<>();
 
     DataManager dataManager = new DataManager();
     NetworkManager networkManager = new NetworkManager();
@@ -140,9 +140,11 @@ public class ApplicationModel {
         return serverList;
     }
 
-    public ObservableList<Contact> getContactList() {
-        return contactList.get();
+    public SimpleListProperty<Contact> onlineContactListProperty() {
+        return onlineContactList;
     }
+
+    public SimpleListProperty<Message> messageListProperty() { return currentMessageList; }
 
     public SimpleBooleanProperty loginStatusProperty() {
         return loginStatus;

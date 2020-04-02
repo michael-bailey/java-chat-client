@@ -9,7 +9,6 @@ import client.views.main_window.ContactListCell;
 import client.views.main_window.MessageListCell;
 import client.views.main_window.ServerListCell;
 import javafx.beans.value.ChangeListener;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +21,6 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 
 public class MainWindowController implements Initializable {
 
@@ -47,6 +45,15 @@ public class MainWindowController implements Initializable {
     URL addServerDialogueURL = getClass().getClassLoader().getResource("layouts/MainWindow/ServerAddDialogue.fxml");
     private ServerAddDialogue serverAddDialogue;
 
+    // change Listeners
+    ChangeListener<Boolean> loginStatusListener = (observable, oldValue, newValue) -> {
+        if (newValue) {
+            this.stage.show();
+        } else {
+            this.stage.hide();
+        }
+    };
+
     // list view factories
     Callback messageCellFactory = new Callback<ListView<Message>, ListCell<Message>>() {
         @Override
@@ -69,7 +76,6 @@ public class MainWindowController implements Initializable {
         }
     };
 
-    ApplicationModel applicationModel = ApplicationModel.getInstance();
     MainWindowModel model = new MainWindowModel();
 
     public MainWindowController() {
@@ -88,13 +94,15 @@ public class MainWindowController implements Initializable {
             e.printStackTrace();
         }
 
+        ApplicationModel.getInstance().loginStatusProperty().addListener(this.loginStatusListener);
+
         // cell factories
         this.messageListView.setCellFactory(this.messageCellFactory);
         this.contactListView.setCellFactory(this.contactCellFactory);
         this.serverListView.setCellFactory(this.serverCellFactory);
 
         // model-view bindings
-        this.serverListView.selectionModelProperty().bindBidirectional(this.model.selectionModelProperty());
+        this.serverListView.selectionModelProperty().bindBidirectional(this.model.serverSelectionModelProperty());
         this.model.contactViewListProperty().bindBidirectional(this.contactListView.itemsProperty());
         this.model.messageViewListProperty().bindBidirectional(this.messageListView.itemsProperty());
     }
@@ -120,19 +128,16 @@ public class MainWindowController implements Initializable {
 
     }
 
-
-
-
     @FXML
     void windowClose(ActionEvent event) {
         this.serverAddDialogue.hideView();
-        this.applicationModel.logout();
+        this.model.logout();
     }
 
     @FXML
     void windowClose(WindowEvent event) {
         this.serverAddDialogue.hideView();
-        this.applicationModel.logout();
+        this.model.logout();
     }
 
 

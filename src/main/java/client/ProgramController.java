@@ -59,8 +59,6 @@ public class ProgramController extends Application {
         tmpFxmlLoader.load();
         this.mainWindow = tmpFxmlLoader.getController();
 
-
-
         // show the login window
         this.loginWindow.showView();
     }
