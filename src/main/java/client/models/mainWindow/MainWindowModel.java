@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
 public class MainWindowModel {
 
     // changeListeners
+
+
     ChangeListener<? super String> searchChangeListener = (observable, oldValue, newValue) -> {
         this.contactViewListProperty().clear();
         Pattern regex = Pattern.compile(newValue + "[a-zA-z0-9]*");

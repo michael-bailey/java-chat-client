@@ -80,6 +80,7 @@ public class MainWindowController implements Initializable {
 
     public MainWindowController() {
         System.out.println(this);
+        ApplicationModel.getInstance().loginStatusProperty().addListener(this.loginStateListener);
     }
 
     @Override
@@ -139,6 +140,4 @@ public class MainWindowController implements Initializable {
         this.serverAddDialogue.hideView();
         this.model.logout();
     }
-
-
 }
