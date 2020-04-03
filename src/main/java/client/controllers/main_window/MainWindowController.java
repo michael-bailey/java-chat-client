@@ -103,12 +103,12 @@ public class MainWindowController implements Initializable {
         this.contactListView.setCellFactory(this.contactCellFactory);
         this.serverListView.setCellFactory(this.serverCellFactory);
 
-        // model-view bindings
-        this.model.serverSelectionModelProperty().bindBidirectional(this.serverListView.selectionModelProperty());
-
+        // view bindings
+        this.model.searchStringProperty().bindBidirectional(this.contactSearchBox.textProperty());
         this.model.serverViewListProperty().bindBidirectional(this.serverListView.itemsProperty());
         this.model.contactViewListProperty().bindBidirectional(this.contactListView.itemsProperty());
         this.model.messageViewListProperty().bindBidirectional(this.messageListView.itemsProperty());
+
     }
 
     public MainWindowModel getModel() {
@@ -122,7 +122,6 @@ public class MainWindowController implements Initializable {
     // TODO implement the messageing system to reflect current state.
     @FXML
     void sendMessage(ActionEvent event) {
-
         this.messageBox.clear();
     }
 
@@ -130,12 +129,6 @@ public class MainWindowController implements Initializable {
     @Deprecated
     @FXML void addContact(ActionEvent actionEvent) {
 
-    }
-
-    @FXML
-    void windowClose(ActionEvent event) {
-        this.serverAddDialogue.hideView();
-        this.model.logout();
     }
 
     @FXML

@@ -1,10 +1,16 @@
 package client.managers;
 
+import client.classes.Server;
+import client.models.ApplicationModel;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 
 import javax.jmdns.*;
+
 
 /**
  * Network Manager
@@ -16,19 +22,19 @@ import javax.jmdns.*;
  * @since 1.0
  */
 public class NetworkManager extends Object {
-    // defining network interfaces
-    ServerSocket incomingSocket;
-    JmDNS MDNS;
 
-    //defining threads
-    ArrayList<Thread> threads = new ArrayList();
+    ApplicationModel appModel = ApplicationModel.getInstance();
+
+    SimpleObjectProperty<Server> currentServer = new SimpleObjectProperty<Server>();
+
+    ChangeListener<? super Server> serverChange =  (observable, oldValue, newValue) -> {
+        
+    };
 
     public NetworkManager() {
-        try {
-            incomingSocket = new ServerSocket(1000);
+        appModel.currentServerProperty().bindBidirectional(this.currentServer);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.currentServer.addListener();
     }
+
 }

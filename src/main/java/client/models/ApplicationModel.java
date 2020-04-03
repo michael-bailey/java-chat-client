@@ -8,8 +8,6 @@ import client.managers.DataManager;
 import client.managers.NetworkManager;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 
 import java.io.File;
 import java.security.Key;
@@ -29,10 +27,11 @@ public class ApplicationModel {
     SimpleObjectProperty<Key> privateKey = new SimpleObjectProperty<>();
 
     SimpleListProperty<Server> serverList = new SimpleListProperty<>();
+
     SimpleMapProperty<UUID, Contact> contactHashMap = new SimpleMapProperty<>();
 
-    SimpleListProperty<Contact> onlineContactList = new SimpleListProperty<>();
-    SimpleListProperty<Message> currentMessageList = new SimpleListProperty<>();
+    SimpleListProperty<Contact> onlineContactsList = new SimpleListProperty<Contact>();
+    SimpleListProperty<Message> MessageList = new SimpleListProperty<Message>();
 
     // volatile variables
     SimpleObjectProperty<Contact> currentContact = new SimpleObjectProperty<>();
@@ -87,13 +86,14 @@ public class ApplicationModel {
                 this.dataManager.createNew(username, password);
 
                 // create the new data
-                Map<UUID, Contact> contactList = new HashMap<UUID, Contact>();
+                Map<UUID, Contact> contactMap = new HashMap<UUID, Contact>();
                 List<Server> serverList = new ArrayList<Server>();
                 Account account = new Account(username);
 
                 // implement it in the model
-                this.contactHashMap = new SimpleMapProperty<UUID, Contact>(FXCollections.observableMap(contactList));
                 this.serverList = new SimpleListProperty<Server>(FXCollections.observableList(serverList));
+                this.contactHashMap = new SimpleMapProperty<UUID, Contact>(FXCollections.observableMap(contactMap));
+
 
                 this.name = new SimpleStringProperty();
                 this.uuid = new SimpleObjectProperty<>();
@@ -106,7 +106,7 @@ public class ApplicationModel {
                 this.privateKey.set(account.getPrivateKey());
 
                 // add to the dataManager
-                this.dataManager.addObject("Contacts", contactList);
+                this.dataManager.addObject("Contacts", contactMap);
                 this.dataManager.addObject("Servers", serverList);
                 this.dataManager.addObject("Account", account);
 
@@ -136,18 +136,19 @@ public class ApplicationModel {
         return serverList;
     }
 
-    public SimpleListProperty<Contact> onlineContactListProperty() {
-        return onlineContactList;
+    public SimpleListProperty<Message> messageListProperty() {
+        return MessageList;
     }
-
-    public SimpleListProperty<Message> messageListProperty() { return currentMessageList; }
 
     public SimpleBooleanProperty loginStatusProperty() {
         return loginStatus;
     }
 
-    public SimpleListProperty<Contact> getOnlineContactList() {
-        return this.onlineContactList;
+    public SimpleListProperty<Contact> onlineContactsListProperty() {
+        return onlineContactsList;
     }
 
+    public SimpleObjectProperty<Server> currentServerProperty() {
+        return currentServer;
+    }
 }

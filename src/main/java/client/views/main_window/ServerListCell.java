@@ -43,7 +43,7 @@ public class ServerListCell extends ListCell<Server> {
                 setGraphic(root);
             } catch (IOException e) {
                 e.printStackTrace();
-                setText("");
+                setText("??");
             }
         } else {
             setText("?");

@@ -5,12 +5,14 @@ import client.classes.Message;
 import client.classes.Server;
 import client.models.ApplicationModel;
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.control.MultipleSelectionModel;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.regex.Pattern;
 
 public class MainWindowModel {
@@ -19,53 +21,77 @@ public class MainWindowModel {
 
 
     ChangeListener<? super String> searchChangeListener = (observable, oldValue, newValue) -> {
-        this.contactViewListProperty().clear();
+        this.contactViewList.clear();
         Pattern regex = Pattern.compile(newValue + "[a-zA-z0-9]*");
-        for (Contact i : this.onlineContactList) {
+        for (Contact i : this.appContactList) {
             if (regex.matcher(i.getUsername()).matches()) {
-                this.contactViewListProperty().add(i);
+                this.contactViewList.add(i);
             }
         }
     };
 
-    ChangeListener<MultipleSelectionModel<Server>> serverSelectionChanged = (observable, oldValue, newValue) -> {
 
+    @SuppressWarnings("unchecked cast")
+    ListChangeListener<? super Server> appServerListChange = c -> {
+        this.serverViewList.set((ObservableList<Server>) c.getList());
     };
 
-    ChangeListener<MultipleSelectionModel<Contact>> contactSelectionChanged = (observable, oldValue, newValue) -> {
+    @SuppressWarnings("unchecked cast")
+    ListChangeListener<? super Contact> appContactListChange = c -> {
+        this.contactViewList.set((ObservableList<Contact>) c.getList());
+    };
 
+    @SuppressWarnings("unchecked cast")
+    ListChangeListener<? super Message> appMessageListChange = c -> {
+        this.messageViewList.set((ObservableList<Message>) c.getList());
     };
 
     private SimpleStringProperty searchString = new SimpleStringProperty();
+    private SimpleStringProperty messageString = new SimpleStringProperty();
 
+    // bound to the views
     private SimpleListProperty<Server> serverViewList = new SimpleListProperty<>();
-    private SimpleListProperty<Contact> onlineContactList = new SimpleListProperty<>();
-    private SimpleListProperty<Contact> contactViewList = new SimpleListProperty();
-    private SimpleListProperty<Message> messageViewList = new SimpleListProperty();
+    private SimpleListProperty<Contact> contactViewList = new SimpleListProperty<>();
+    private SimpleListProperty<Message> messageViewList = new SimpleListProperty<>();
 
-    SimpleObjectProperty<MultipleSelectionModel<Server>> serverSelectionModel = new SimpleObjectProperty<MultipleSelectionModel<Server>>();
-    SimpleObjectProperty<MultipleSelectionModel<Contact>> contactSelectionModel = new SimpleObjectProperty<>();
-    SimpleObjectProperty<MultipleSelectionModel<Message>> messageSelectionModel = new SimpleObjectProperty<>();
+    // bound to the app
+    private SimpleListProperty<Server> appServerList = new SimpleListProperty<>();
+    private SimpleListProperty<Contact> appContactList = new SimpleListProperty<>();
+    private SimpleListProperty<Message> appMessageList = new SimpleListProperty<>();
 
+    ApplicationModel appModel = ApplicationModel.getInstance();
 
     public MainWindowModel() {
-        this.searchStringProperty().addListener(this.searchChangeListener);
+        appModel.serverListProperty().bindBidirectional(this.appServerList);
+        appModel.onlineContactsListProperty().bindBidirectional(this.appContactList);
+        appModel.messageListProperty().bindBidirectional(this.appMessageList);
 
-        ApplicationModel appModel = ApplicationModel.getInstance();
+        this.appMessageList.set(FXCollections.observableList(new ArrayList<>()));
+        this.appContactList.set(FXCollections.observableList(new ArrayList<>()));
+        this.appServerList.set(FXCollections.observableList(new ArrayList<>()));
 
-        // binding the application model to the selected properties
-        appModel.serverListProperty().bindBidirectional(this.serverViewList);
-        appModel.onlineContactListProperty().bindBidirectional(this.onlineContactList);
-        appModel.messageListProperty().bindBidirectional(this.messageViewList);
+        serverViewList.bindBidirectional(appServerList);
 
-        // selection changes
-        this.contactSelectionModel.addListener(this.contactSelectionChanged);
-        this.serverSelectionModel.addListener(this.serverSelectionChanged);
+        this.searchString.addListener(this.searchChangeListener);
+        this.appServerList.addListener(this.appServerListChange);
+        this.appContactList.addListener(this.appContactListChange);
+        this.appMessageList.addListener(this.appMessageListChange);
+    }
 
+    public void logout() {
+        ApplicationModel.getInstance().logout();
     }
 
     public SimpleStringProperty searchStringProperty() {
         return searchString;
+    }
+
+    public SimpleStringProperty messageStringProperty() {
+        return messageString;
+    }
+
+    public SimpleListProperty<Server> serverViewListProperty() {
+        return serverViewList;
     }
 
     public SimpleListProperty<Contact> contactViewListProperty() {
@@ -73,30 +99,6 @@ public class MainWindowModel {
     }
 
     public SimpleListProperty<Message> messageViewListProperty() {
-        return this.messageViewList;
-    }
-
-    public SimpleObjectProperty<MultipleSelectionModel<Server>> serverSelectionModelProperty() {
-        return serverSelectionModel;
-    }
-
-    public SimpleObjectProperty<MultipleSelectionModel<Contact>> contactSelectionModelProperty() {
-        return contactSelectionModel;
-    }
-
-    public SimpleObjectProperty<MultipleSelectionModel<Message>> messageSelectionModelProperty() {
-        return messageSelectionModel;
-    }
-
-    public SimpleListProperty<Server> serverViewListProperty() {
-        return serverViewList;
-    }
-
-    public void logout() {
-        ApplicationModel.getInstance().logout();
-    }
-
-    public void sendMessage(String text) {
-
+        return messageViewList;
     }
 }
