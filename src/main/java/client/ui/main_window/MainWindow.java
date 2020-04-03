@@ -76,11 +76,11 @@ public class MainWindow implements IWindow {
 		});
 
 		//TMP EVENT
-		this.contactPane.setTmpContact(event -> {
-			if(this.tmpContact != null){
-				this.tmpContact.handle(event);
-			}
-		});
+		//this.contactPane.setTmpContact(event -> {
+		//	if(this.tmpContact != null){
+		//		this.tmpContact.handle(event);
+		//	}
+		//});
 
 		// creating the main
 		GridPane mainGrid = new GridPane();
@@ -128,7 +128,7 @@ public class MainWindow implements IWindow {
 		mainGrid.getRowConstraints().add(row0);
 		mainGrid.getRowConstraints().add(row1);
 
-		friendFrame.getChildren().add(this.FriendGrid());
+		//friendFrame.getChildren().add(this.FriendGrid());
 
 		mainGrid.add(this.menuBar,0,0,GridPane.REMAINING, 1);
 		// TODO mainGrid.add(null, 0, 1);

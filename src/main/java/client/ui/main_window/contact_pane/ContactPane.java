@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
+import javafx.scene.control.Button;
+import javafx.event.EventHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +16,15 @@ public class ContactPane extends AnchorPane {
     private ListView<ContactBox> listView = new ListView<>();
     
 
-    private EventHandler tmpContact;
+    //private EventHandler tmpContact;
 
     public ContactPane() {
 
-	this.tmp.setOnAction(event -> {
-		if(this.tmpContact != null){
-			this.tmpContact.handle(event);
-		}
-	});
+	//this.tmp.setOnAction(event -> {
+	//	if(this.tmpContact != null){
+	//		this.tmpContact.handle(event);
+	//	}
+	//});
         System.out.println(this);
 
         this.listView.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -46,6 +48,6 @@ public class ContactPane extends AnchorPane {
         return (ArrayList) this.listView.getItems();
     }
 
-    public Button getTmpContact(){return this.tmpContact;}
-    public void setTmpContact(EventHanlder tmp){this.tmpContact = tmp;}
+    //public EventHandler getTmpContact(){return this.tmpContact;}
+    //public void setTmpContact(EventHandler tmp){this.tmpContact = tmp;}
 }

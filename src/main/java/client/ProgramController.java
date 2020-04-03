@@ -44,12 +44,12 @@ public class ProgramController extends Application {
     private EventHandler onRequestLogin = event -> { this.LoginRequest(this.loginWindow.getUsername(), this.loginWindow.getPassword()); };
     private EventHandler onRequestCreate = event -> { this.LoginCreateUser(this.loginWindow.getUsername(), this.loginWindow.getPassword()); };
     private EventHandler onRequestClose = event -> { this.RequestLogout(); };
-    private EventHandler onRequestSendMessage = event -> { String a = this.mainWindow.getMessageBoxText(); this.testMessages.add(a); this.mainWindow.addMessage(a, MessageAlignment.sent); this.networkManager.getCurrentClient().queueMessage(this.mainWindow.getMessageBoxText())};
+    private EventHandler onRequestSendMessage = event -> { String a = this.mainWindow.getMessageBoxText(); this.testMessages.add(a); this.mainWindow.addMessage(a, MessageAlignment.sent); this.networkManager.sendClientMessage(this.mainWindow.getMessageBoxText());};
     
     // TMP DELETE WHEN DONE
-    private EventHandler tmpContact = event -> { this.networkManager.getCurrentServer().setRequestToChat(true) };
+    //private EventHandler tmpContact = event -> { this.networkManager.getCurrentServer().setRequestToChat(true); };
 
-    /**
+    /*
      * this is called by main
      * @param args arguments passed from the command line
      * @throws Exception any exception
@@ -63,9 +63,8 @@ public class ProgramController extends Application {
      * @param stage the stage given to the function by application.
      * @throws Exception any thing that could go wrong.
      */
-    public void start(Stage stage) throws Exception {
-	this.networkManager.start();
-        System.out.println(this);
+    public void start(Stage stage) throws Exception { 
+	System.out.println(this);
 
         this.loginWindow = new LoginWindow();
         this.mainWindow = new MainWindow();
@@ -109,6 +108,11 @@ public class ProgramController extends Application {
 
             this.account = (Account) this.dataManager.getObject("account");
             this.mainWindow.show();
+
+
+	    System.out.println("first");
+	    this.networkManager.start();
+	    System.out.println("end");
         }
     }
 

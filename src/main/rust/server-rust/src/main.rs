@@ -4,7 +4,7 @@ use std::sync::mpsc;
 use std::thread;
 
 //ip and port
-const LOCAL: &str = "127.0.0.1:6000";
+const LOCAL: &str = "127.0.0.1:6001";
 //buffer size of messages
 const MSG_SIZE: usize = 32;
 
@@ -61,6 +61,7 @@ fn main(){
             });
         }
         // when server recives a message
+        println!("t: {:?}",rx.try_recv());
         if let Ok(msg) = rx.try_recv(){
             clients = clients.into_iter().filter_map(|mut client|{
                 let mut buff = msg.clone().into_bytes();
