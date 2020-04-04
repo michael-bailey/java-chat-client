@@ -1,10 +1,101 @@
 GridPane {
-    -fx-background-color: #2c3032;
+    -fx-background-color: #202124;
     -fx-focus-color: transparent;
 }
 
-
-.menuBar {
+.SendButton {
     -fx-text-fill: #FFFFFF;
-    -fx-background-color: #3c4042;
+    
+    -fx-border-color: #555555;
+    -fx-border-radius: 12.5;
+    
+    -fx-background-color: #454949;
+	-fx-background-radius: 12.5;
+}
+
+.MessageField {
+    -fx-text-fill: #FFFFFF;
+    
+    -fx-border-color: #555555;
+    -fx-border-radius: 12.5;
+    
+    -fx-background-color: #353940;
+	-fx-background-radius: 12.5;
+}
+
+.MessageListView {
+    -fx-text-fill: #FFFFFF;
+    
+    -fx-border-color: #353535;
+    -fx-border-radius: 12.5;
+    
+    -fx-background-color: #353940;
+	-fx-background-radius: 12.5;
+}
+
+.MessageListView .list-cell:odd {
+    -fx-background-color: #353940;
+    -fx-background-radius: 12.5;
+    -fx-border-radius: 12.5;
+}
+
+.MessageListView .list-cell:even {
+    -fx-background-color: #353940;
+    -fx-background-radius: 12.5;
+    -fx-border-radius: 12.5;
+}
+
+.MessageListView .scroll-bar:vertical {
+     -fx-background-color: #353940;
+     -fx-background-radius: 8;
+     -fx-border-radius: 8;
+}
+
+.thumb  {
+     -fx-background-color: #202124;
+     -fx-background-radius: 8;
+     -fx-border-radius: 8;
+}
+
+.MessageContent {
+    -fx-background-color: #3399ff;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 12.5;
+}
+
+.ContactListView {
+    -fx-text-fill: #FFFFFF;
+    
+    -fx-border-color: #353535;
+    -fx-border-radius: 12.5;
+    
+    -fx-background-color: #353940;
+	-fx-background-radius: 12.5;
+}
+
+.ContactListView .list-cell:odd {
+    -fx-background-color: #353940;
+    -fx-background-radius: 12.5;
+    -fx-border-radius: 12.5;
+}
+
+.ContactListView .list-cell:even {
+    -fx-background-color: #353940;
+    -fx-background-radius: 12.5;
+    -fx-border-radius: 12.5;
+}
+
+.ContactListView .scroll-bar:vertical {
+     -fx-background-color: #353940;
+     -fx-background-radius: 8;
+     -fx-border-radius: 8;
+}
+
+.AddServerButton {
+    -fx-background-color: #353940;
+    -fx-background-radius: 12.5;
+    -fx-border-radius: 12.5;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #555555;
+    -fx-border-radius: 12.5;
 }
