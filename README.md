@@ -1,5 +1,7 @@
 # java-chat-client
 
+![Java CI](https://github.com/michael-bailey/java-chat-client/workflows/Java%20CI/badge.svg)
+
 this will be a simplistic chat client 
 with the ability to send and receive messages to users over th internet.
 
