@@ -22,19 +22,5 @@ import javax.jmdns.*;
  * @since 1.0
  */
 public class NetworkManager extends Object {
-
-    ApplicationModel appModel = ApplicationModel.getInstance();
-
-    SimpleObjectProperty<Server> currentServer = new SimpleObjectProperty<Server>();
-
-    ChangeListener<? super Server> serverChange =  (observable, oldValue, newValue) -> {
-        
-    };
-
-    public NetworkManager() {
-        appModel.currentServerProperty().bindBidirectional(this.currentServer);
-
-        this.currentServer.addListener();
-    }
-
+    
 }
