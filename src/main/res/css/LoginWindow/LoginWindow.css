@@ -15,10 +15,25 @@
 
 .Button {
     -fx-text-fill: #FFFFFF;
-    
-    -fx-border-color: #555555;
+
     -fx-border-radius: 12.5;
     
     -fx-background-color: #353940;
 	-fx-background-radius: 12.5;
+}
+
+.TextBoxEmpty {
+    -fx-border-color: #555555;
+}
+
+.TextBoxWrong {
+    -fx-border-color: #ff0000;
+}
+
+.TextBoxAlmost {
+    -fx-border-color: #ffd500;
+}
+
+.TextBoxCorrect {
+    -fx-border-color: #29e35a;
 }
