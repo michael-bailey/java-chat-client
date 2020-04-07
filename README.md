@@ -35,12 +35,12 @@ to run this program use the grade wrapper
 ## images
 
 #### the login window
-![UI Login](./.github/images/Screenshot 2020-03-27 at 12.34.33.png)
+![UI Login](.github/images/Screenshot 2020-03-27 at 12.34.33.png)
 
 
 
 #### the main window with contant
-![UI Main](./.github/images/Screenshot%202020-03-29%20at%2015.56.16.png)
+![UI Main](.github/images/Screenshot%202020-03-29%20at%2015.56.16.png)
 
 *this may not reflect the actual interface at all times as it may be changed in the future*
 
