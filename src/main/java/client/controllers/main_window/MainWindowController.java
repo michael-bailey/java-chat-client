@@ -43,11 +43,12 @@ public class MainWindowController implements Initializable {
     @FXML private ListView<Server> serverListView;
 
     // other menus
-    URL addServerDialogueURL = getClass().getClassLoader().getResource("layouts/MainWindow/ServerAddDialogue.fxml");
+    private URL addServerDialogueURL = getClass().getClassLoader().getResource("layouts/MainWindow/ServerAddDialogue.fxml");
     private ServerAddDialogue serverAddDialogue;
+    private MainWindowModel model = new MainWindowModel();
 
     // change Listeners
-    ChangeListener<Boolean> loginStatusListener = (observable, oldValue, newValue) -> {
+    private ChangeListener<Boolean> loginStatusListener = (observable, oldValue, newValue) -> {
         if (newValue) {
             this.stage.show();
         } else {
@@ -55,29 +56,6 @@ public class MainWindowController implements Initializable {
         }
     };
 
-    // list view factories
-    Callback messageCellFactory = new Callback<ListView<Message>, ListCell<Message>>() {
-        @Override
-        public ListCell<Message> call(ListView<Message> studentListView) {
-            return new MessageListCell();
-        }
-    };
-
-    Callback contactCellFactory = new Callback<ListView<Contact>, ContactListCell>() {
-        @Override
-        public ContactListCell call(ListView<Contact> studentListView) {
-            return new ContactListCell();
-        }
-    };
-
-    Callback serverCellFactory = new Callback<ListView<Server>, ServerListCell>() {
-        @Override
-        public ServerListCell call(ListView<Server> studentListView) {
-            return new ServerListCell();
-        }
-    };
-
-    MainWindowModel model = new MainWindowModel();
 
     public MainWindowController() {
         System.out.println(this);
@@ -99,9 +77,13 @@ public class MainWindowController implements Initializable {
         ApplicationModel.getInstance().loginStatusProperty().addListener(this.loginStatusListener);
 
         // cell factories
-        this.messageListView.setCellFactory(this.messageCellFactory);
-        this.contactListView.setCellFactory(this.contactCellFactory);
-        this.serverListView.setCellFactory(this.serverCellFactory);
+        this.messageListView.setCellFactory(this.model.getMessageCellFactory());
+        this.contactListView.setCellFactory(this.model.getContactCellFactory());
+        this.serverListView.setCellFactory(this.model.getServerCellFactory());
+
+        this.serverListView.selectionModelProperty().addListener(this.model.getServerSelectionChangeListener());
+        this.contactListView.selectionModelProperty().addListener(this.model.getContactSelectionChangeListener());
+
 
         // view bindings
         this.model.searchStringProperty().bindBidirectional(this.contactSearchBox.textProperty());

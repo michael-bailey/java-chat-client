@@ -7,7 +7,9 @@ import client.classes.Server;
 import client.managers.DataManager;
 import client.managers.NetworkManager;
 import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.scene.input.Clipboard;
 
 import java.io.File;
 import java.security.Key;
@@ -18,27 +20,47 @@ public class ApplicationModel {
     private static ApplicationModel instance;
 
     // persistent variables
-    SimpleBooleanProperty loginStatus;
+    private SimpleBooleanProperty loginStatus;
 
-    SimpleStringProperty name = new SimpleStringProperty();
-    SimpleObjectProperty<UUID> uuid = new SimpleObjectProperty<>();
+    private SimpleStringProperty name = new SimpleStringProperty();
+    private SimpleObjectProperty<UUID> uuid = new SimpleObjectProperty<>();
+    private SimpleObjectProperty<Key> publicKey = new SimpleObjectProperty<>();
+    private SimpleObjectProperty<Key> privateKey = new SimpleObjectProperty<>();
 
-    SimpleObjectProperty<Key> publicKey = new SimpleObjectProperty<>();
-    SimpleObjectProperty<Key> privateKey = new SimpleObjectProperty<>();
+    private SimpleListProperty<Server> serverList = new SimpleListProperty<>();
 
-    SimpleListProperty<Server> serverList = new SimpleListProperty<>();
+    private SimpleMapProperty<UUID, Contact> contactHashMap = new SimpleMapProperty<>();
 
-    SimpleMapProperty<UUID, Contact> contactHashMap = new SimpleMapProperty<>();
-
-    SimpleListProperty<Contact> onlineContactsList = new SimpleListProperty<Contact>();
-    SimpleListProperty<Message> MessageList = new SimpleListProperty<Message>();
+    private SimpleListProperty<Contact> onlineContactsList = new SimpleListProperty<Contact>();
+    private SimpleListProperty<Message> MessageList = new SimpleListProperty<Message>();
 
     // volatile variables
-    SimpleObjectProperty<Contact> currentContact = new SimpleObjectProperty<>();
-    SimpleObjectProperty<Server> currentServer = new SimpleObjectProperty<>();
+    private SimpleObjectProperty<Contact> currentContact = new SimpleObjectProperty<>();
+    private SimpleObjectProperty<Server> currentServer = new SimpleObjectProperty<>();
 
-    DataManager dataManager = new DataManager();
-    NetworkManager networkManager = new NetworkManager();
+    private Clipboard systemClipBoard = Clipboard.getSystemClipboard();
+    private DataManager dataManager = new DataManager();
+    private NetworkManager networkManager = new NetworkManager();
+
+    ChangeListener<Server> serverChangeListener = (observable, oldValue, newValue) -> {
+        // tell the network manager to change the server if not null
+        if (newValue != null) {
+
+        }
+    };
+    ChangeListener<Contact> contactChangeListener = (observable, oldValue, newValue) -> {
+        if (newValue != null) {
+            Contact contactData;
+            if ((contactData = this.contactHashMap.get(newValue.getUUID())) != null) {
+                this.messageListProperty().get().clear();
+                this.messageListProperty().get().setAll(contactData.getMessages());
+            } else {
+                this.contactHashMap.put(newValue.getUUID(), newValue);
+            }
+        } else {
+            this.MessageList.set(null);
+        }
+    };
 
     public ApplicationModel() {
         loginStatus = new SimpleBooleanProperty(false);
@@ -150,5 +172,17 @@ public class ApplicationModel {
 
     public SimpleObjectProperty<Server> currentServerProperty() {
         return currentServer;
+    }
+
+    public Clipboard getSystemClipBoard() {
+        return systemClipBoard;
+    }
+
+    public Contact getCurrentContact() {
+        return currentContact.get();
+    }
+
+    public SimpleObjectProperty<Contact> currentContactProperty() {
+        return currentContact;
     }
 }

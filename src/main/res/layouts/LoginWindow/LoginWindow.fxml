@@ -17,7 +17,7 @@
          <root>
             <BorderPane>
                <center>
-                  <AnchorPane id="root" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="270.0" styleClass="Root">
+                  <AnchorPane id="root" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="281.0" prefWidth="270.0" styleClass="Root">
                      <children>
                         <Label alignment="CENTER" layoutX="142.0" layoutY="240.0" text="Login" textFill="TRANSPARENT" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
                            <font>
@@ -29,18 +29,18 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <PasswordField fx:id="passwordField" layoutX="59.0" layoutY="286.0" maxHeight="30.0" minHeight="30.0" onAction="#Login" prefHeight="30.0" promptText="Password..." styleClass="TextBox" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="175.0">
+                        <PasswordField fx:id="passwordField" layoutX="59.0" layoutY="286.0" maxHeight="35.0" minHeight="35.0" onAction="#Login" prefHeight="35.0" promptText="Password..." styleClass="TextBox" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="175.0">
                            <padding>
-                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding></PasswordField>
                         <Label alignment="CENTER" layoutX="59.0" layoutY="206.0" text="Password" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="145.0">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Button fx:id="cancelButton" layoutX="25.0" layoutY="247.0" mnemonicParsing="false" onAction="#cancel" prefHeight="27.0" prefWidth="80.0" styleClass="Button" text="cancel" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="220.0" />
-                        <Button fx:id="loginButton" layoutX="120.0" layoutY="247.0" mnemonicParsing="false" onAction="#Login" prefHeight="27.0" prefWidth="80.0" styleClass="Button" text="login" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="220.0" />
-                        <TextField fx:id="usernameField" layoutX="25.0" layoutY="105.0" maxHeight="30.0" minHeight="30.0" onAction="#Login" prefHeight="30.0" promptText="Username..." styleClass="TextBox" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="105.0">
+                        <Button fx:id="cancelButton" layoutX="25.0" layoutY="247.0" mnemonicParsing="false" onAction="#cancel" prefHeight="27.0" prefWidth="80.0" styleClass="Button" text="cancel" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="150.0" />
+                        <Button fx:id="loginButton" layoutX="120.0" layoutY="247.0" mnemonicParsing="false" onAction="#Login" prefHeight="27.0" prefWidth="80.0" styleClass="Button" text="login" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="25.0" />
+                        <TextField fx:id="usernameField" layoutX="25.0" layoutY="105.0" maxHeight="35.0" minHeight="35.0" onAction="#Login" prefHeight="35.0" promptText="Username..." styleClass="TextBox" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="105.0">
                            <padding>
                               <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                            </padding></TextField>

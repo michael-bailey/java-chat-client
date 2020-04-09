@@ -1,5 +1,6 @@
 package client.controllers.login_display;
 
+import client.classes.Message;
 import client.models.login_window.LoginWindowModel;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -10,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -31,57 +33,15 @@ public class LoginWindowController implements Initializable {
     @FXML private Button cancelButton;
     @FXML private Button loginButton;
 
+    private LoginWindowModel model = new LoginWindowModel();
+
     private ChangeListener<Boolean> loggedInListener = (observableValue, oldValue, newValue) -> {
-        if ((Boolean) newValue) {
+        if (newValue) {
             this.hideView();
         } else {
             this.showView();
         }
     };
-
-    private ChangeListener<String> usernameListener = (observableValue, oldValue, newValue) -> {
-        ObservableList<String> styleClass = this.usernameField.getStyleClass();
-        styleClass.clear();
-        styleClass.add("TextBox");
-
-        if (!(newValue.length() > 0)) {
-            styleClass.add("TextBoxEmpty");
-            this.model.usernameCorrectProperty().setValue(false);
-            return;
-        }
-
-        if (newValue.matches("[a-zA-Z0-9_-]*")) {
-            styleClass.add("TextBoxCorrect");
-            this.model.usernameCorrectProperty().setValue(true);
-        } else {
-            styleClass.add("TextBoxWrong");
-            this.model.usernameCorrectProperty().set(false);
-        }
-    };
-
-    private ChangeListener<String> passwordListener = (observableValue, oldValue, newValue) -> {
-        ObservableList<String> styleClass = this.passwordField.getStyleClass();
-        styleClass.clear();
-        styleClass.add("TextBox");
-
-        if (!(newValue.length() > 0)) {
-            styleClass.add("TextBoxEmpty");
-            this.model.passwordCorrectProperty().setValue(false);
-            return;
-        }
-
-        if (newValue.matches("[a-zA-Z]*")) {
-            styleClass.add("TextBoxWrong");
-            this.model.passwordCorrectProperty().setValue(false);
-        } else {
-            styleClass.add("TextBoxCorrect");
-            this.model.passwordCorrectProperty().setValue(true);
-        }
-    };
-
-    private LoginWindowModel model = new LoginWindowModel();
-    private TranslateTransition usernameAnimation;
-    private TranslateTransition passwordAnimation;
 
     public LoginWindowController() {
         System.out.println(this);
@@ -92,21 +52,18 @@ public class LoginWindowController implements Initializable {
         System.out.println(this.usernameField.getStyleClass().toString());
 
         // state listeners
-        this.passwordField.textProperty().addListener(passwordListener);
-        this.usernameField.textProperty().addListener(usernameListener);
         this.model.loginStatusProperty().addListener(loggedInListener);
+
+        // set observables
+        this.model.usernameBoxCSSProperty().set(this.usernameField.getStyleClass());
+        this.model.passwordBoxCSSProperty().set(this.passwordField.getStyleClass());
 
         // property bindings
         this.model.usernameStringProperty().bindBidirectional(usernameField.textProperty());
         this.model.passwordStringProperty().bindBidirectional(passwordField.textProperty());
 
-        // animations
-        usernameAnimation = this.model.getErrorAnimation();
-        usernameAnimation.setNode(this.usernameField);
-
-        passwordAnimation = this.model.getErrorAnimation();
-        passwordAnimation.setNode(this.passwordField);
-
+        this.model.getUsernameAnimation().setNode(this.usernameField);
+        this.model.getPasswordAnimation().setNode(this.passwordField);
 
         this.usernameField.requestFocus();
     }
@@ -115,11 +72,11 @@ public class LoginWindowController implements Initializable {
         this.model.login();
 
         if (!this.model.usernameCorrectProperty().get()) {
-            this.usernameAnimation.play();
+            this.model.getUsernameAnimation().play();
         }
 
         if (!this.model.passwordCorrectProperty().get()) {
-            this.passwordAnimation.play();
+            this.model.getPasswordAnimation().play();
         }
     }
 

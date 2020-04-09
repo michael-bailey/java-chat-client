@@ -46,9 +46,9 @@
                           </AnchorPane>
                           <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
                               <children>
-                                  <ListView fx:id="messageListView" prefHeight="200.0" prefWidth="200.0" styleClass="MessageListView" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-                                  <TextField fx:id="messageBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="160.0" onAction="#sendMessage" prefHeight="25.0" promptText="Message..." styleClass="MessageField" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="35.0" />
-                                  <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendMessage" prefHeight="25.0" prefWidth="25.0" styleClass="SendButton" text="&gt;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                                  <ListView fx:id="messageListView" disable="true" prefHeight="200.0" prefWidth="200.0" styleClass="MessageListView" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                  <TextField fx:id="messageBox" disable="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="160.0" onAction="#sendMessage" prefHeight="25.0" promptText="Message..." styleClass="MessageField" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="35.0" />
+                                  <Button fx:id="sendButton" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendMessage" prefHeight="25.0" prefWidth="25.0" styleClass="SendButton" text="&gt;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
                               </children>
                           </AnchorPane>
                       </children>
