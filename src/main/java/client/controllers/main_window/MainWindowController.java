@@ -65,36 +65,15 @@ public class MainWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // create windows
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(addServerDialogueURL);
-            fxmlLoader.load();
-            this.serverAddDialogue = fxmlLoader.getController();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         ApplicationModel.getInstance().loginStatusProperty().addListener(this.loginStatusListener);
+
+        // binding model to view
+        this.serverListView.itemsProperty().bindBidirectional(this.model.viewServerListProperty());
 
         // cell factories
         this.messageListView.setCellFactory(this.model.getMessageCellFactory());
         this.contactListView.setCellFactory(this.model.getContactCellFactory());
         this.serverListView.setCellFactory(this.model.getServerCellFactory());
-
-        this.serverListView.selectionModelProperty().addListener(this.model.getServerSelectionChangeListener());
-        this.contactListView.selectionModelProperty().addListener(this.model.getContactSelectionChangeListener());
-
-
-        // view bindings
-        this.model.searchStringProperty().bindBidirectional(this.contactSearchBox.textProperty());
-        this.model.serverViewListProperty().bindBidirectional(this.serverListView.itemsProperty());
-        this.model.contactViewListProperty().bindBidirectional(this.contactListView.itemsProperty());
-        this.model.messageViewListProperty().bindBidirectional(this.messageListView.itemsProperty());
-
-    }
-
-    public MainWindowModel getModel() {
-        return model;
     }
 
     @FXML void addServer(ActionEvent actionEvent) {

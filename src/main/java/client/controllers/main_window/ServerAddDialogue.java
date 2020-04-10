@@ -44,7 +44,7 @@ public class ServerAddDialogue implements Initializable {
 
 
         if (this.serverListProperty.get() != null) {
-            ApplicationModel.getInstance().serverListProperty().add(new Server(this.IPAddressBox.getText(), "BOB"));
+            //ApplicationModel.getInstance().serverListProperty().add(new Server(this.IPAddressBox.getText(), "BOB"));
         }
     }
 
