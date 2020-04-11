@@ -4,6 +4,9 @@ import client.classes.Server;
 import client.models.ApplicationModel;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.ObservableList;
+import java.util.UUID;
+
+import java.util.UUID;
 
 public class AddServerDialogueModel {
 
@@ -16,7 +19,7 @@ public class AddServerDialogueModel {
     }
 
     public void add(String ipAddress, String name) {
-        this.serverList.add(new Server(ipAddress, name));
+        this.serverList.add(new Server(ipAddress, name, UUID.randomUUID()));
     }
 
 }

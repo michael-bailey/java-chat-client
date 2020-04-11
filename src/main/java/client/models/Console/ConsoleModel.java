@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.UUID;
 
 public class ConsoleModel {
     SimpleStringProperty commandString = new SimpleStringProperty();
@@ -54,7 +55,7 @@ public class ConsoleModel {
         switch (args.get(0)) {
             case "server":
                 this.write("Adding server");
-                appModel.serverListProperty().add(new Server(args.get(1), args.get(2)));
+                appModel.serverListProperty().add(new Server(args.get(1), args.get(2), UUID.randomUUID()));
                 this.write("Added to server");
                 break;
 
@@ -73,9 +74,7 @@ public class ConsoleModel {
                 break;
         }
     }
-
-
-
+    
     private void remove(ArrayList<String> args) {
 
     }

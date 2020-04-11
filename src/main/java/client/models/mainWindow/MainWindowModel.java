@@ -22,8 +22,6 @@ import java.util.regex.Pattern;
 
 public class MainWindowModel {
 
-
-
     ApplicationModel appModel = ApplicationModel.getInstance();
 
     private final SimpleListProperty<Server> appModelServerList = new SimpleListProperty<>();
