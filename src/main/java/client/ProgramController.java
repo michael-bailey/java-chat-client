@@ -69,10 +69,4 @@ public class ProgramController extends Application {
         // show the login window
         this.loginWindow.showView();
     }
-
-    public void quitApplication() {
-        ApplicationModel.getInstance().save();
-        Platform.exit();
-    }
-
 }

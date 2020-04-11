@@ -25,6 +25,8 @@ public class ServerAddDialogue implements Initializable {
 
     private SimpleListProperty<Server> serverListProperty = new SimpleListProperty<>();
 
+    private AddServerDialogueModel model = new AddServerDialogueModel();
+
     public ServerAddDialogue() {
 
     }
@@ -44,7 +46,7 @@ public class ServerAddDialogue implements Initializable {
 
 
         if (this.serverListProperty.get() != null) {
-            ApplicationModel.getInstance().serverListProperty().add(new Server(this.IPAddressBox.getText(), "BOB"));
+            //ApplicationModel.getInstance().serverListProperty().add(new Server(this.IPAddressBox.getText(), "BOB"));
         }
     }
 

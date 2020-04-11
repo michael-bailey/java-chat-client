@@ -1,6 +1,7 @@
 package client.views.main_window;
 
 import client.classes.Server;
+import client.models.ApplicationModel;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,8 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class ServerListCell extends ListCell<Server> {
@@ -24,16 +27,19 @@ public class ServerListCell extends ListCell<Server> {
     @FXML Label label;
     @FXML ImageView imgView;
 
+    private SimpleObjectProperty<Server> server = new SimpleObjectProperty<>();
+
     @Override
     protected void updateItem(Server item, boolean empty) {
         super.updateItem(item, empty);
+        System.out.println("cell created");
         setText(null);
         setGraphic(null);
 
-        server.set(item);
-
         if (!empty) {
             try {
+                server.set(item);
+
                 FXMLLoader loader = new FXMLLoader(fxmlURL);
                 loader.setController(this);
                 loader.load();
@@ -43,13 +49,11 @@ public class ServerListCell extends ListCell<Server> {
                 setGraphic(root);
             } catch (IOException e) {
                 e.printStackTrace();
-                setText("??");
+                setText("Error");
             }
         } else {
-            setText("?");
+            setText(null);
+            setGraphic(null);
         }
     }
-
-    private SimpleObjectProperty<Server> server = new SimpleObjectProperty<>();
-
 }

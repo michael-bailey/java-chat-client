@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.UUID;
 
 public class ConsoleModel {
     SimpleStringProperty commandString = new SimpleStringProperty();
@@ -17,8 +18,7 @@ public class ConsoleModel {
     ApplicationModel appModel = ApplicationModel.getInstance();
 
     public ConsoleModel() {
-        System.out.println(appModel.onlineContactsListProperty().get());
-        System.out.println(appModel.messageListProperty().get());
+
     }
 
     public void processCommand() {
@@ -38,29 +38,49 @@ public class ConsoleModel {
             switch (command) {
                 case "add":
                     this.add(args);
+                    break;
+
+                case "remove":
+                    this.remove(args);
+                    break;
+
+
             }
         }
 
         commandString.set("");
     }
 
-    public void add(ArrayList<String> args) {
+    private void add(ArrayList<String> args) {
         switch (args.get(0)) {
             case "server":
-                ObservableList<Server> slist = appModel.serverListProperty();
-                slist.add(new Server(args.get(1), args.get(2)));
+                this.write("Adding server");
+                appModel.serverListProperty().add(new Server(args.get(1), args.get(2), UUID.randomUUID()));
+                this.write("Added to server");
                 break;
 
             case "contact":
-                ObservableList<Contact> clist = appModel.onlineContactsListProperty();
-                clist.add(new Contact(args.get(1)));
+                this.write("Adding Contact");
+                //ObservableList<Contact> clist = appModel.onlineContactsListProperty();
+                //clist.add(new Contact(args.get(1)));
+                this.write("Added to Contacts");
                 break;
 
             case "message":
-                ObservableList<Message> mlist = appModel.messageListProperty();
-                mlist.add(new Message(args.subList(1, args.size()-1).toString(), Boolean.valueOf(args.get(args.size()-1))));
+                this.write("Adding Message");
+                //ObservableList<Message> mlist = appModel.messageListProperty();
+                //mlist.add(new Message(args.subList(1, args.size() - 1).toString(), Boolean.valueOf(args.get(args.size() - 1))));
+                this.write("Added to Messages");
                 break;
         }
+    }
+    
+    private void remove(ArrayList<String> args) {
+
+    }
+
+    private void write(String string) {
+        this.outputString.set(this.outputString.get().concat(string+"\n"));
     }
 
     public SimpleStringProperty commandStringProperty() {
