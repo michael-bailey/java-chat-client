@@ -1,5 +1,7 @@
 package client;
 
+import baselib.managers.NetworkManager;
+import baselib.managers.DataManager;
 import client.classes.Account;
 import client.controllers.console.Console;
 import client.controllers.login_display.LoginWindowController;
