@@ -1,20 +1,19 @@
 package client.models;
 
-import client.classes.Account;
 import client.classes.Contact;
-import client.classes.Message;
 import client.classes.Server;
+import client.exceptions.CannotConnectException;
+import client.exceptions.InvalidConfigurationException;
 import client.managers.DataManager;
 import client.managers.NetworkManager;
-import javafx.beans.property.*;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.input.Clipboard;
 
 import java.io.File;
-import java.security.Key;
-import java.util.*;
+import java.util.ArrayList;
 
 public class ApplicationModel {
 
@@ -25,6 +24,8 @@ public class ApplicationModel {
 
     // server list value
     private final SimpleListProperty<Server> serverList;
+
+    private final SimpleObjectProperty<Server> selectedServer;
 
     private final DataManager dataManager = new DataManager();
     private final NetworkManager networkManager = new NetworkManager();
@@ -45,6 +46,7 @@ public class ApplicationModel {
 
         // create the server list property
         serverList = new SimpleListProperty<Server>(FXCollections.observableList(new ArrayList<Server>()));
+        selectedServer = new SimpleObjectProperty<Server>();
     }
 
     public static ApplicationModel getInstance() {
@@ -103,6 +105,15 @@ public class ApplicationModel {
         this.loginStatus.set(false);
     }
 
+    public void addServer(String ipAddress, String name) throws CannotConnectException, InvalidConfigurationException {
+        if (ipAddress.matches("(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.\n" +
+                "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.\n" +
+                "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.\n" +
+                "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)")) {
+            // this.networkManager.setupNewServer();
+        }
+    }
+
     public SimpleBooleanProperty loginStatusProperty() {
         return loginStatus;
     }
@@ -110,4 +121,6 @@ public class ApplicationModel {
     public SimpleListProperty<Server> serverListProperty() {
         return serverList;
     }
+
+
 }

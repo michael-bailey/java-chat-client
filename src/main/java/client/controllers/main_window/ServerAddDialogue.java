@@ -25,6 +25,8 @@ public class ServerAddDialogue implements Initializable {
 
     private SimpleListProperty<Server> serverListProperty = new SimpleListProperty<>();
 
+    private AddServerDialogueModel model = new AddServerDialogueModel();
+
     public ServerAddDialogue() {
 
     }

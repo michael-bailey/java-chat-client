@@ -1,21 +1,25 @@
 package client.classes;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.net.InetAddress;
+import java.util.UUID;
 
 public class Server implements Serializable {
     private static final long serialVersionUID = 7209367093717893717L;
-    
-    String ipAddress;
+
+    UUID uuid;
+    String host;
     String serverName;
 
-    public Server(String IPAddress, String serverName) {
-        this.ipAddress = IPAddress;
+    public Server(String host, String serverName, UUID uuid) {
+        this.host = host;
         this.serverName = serverName;
+        this.uuid = uuid;
     }
 
     public String getIpAddress() {
-        return ipAddress;
+        return host;
     }
 
     public String getServerName() {
