@@ -20,9 +20,12 @@ are to be sent, and permissions for the user on the server
 * JavaFx - used for the User interface
 * gradle - the build system we are using
 
+# other infomation pages.
+* ![client to server protocol](./docs/Protocol.md)
+
 ## Running
 
-to run this program use the grade wrapper 
+to run this program use the grade wrapper
 
 #### linux
 
