@@ -1,0 +1,27 @@
+.ContactPane {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent ;
+    -fx-control-inner-background-alt: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.ContactPane:focused {
+    -fx-focus-color: #2c3032;
+    -fx-box-border: transparent;
+    -fx-background-insets: -1.4, 0, 1;
+    -fx-background-radius: 1.4, 0, 0;
+}
+
+.AddButton {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3c4042;
+	-fx-background-radius: 12.5;
+}
+
+.SearchBar {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3c4042;
+	-fx-background-radius: 12.5;
+}

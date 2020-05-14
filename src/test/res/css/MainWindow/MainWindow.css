@@ -1,0 +1,129 @@
+GridPane {
+    -fx-background-color: #FFFFFF;
+    -fx-focus-color: transparent;
+}
+
+.SendButton {
+    -fx-text-fill: #FFFFFF;
+    
+    -fx-border-color: #D5D8DC;
+    -fx-border-radius: 12.5;
+    
+    -fx-background-color: #FFFFFF;
+	-fx-background-radius: 12.5;
+}
+
+.MessageField {
+    -fx-text-fill: #FFFFFF;
+    
+    -fx-border-color: #D5D8DC;
+    -fx-border-radius: 17.5;
+    
+    -fx-background-color: #FFFFFF;
+	-fx-background-radius: 17.5;
+}
+
+.MessageListView {
+    -fx-text-fill: #FFFFFF;
+    
+    -fx-border-color: #D5D8DC;
+    -fx-border-radius: 12.5;
+    
+    -fx-background-color: #FFFFFF;
+	-fx-background-radius: 12.5;
+}
+
+.MessageListView .list-cell:odd {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12.5;
+    -fx-border-radius: 12.5;
+}
+
+.MessageListView .list-cell:even {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12.5;
+    -fx-border-radius: 12.5;
+}
+
+.MessageListView .scroll-bar:vertical {
+     -fx-background-color: #FFFFFF;
+     -fx-background-radius: 8;
+     -fx-border-radius: 8;
+}
+
+.thumb  {
+     -fx-background-color: #AAAAAA;
+     -fx-background-radius: 8;
+     -fx-border-radius: 8;
+}
+
+.MessageContent {
+    -fx-background-color: #3399ff;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 12.5;
+}
+
+.ContactListView {
+    -fx-text-fill: #FFFFFF;
+    
+    -fx-border-color: #D5D8DC;
+    -fx-border-radius: 12.5;
+    
+    -fx-background-color: #353940;
+	-fx-background-radius: 12.5;
+}
+
+.ContactListView .list-cell:odd {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12.5;
+    -fx-border-radius: 12.5;
+}
+
+.ContactListView .list-cell:even {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12.5;
+    -fx-border-radius: 12.5;
+}
+
+.ContactListView .scroll-bar:vertical {
+     -fx-background-color: #FFFFFF;
+     -fx-background-radius: 8;
+     -fx-border-radius: 8;
+}
+
+.ServerListView {
+    -fx-text-fill: #FFFFFF;
+    
+    -fx-border-color: #D5D8DC;
+    -fx-border-radius: 12.5;
+    
+    -fx-background-color: #FFFFFF;
+	-fx-background-radius: 12.5;
+}
+
+.ServerListView .list-cell:odd {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12.5;
+    -fx-border-radius: 12.5;
+}
+
+.ServerListView .list-cell:even {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12.5;
+    -fx-border-radius: 12.5;
+}
+
+.ServerListView .scroll-bar:vertical {
+     -fx-background-color: #FFFFFF;
+     -fx-background-radius: 8;
+     -fx-border-radius: 8;
+}
+
+.AddServerButton {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12.5;
+    -fx-border-radius: 12.5;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #D5D8DC;
+    -fx-border-radius: 12.5;
+}

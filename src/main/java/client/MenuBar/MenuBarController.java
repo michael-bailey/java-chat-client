@@ -1,4 +1,4 @@
-package client.controllers;
+package client.MenuBar;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;

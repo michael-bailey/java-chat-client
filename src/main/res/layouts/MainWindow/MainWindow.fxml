@@ -12,10 +12,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.stage.Stage?>
 
-<Stage fx:id="stage" minHeight="315.0" minWidth="500.0" onCloseRequest="#windowClose" title="chat client" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.main_window.MainWindowController">
+<Stage fx:id="stage" minHeight="375.0" minWidth="500.0" onCloseRequest="#windowClose" title="chat client" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ChatWindow.ChatWindowController">
     <scene>
         <Scene stylesheets="@../../css/MainWindow/MainWindow.css">
-         <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="250.0" minWidth="475.0">
+         <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="325.0" minWidth="475.0">
+             <top>
+                 <fx:include fx:id="menuBar" source="../MainMenu.fxml" />
+             </top>
             <center>
                   <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="250.0" minWidth="475.0" BorderPane.alignment="CENTER">
                       <columnConstraints>
@@ -29,8 +32,8 @@
                       <children>
                           <AnchorPane prefHeight="50.0" prefWidth="50.0" GridPane.hgrow="NEVER">
                                <children>
-                                   <ListView fx:id="serverListView" prefHeight="200.0" prefWidth="200.0" styleClass="MessageListView" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-                           <Button fx:id="addServerButton" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#addServer" styleClass="AddServerButton" text="+" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                                   <ListView fx:id="serverListView" prefHeight="200.0" prefWidth="200.0" styleClass="ServerListView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           <Button fx:id="addServerButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addServer" prefHeight="25.0" prefWidth="25.0" styleClass="AddServerButton" text="+" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                               <font>
                                  <Font name="System Bold" size="22.0" />
                               </font>
@@ -39,24 +42,20 @@
                           </AnchorPane>
                           <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                               <children>
-                                  <ListView fx:id="contactListView" prefHeight="200.0" prefWidth="200.0" styleClass="MessageListView" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-                                  <TextField fx:id="contactSearchBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" promptText="Search..." styleClass="MessageField" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="35.0" />
-                                  <Button fx:id="addContactButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addContact" prefHeight="25.0" prefWidth="25.0" styleClass="SendButton" text="+" textOverrun="CLIP" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                                  <ListView fx:id="contactListView" prefHeight="200.0" prefWidth="200.0" styleClass="MessageListView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                  <TextField fx:id="contactSearchBox" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" promptText="Search..." styleClass="MessageField" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
                               </children>
                           </AnchorPane>
                           <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
                               <children>
-                                  <ListView fx:id="messageListView" disable="true" prefHeight="200.0" prefWidth="200.0" styleClass="MessageListView" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-                                  <TextField fx:id="messageBox" disable="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="160.0" onAction="#sendMessage" prefHeight="25.0" promptText="Message..." styleClass="MessageField" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="35.0" />
-                                  <Button fx:id="sendButton" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendMessage" prefHeight="25.0" prefWidth="25.0" styleClass="SendButton" text="&gt;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                                  <ListView fx:id="messageListView" disable="true" prefHeight="200.0" prefWidth="200.0" styleClass="MessageListView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                  <TextField fx:id="messageBox" disable="true" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="160.0" onAction="#sendMessage" prefHeight="35.0" promptText="Message..." styleClass="MessageField" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                                  <Button fx:id="sendButton" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendMessage" prefHeight="25.0" prefWidth="25.0" styleClass="SendButton" text="&gt;" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                               </children>
                           </AnchorPane>
                       </children>
                   </GridPane>
             </center>
-            <top>
-                    <fx:include fx:id="menuBar" source="../MainMenu.fxml" />
-            </top>
          </BorderPane>
         </Scene>
     </scene>

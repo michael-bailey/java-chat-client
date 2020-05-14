@@ -1,0 +1,12 @@
+.contextMenu {
+    -fx-text-fill: #404144;
+    -fx-background-color: #4c5052;
+
+    -fx-padding: 8;
+    -fx-background-radius: 8;
+}
+
+.contextMenuItem .label {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 4 4 4 0;
+}
