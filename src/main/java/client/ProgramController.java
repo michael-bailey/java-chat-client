@@ -1,20 +1,12 @@
 package client;
 
-import baselib.managers.NetworkManager;
-import baselib.managers.DataManager;
-import client.classes.Account;
-import client.controllers.console.Console;
-import client.controllers.login_display.LoginWindowController;
-import client.controllers.main_window.MainWindowController;
-import client.models.ApplicationModel;
+import client.LoginWindow.LoginWindowController;
+import client.ChatWindow.ChatWindowController;
+import client.LoginWindow.LoginWindowModel;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
-import java.awt.Desktop;
 
 /**
  * Program Controller.
@@ -32,8 +24,7 @@ public class ProgramController extends Application {
 
     // this section defines the windows that are in use
     private LoginWindowController loginWindow;
-    private MainWindowController mainWindow;
-    private Console console;
+
 
     /**
      * this is called by main
@@ -55,18 +46,10 @@ public class ProgramController extends Application {
 
         Platform.setImplicitExit(false);
 
-        FXMLLoader tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/LoginWindow/LoginWindow.fxml"));
+        FXMLLoader tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/client.LoginWindow/client.LoginWindow.fxml"));
         tmpFxmlLoader.load();
         this.loginWindow = tmpFxmlLoader.getController();
-
-        tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/MainWindow/MainWindow.fxml"));
-        tmpFxmlLoader.load();
-        this.mainWindow = tmpFxmlLoader.getController();
-
-        tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/ConsoleWindow/Console.fxml"));
-        tmpFxmlLoader.load();
-        this.console = tmpFxmlLoader.getController();
-        this.console.show();
+        this.loginWindow.setModel(new LoginWindowModel());
 
         // show the login window
         this.loginWindow.showView();
