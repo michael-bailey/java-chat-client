@@ -1,37 +1,34 @@
 .Root, .Root Label {
-        -fx-background-color: #202428;
-        -fx-text-fill: #FFFFFF;
+        -fx-background-color: #FFFFFF;
+        -fx-text-fill: #000000;
 }
 
 .TextBox {
-    -fx-text-fill: #FFFFFF;
+    -fx-text-fill: #000000;
     
-    -fx-border-color: #555555;
-    -fx-border-radius: 12.5;
+    -fx-border-color: #d3d3d3;
+    -fx-border-radius: 5;
     
-    -fx-background-color: #353940;
-	-fx-background-radius: 12.5;
+    -fx-background-color: #FFFFFF;
+	-fx-background-radius: 5;
 }
 
 .Button {
-    -fx-text-fill: #FFFFFF;
+    -fx-text-fill: #000000;
 
-    -fx-border-radius: 12.5;
+    -fx-border-color: #d3d3d3;
+    -fx-border-radius: 5;
     
-    -fx-background-color: #353940;
-	-fx-background-radius: 12.5;
+    -fx-background-color: #FFFFFF;
+	-fx-background-radius: 5;
 }
 
 .TextBoxEmpty {
-    -fx-border-color: #555555;
+    -fx-border-color: #d3d3d3;
 }
 
 .TextBoxWrong {
     -fx-border-color: #ff0000;
-}
-
-.TextBoxAlmost {
-    -fx-border-color: #ffd500;
 }
 
 .TextBoxCorrect {
