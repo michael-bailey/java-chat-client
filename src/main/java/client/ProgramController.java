@@ -46,7 +46,7 @@ public class ProgramController extends Application {
 
         Platform.setImplicitExit(false);
 
-        FXMLLoader tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/client.LoginWindow/client.LoginWindow.fxml"));
+        FXMLLoader tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/LoginWindow/LoginWindow.fxml"));
         tmpFxmlLoader.load();
         this.loginWindow = tmpFxmlLoader.getController();
         this.loginWindow.setModel(new LoginWindowModel());
