@@ -140,7 +140,7 @@ public class DataManagerTest {
         new File(filename + ".dat").delete();
 
         assertTrue(a.save());
-        assertTrue(a.unlock(filename, password));
+        assertTrue(a.lock());
     }
 
     @Test
