@@ -43,22 +43,14 @@ public class ChatWindowModel {
     public static class ChatWindowModelBuilder {
 
         private SimpleMapProperty<UUID, Server> ServerStore = new SimpleMapProperty<>();
-        private SimpleObjectProperty<EventHandler<WindowEvent>> logoutCallback = new SimpleObjectProperty();
 
         public ChatWindowModelBuilder serverStore(Map<UUID, Server> serverMap) {
             this.ServerStore.set(FXCollections.observableMap(serverMap));
             return this;
         }
 
-        public ChatWindowModelBuilder logoutCallback(EventHandler<WindowEvent> eventHandler) {
-            this.logoutCallback.set(eventHandler);
-            return this;
-        }
-
         public ChatWindowModel build() {
             return new ChatWindowModel(this);
         }
-
-
     }
 }

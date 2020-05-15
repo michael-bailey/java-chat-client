@@ -48,6 +48,7 @@ public class LoginWindowModelTest {
         passwordProp.set(password);
 
         assertNotNull(model.login());
-    }
 
+        assertTrue(model.logout());
+    }
 }

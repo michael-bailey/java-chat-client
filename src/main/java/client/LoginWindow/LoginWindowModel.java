@@ -113,79 +113,39 @@ public class LoginWindowModel {
             return null;
         }
 
-        try {
-            dataManager.unlock(usernameString.get(), passwordString.get());
+        if (dataManager.unlock(usernameString.get(), passwordString.get())) {
+            var serverStore = (HashMap<UUID, Server>) dataManager.getObject("Servers");
 
-            // if successful then load the main window
-            if (dataManager.isUnlocked()) {
-                return null;
-            }
+            // add stores to the model
+            var chatwindowModel = new ChatWindowModel
+                    .ChatWindowModelBuilder()
+                    .serverStore(serverStore)
+                    .build();
 
-            FXMLLoader loader = new FXMLLoader(this.MainWindowUrl);
+            return chatwindowModel;
 
-            loader.setControllerFactory(c -> {
+        } else if(dataManager.createNew(usernameString.get(), passwordString.get())) {
 
-                var serverStore = (HashMap<UUID, Server>) dataManager.getObject("Servers");
 
-                // add stores to the model
-                var modelBuilder = new ChatWindowModel.ChatWindowModelBuilder();
-                modelBuilder.serverStore(serverStore)
-                            .logoutCallback(event -> {
-                                System.out.println("logging out...");
-                                this.dataManager.lock();
-                            });
+            HashMap<UUID, Server> serverStore = new HashMap<>();
+            dataManager.addObject("Servers", serverStore);
 
-                return new ChatWindowController(modelBuilder.build());
-            });
+            // add stores to the model
+            var chatwindowModel = new ChatWindowModel
+                    .ChatWindowModelBuilder()
+                    .serverStore(serverStore)
+                    .build();
 
-            loader.load();
-            ChatWindowController newController = loader.getController();
-
-            // if the file isn't found then
-        } catch (FileNotFoundException e) {
-            System.out.println("file not found");
-
-            if (!dataManager.isUnlocked()) {
-                return null;
-            }
-
-            dataManager.createNew(this.usernameString.get(), this.passwordString.get());
-
-            if (!dataManager.isUnlocked()) {
-                return null;
-            }
-
-            try {
-                FXMLLoader loader = new FXMLLoader(this.MainWindowUrl);
-                loader.setControllerFactory(c -> {
-
-                    var serverStore = new HashMap<UUID, Server>();
-                    dataManager.addObject("Servers", serverStore);
-
-                    // add store models to the model.
-                    var modelBuilder = new ChatWindowModel.ChatWindowModelBuilder();
-                    modelBuilder.serverStore(serverStore)
-                            .logoutCallback(event -> {
-                                System.out.println("logging out...");
-                                this.dataManager.lock();
-                            });
-
-                    return new ChatWindowController(modelBuilder.build());
-                });
-                loader.load();
-                chatWindowController = loader.getController();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            return chatwindowModel;
         }
         return null;
     }
 
-    public void logout() {
-        return;
+    public boolean logout() {
+        if (this.dataManager.lock()) {
+            return true;
+        }
+        return false;
     }
 
     public SimpleStringProperty usernameStringProperty() {
