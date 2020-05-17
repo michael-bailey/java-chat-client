@@ -26,17 +26,17 @@ public class LoginWindowModel {
 
     private final URL MainWindowUrl = getClass().getClassLoader().getResource("layouts/MainWindow/MainWindow.fxml");
 
-    private DataManager dataManager = new DataManager();
+    private final DataManager dataManager = new DataManager();
     private ChatWindowController chatWindowController;
 
-    private SimpleStringProperty usernameString = new SimpleStringProperty(new String());
-    private SimpleStringProperty passwordString = new SimpleStringProperty(new String());
-    private SimpleListProperty<String> usernameBoxCSS = new SimpleListProperty(FXCollections.observableList(new ArrayList<String>()));
-    private SimpleListProperty<String> passwordBoxCSS = new SimpleListProperty(FXCollections.observableList(new ArrayList<String>()));
-    private SimpleBooleanProperty usernameCorrect = new SimpleBooleanProperty(false);
-    private SimpleBooleanProperty passwordCorrect = new SimpleBooleanProperty(false);
+    private final SimpleStringProperty usernameString = new SimpleStringProperty("");
+    private final SimpleStringProperty passwordString = new SimpleStringProperty("");
+    private final SimpleListProperty<String> usernameBoxCSS = new SimpleListProperty(FXCollections.observableList(new ArrayList<String>()));
+    private final SimpleListProperty<String> passwordBoxCSS = new SimpleListProperty(FXCollections.observableList(new ArrayList<String>()));
+    private final SimpleBooleanProperty usernameCorrect = new SimpleBooleanProperty(false);
+    private final SimpleBooleanProperty passwordCorrect = new SimpleBooleanProperty(false);
 
-    private ChangeListener<String> usernameListener = (observableValue, oldValue, newValue) -> {
+    private final ChangeListener<String> usernameListener = (observableValue, oldValue, newValue) -> {
         ObservableList<String> styleClass = this.usernameBoxCSS;
         styleClass.clear();
         styleClass.add("TextBox");
@@ -55,7 +55,7 @@ public class LoginWindowModel {
             this.usernameCorrect.set(false);
         }
     };
-    private ChangeListener<String> passwordListener = (observableValue, oldValue, newValue) -> {
+    private final ChangeListener<String> passwordListener = (observableValue, oldValue, newValue) -> {
         ObservableList<String> styleClass = this.passwordBoxCSS;
         styleClass.clear();
         styleClass.add("TextBox");
@@ -75,8 +75,8 @@ public class LoginWindowModel {
         }
     };
 
-    private TranslateTransition usernameAnimation = new TranslateTransition();
-    private TranslateTransition passwordAnimation = new TranslateTransition();
+    private final TranslateTransition usernameAnimation = new TranslateTransition();
+    private final TranslateTransition passwordAnimation = new TranslateTransition();
 
 
     public LoginWindowModel() {
@@ -142,10 +142,7 @@ public class LoginWindowModel {
     }
 
     public boolean logout() {
-        if (this.dataManager.lock()) {
-            return true;
-        }
-        return false;
+        return this.dataManager.lock();
     }
 
     public SimpleStringProperty usernameStringProperty() {

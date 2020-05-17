@@ -154,7 +154,7 @@ public class DataManagerTest {
         assertTrue(a.createNew(filename, password));
 
         class testObject implements Serializable {
-            public String text = "hello world";
+            public final String text = "hello world";
         }
 
         assertTrue(a.addObject("test", new testObject()));

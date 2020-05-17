@@ -530,10 +530,7 @@ public class DataManager implements Closeable {
      * @return boolean whether the string is a valid file name.
      */
     public static boolean checkFileNameValid(String filename) {
-        if (filename.matches("^[a-zA-Z0-9]*$")) {
-            return true;
-        }
-        return false;
+        return filename.matches("^[a-zA-Z0-9]*$");
     }
 
     /**
@@ -558,10 +555,7 @@ public class DataManager implements Closeable {
             return false;
         }
 
-        if (!password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@£$%^&*()_+\\-\"'/?`~=#€])(?=\\S+$).{8,}$")) {
-            return false;
-        }
-        return true;
+        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@£$%^&*()_+\\-\"'/?`~=#€])(?=\\S+$).{8,}$");
     }
 }
 // these websites where used to kelp with the key generation

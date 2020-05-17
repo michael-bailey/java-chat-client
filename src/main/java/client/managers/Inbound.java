@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 public class Inbound extends Thread{
-	private Socket clientSocket;
+	private final Socket clientSocket;
 	private BufferedReader clientSocketInput;
 	
 	public Inbound(Socket clientSocket){
