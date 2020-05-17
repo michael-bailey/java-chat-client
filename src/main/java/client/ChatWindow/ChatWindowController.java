@@ -39,9 +39,9 @@ public class ChatWindowController implements Initializable {
     @FXML private ListView<ServerListCellModel> serverListView;
 
     // other menus
-    private URL addServerDialogueURL = getClass().getClassLoader().getResource("layouts/MainWindow/ServerAddDialogue.fxml");
+    private final URL addServerDialogueURL = getClass().getClassLoader().getResource("layouts/MainWindow/ServerAddDialogue.fxml");
 
-    private ChatWindowModel model;
+    private final ChatWindowModel model;
     private EventHandler<ActionEvent> onCloseHandler;
 
     public ChatWindowController(ChatWindowModel model) {

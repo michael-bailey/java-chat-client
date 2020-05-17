@@ -42,7 +42,7 @@ public class ChatWindowModel {
 
     public static class ChatWindowModelBuilder {
 
-        private SimpleMapProperty<UUID, Server> ServerStore = new SimpleMapProperty<>();
+        private final SimpleMapProperty<UUID, Server> ServerStore = new SimpleMapProperty<>();
 
         public ChatWindowModelBuilder serverStore(Map<UUID, Server> serverMap) {
             this.ServerStore.set(FXCollections.observableMap(serverMap));
