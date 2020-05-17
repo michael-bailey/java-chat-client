@@ -22,7 +22,7 @@ public class ServerListCell extends ListCell<ServerListCellModel> {
     @FXML Label label;
     @FXML ImageView imgView;
 
-    private SimpleObjectProperty<ServerListCellModel> server = new SimpleObjectProperty<>();
+    private final SimpleObjectProperty<ServerListCellModel> server = new SimpleObjectProperty<>();
 
     @Override
     protected void updateItem(ServerListCellModel item, boolean empty) {

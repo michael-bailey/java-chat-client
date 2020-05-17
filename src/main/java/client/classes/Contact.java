@@ -8,14 +8,14 @@ import java.util.UUID;
 public class Contact implements Serializable {
     private static final long serialVersionUID = 365392247250419493L;
     
-    private String username;
-    private UUID UUID;
+    private final String username;
+    private final UUID UUID;
 
-    private ArrayList<Message> messages;
+    private final ArrayList<Message> messages;
 
     public Contact(String username) {
         this.username = username;
-        this.UUID = UUID.randomUUID();
+        this.UUID = java.util.UUID.randomUUID();
         this.messages = new ArrayList<Message>();
     }
 
