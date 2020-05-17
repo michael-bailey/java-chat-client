@@ -2,13 +2,14 @@ package client.managers;
 
 import java.io.DataOutputStream;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class Outbound extends Thread{
-	private Socket clientSocket;
+	private final Socket clientSocket;
 //	private PrintWriter clientSocketOutput;
 	//private OutputStream clientSocketOutput;
 	private DataOutputStream clientSocketOutput;
-	private String message;
+	private final String message;
 
 	public Outbound(Socket clientSocket, String message){
 		this.clientSocket = clientSocket;
@@ -45,7 +46,7 @@ public class Outbound extends Thread{
 
 	private void sendMessage(){
 		try{
-			byte[] messageBytes = this.message.getBytes("UTF8");
+			byte[] messageBytes = this.message.getBytes(StandardCharsets.UTF_8);
 			//this.clientSocketOutput.println(messageBytes)
 			System.out.println("Sending message: "+this.message);
 			this.clientSocketOutput.write(messageBytes);

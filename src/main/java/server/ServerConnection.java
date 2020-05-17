@@ -1,3 +1,5 @@
+package server;
+
 import java.net.Socket;
 import java.net.ServerSocket;
 import java.io.BufferedReader;
@@ -10,7 +12,7 @@ public class ServerConnection{
 	private final int PORT = 9806;
 	private boolean doStop = false;
 	private ServerSocket ss;
-	private ArrayList<Socket> connectedUsers = new ArrayList<Socket>();
+	private final ArrayList<Socket> connectedUsers = new ArrayList<Socket>();
 
 	public ServerConnection(){}
 
@@ -45,7 +47,7 @@ public class ServerConnection{
 	}
 	
 	private class ClientThread extends Thread{
-		private Socket socket;
+		private final Socket socket;
 		private boolean doStop = false;
 
 		public ClientThread(Socket socket){
