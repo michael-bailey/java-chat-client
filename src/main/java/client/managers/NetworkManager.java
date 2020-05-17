@@ -1,25 +1,13 @@
 package client.managers;
 
 import client.classes.Server;
-import client.ChatWindow.ListCells.ServerListCellModel;
-
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleMapProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.collections.FXCollections;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 
 
 /**
@@ -33,114 +21,92 @@ import java.util.UUID;
  */
 
 public class NetworkManager extends Thread{
-	private String serverAddress;
-	private int serverPort, tmpPort;
-	boolean programRunning = true;
+
+	// --Commented out by Inspection (17/05/2020, 16:44):private final int serverConnectionPort = 6000;
+
+	private final String serverAddress;
+	private final int serverPort;
+	private final int tmpPort;
+	// --Commented out by Inspection (17/05/2020, 16:44):boolean programRunning = true;
 
 	// login properties
-	SimpleBooleanProperty loggedIn = new SimpleBooleanProperty(false);
+	final SimpleBooleanProperty loggedIn = new SimpleBooleanProperty(false);
 
-	// server properties
-	SimpleMapProperty<UUID, Server> serverStore = new SimpleMapProperty<UUID, Server>();
-	SimpleListProperty<ServerListCellModel> serverList = new SimpleListProperty<>(FXCollections.observableList(new ArrayList<>()));
-	SimpleObjectProperty<Server> currentServer = new SimpleObjectProperty<>();
-
-	//server change Listeners
-	private ChangeListener<Server> currentServerChange = (observable, oldValue, newValue) -> {
-		System.out.println("Server changed");
-	};
-
-	/**
-	 * defining the thread runnable that will,
-	 * loop through all the server uuids.
-	*/
-	Runnable serverPingRunnable = () -> {
-		System.out.println("Started...");
-
-		// loop through the server keys
-		for (UUID uuid : serverStore.keySet()) {
-			try {
-				// getting the server object
-				System.out.println("testing: " + uuid.getMostSignificantBits());
-				Server server = serverStore.get(uuid);
-
-				// creating a socket for the server object along with
-				// the same IO streams
-				Socket serverSock = new Socket(server.getIpAddress(), 6001);
-				InputStream sockIN = serverSock.getInputStream();
-				OutputStream sockOUT = serverSock.getOutputStream();
-
-				// get the message sent from the server and test it is part of the protocol
-				if (new String(sockIN.readAllBytes()).equals(":Request?")) {
-					// request the status from the server
-					sockOUT.write(":status?".getBytes());
-
-					// todo read server data to get
-					// print out the server status just for debug and close the socket
-					System.out.println(sockIN.readAllBytes());
-					serverSock.close();
-
-					var serverView = new ServerListCellModel();
-					// the server is online
-					serverView.ServerName = server.getServerName();
-					serverView.uuid = uuid;
-
-					serverList.add(serverView);
-				}
-
-
-			// the host can't be found
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-
-			// other io exception occured.
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	};
-
-	public boolean requestAddServer(String ipAddress) {
-		return false;
-	}
-
-	private class serverPingTimerTask extends TimerTask {
-		@Override
-		public void run() {
-			try {
-				if (loggedIn.get()) {
-					System.out.println("creating thread");
-					var a = new Thread(serverPingRunnable);
-					a.setDaemon(true);
-					a.setName("server_ping_thread");
-					a.start();
-				} else {
-					System.out.println("not logged in");
-				}
-			} catch (IllegalThreadStateException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	Timer serverPingTimer = new Timer();
 
 
 	public NetworkManager(){
 		this.serverAddress = "127.0.0.1";
 		this.serverPort = 6001;
 		this.tmpPort = 6000;
+	}
 
-		serverPingTimer.scheduleAtFixedRate(new serverPingTimerTask(), 0, 10000);
+	/**
+	 * addServer
+	 *
+	 * this is the primary way of adding getting new Server instances
+	 * gets the status of the server in question and builds a server object from that.
+	 *
+	 * @param ipAddress the address of the server
+	 * @return new Server instance if the connection was successful.
+	 */
+	public Server getServerDetails(String ipAddress) {
+		try {
+			Socket connection = new Socket(ipAddress, 6000);
+
+
+			DataInputStream in = new DataInputStream(connection.getInputStream());
+			DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+
+			char[] inBuffer = new char[1024];
+
+			String request = in.readUTF();
+
+
+			if (request.equals("?request:")) {
+				out.writeUTF("!info:");
+				out.flush();
+
+				Iterator<Object> tokenizer = new StringTokenizer(in.readUTF()).asIterator();
+				String a = (String) tokenizer.next();
+
+				if (a.equals("!success:")) {
+
+					var serverBuilder = new Server.Builder();
+					while (tokenizer.hasNext()) {
+						String[] property = ((String) tokenizer.next()).split(":");
+						switch (property[0]) {
+							case "name":
+								serverBuilder.name(property[1]);
+								break;
+
+							case "owner":
+								serverBuilder.owner(property[1]);
+								break;
+
+							default:
+								break;
+						}
+					}
+					connection.close();
+					return serverBuilder.build();
+				} else {
+					connection.close();
+					return null;
+				}
+			} else {
+				connection.close();
+				return null;
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
 	public void run(){
+		/*
 		while(this.programRunning){
 			// System.out.println("Please help");
 			Socket clientSocket = this.listenForClientConnection();
@@ -149,42 +115,39 @@ public class NetworkManager extends Thread{
 				this.startInboundConnection(clientSocket);
 			}
 		}
+
+		 */
 	}
 
-	public void doStop(){this.programRunning = false;}
+// --Commented out by Inspection START (17/05/2020, 16:44):
+//	// --Commented out by Inspection (17/05/2020, 16:44):public void doStop(){this.programRunning = false;}
+//
+//	public void sendClientMessage(String message){
+//		Socket clientSocket = this.createClientConnection();
+//		if(clientSocket != null){
+//			System.out.println("Connection Successful!");
+//			this.startOutboundConnection(clientSocket, message);
+// --Commented out by Inspection STOP (17/05/2020, 16:44)
+		//}
+	//}
 	
-	public void sendClientMessage(String message){
-		Socket clientSocket = this.createClientConnection();
-		if(clientSocket != null){
-			System.out.println("Connection Successful!");
-			this.startOutboundConnection(clientSocket, message);
-		}
-	}
+// --Commented out by Inspection START (17/05/2020, 16:44):
+//	private Socket listenForClientConnection(){
+//		try{
+// --Commented out by Inspection START (17/05/2020, 16:44):
+////			System.out.println("listening for client connection...");
+////			ServerSocket listenSocket = new ServerSocket(this.tmpPort);
+////			return(listenSocket.accept());
+////		}catch(Exception e){
+////			System.out.println("Could not connect to incoming client!\nException Thrown:\n");
+// --Commented out by Inspection STOP (17/05/2020, 16:44)
+//			e.printStackTrace();
+//			return null;
+//		}
+//	}
+// --Commented out by Inspection STOP (17/05/2020, 16:44)
 
-	private Socket createClientConnection(){
-		try{
-			System.out.println("Connecting to Client...");
-			return(new Socket(this.serverAddress, this.serverPort));
-		}catch(Exception e){
-			//throw new ClientConnectionException
-			System.out.println("Could not connect to requested client!\nException Thrown:\n");
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	private Socket listenForClientConnection(){
-		try{
-			System.out.println("listening for client connection...");
-			ServerSocket listenSocket = new ServerSocket(this.tmpPort);
-			return(listenSocket.accept());
-		}catch(Exception e){
-			System.out.println("Could not connect to incoming client!\nException Thrown:\n");
-			e.printStackTrace();
-			return null;
-		}
-	}
-
+	/*
 	private void startInboundConnection(Socket clientSocket){
 		System.out.println("Inbound Connection Started");
 		Inbound inbound = new Inbound(clientSocket);
@@ -199,16 +162,5 @@ public class NetworkManager extends Thread{
 	public SimpleBooleanProperty loggedInProperty() {
 		return loggedIn;
 	}
-
-	public SimpleMapProperty<UUID, Server> serverStoreProperty() {
-		return serverStore;
-	}
-
-	public SimpleListProperty<ServerListCellModel> serverListProperty() {
-		return serverList;
-	}
-
-	public SimpleObjectProperty<Server> currentServerProperty() {
-		return currentServer;
-	}
+*/
 }
