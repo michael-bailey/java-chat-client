@@ -22,15 +22,14 @@ import java.util.StringTokenizer;
 
 public class NetworkManager extends Thread{
 
-	// --Commented out by Inspection (17/05/2020, 16:44):private final int serverConnectionPort = 6000;
+	private final int serverConnectionPort = 6000;
+	private final int clientConnectionPort = 6001;
 
 	private final String serverAddress;
 	private final int serverPort;
 	private final int tmpPort;
-	// --Commented out by Inspection (17/05/2020, 16:44):boolean programRunning = true;
+	boolean programRunning = true;
 
-	// login properties
-	final SimpleBooleanProperty loggedIn = new SimpleBooleanProperty(false);
 
 
 
@@ -52,7 +51,6 @@ public class NetworkManager extends Thread{
 	public Server getServerDetails(String ipAddress) {
 		try {
 			Socket connection = new Socket(ipAddress, 6000);
-
 
 			DataInputStream in = new DataInputStream(connection.getInputStream());
 			DataOutputStream out = new DataOutputStream(connection.getOutputStream());
