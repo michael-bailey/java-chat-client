@@ -48,10 +48,10 @@ public class ApplicationModel {
         loginStatus = new SimpleBooleanProperty(false);
 
         // bind to the network manager
-        this.loginStatus.bindBidirectional(this.networkManager.loggedInProperty());
-        this.serverStore.bindBidirectional(this.networkManager.serverStoreProperty());
-        this.serverList.bindBidirectional(this.networkManager.serverListProperty());
-        this.selectedServer.bindBidirectional(this.networkManager.currentServerProperty());
+        //this.loginStatus.bindBidirectional(this.networkManager.loggedInProperty());
+        //this.serverStore.bindBidirectional(this.networkManager.serverStoreProperty());
+        //this.serverList.bindBidirectional(this.networkManager.serverListProperty());
+        //this.selectedServer.bindBidirectional(this.networkManager.currentServerProperty());
 
         // create the server list property
         //serverList = new SimpleListProperty<Server>(FXCollections.observableList(new ArrayList<Server>()));
@@ -85,7 +85,8 @@ public class ApplicationModel {
     }
 
     public boolean requestAddServer(String ipAddress) {
-        return this.networkManager.requestAddServer(ipAddress);
+        //return this.networkManager.requestAddServer(ipAddress);
+        return false;
     }
 
     public SimpleBooleanProperty loginStatusProperty() {
