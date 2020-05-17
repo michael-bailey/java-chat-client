@@ -6,22 +6,23 @@ this set of protocols will define how data is retrieved from the server
 
 any initial request to the server will make it send ?Request:
 
-### !Status:
-this will retrieve the status from the server including
+### !info:
+this will retrieve server info.
 * server name
-* server ip
-* server UUID
+* server MOTD
+
 possibly
 * owner name
 * owner email
 
 
-## !Joining
+## !Join:
 this will tell the server to use this socket as a client
 will require sending
 * username
 * user UUID
 * user ip address
+
 posibly
 * public key
 
