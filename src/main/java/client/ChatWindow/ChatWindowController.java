@@ -1,13 +1,8 @@
 package client.ChatWindow;
 
-import client.ChatWindow.CellFactories.ContactCellFactory;
-import client.ChatWindow.CellFactories.MessageCellFactory;
-import client.ChatWindow.CellFactories.ServerCellFactory;
 import client.classes.Contact;
 import client.classes.Message;
 import client.ChatWindow.ListCells.ServerListCellModel;
-import client.models.ApplicationModel;
-import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -39,7 +34,7 @@ public class ChatWindowController implements Initializable {
     @FXML private ListView<ServerListCellModel> serverListView;
 
     // other menus
-    private final URL addServerDialogueURL = getClass().getClassLoader().getResource("layouts/MainWindow/ServerAddDialogue.fxml");
+    private final URL addServerDialogueURL = getClass().getClassLoader().getResource("layouts/ChatWindow/ServerAddDialogue.fxml");
 
     private final ChatWindowModel model;
     private EventHandler<ActionEvent> onCloseHandler;

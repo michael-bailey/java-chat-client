@@ -10,13 +10,12 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-import javax.tools.Tool;
 import java.io.IOException;
 import java.net.URL;
 
 public class ContactListCell extends ListCell<Contact> {
 
-    URL fxmlURL = getClass().getClassLoader().getResource("layouts/MainWindow/ContactCell/ContactCell.fxml");
+    URL fxmlURL = getClass().getClassLoader().getResource("layouts/ChatWindow/ContactCell/ContactCell.fxml");
 
     @FXML AnchorPane root;
     @FXML Label Username;

@@ -12,11 +12,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
 import javafx.util.Duration;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +21,7 @@ import java.util.UUID;
 
 public class LoginWindowModel {
 
-    private final URL MainWindowUrl = getClass().getClassLoader().getResource("layouts/MainWindow/MainWindow.fxml");
+    private final URL MainWindowUrl = getClass().getClassLoader().getResource("layouts/ChatWindow/ChatWindow.fxml");
 
     private final DataManager dataManager = new DataManager();
     private ChatWindowController chatWindowController;

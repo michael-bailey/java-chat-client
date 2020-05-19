@@ -1,6 +1,5 @@
 package client.ChatWindow.ListCells;
 
-import client.ChatWindow.ListCells.ServerListCellModel;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +14,7 @@ import java.net.URL;
 
 public class ServerListCell extends ListCell<ServerListCellModel> {
 
-    URL fxmlURL = getClass().getClassLoader().getResource("layouts/MainWindow/serverCell/ServerCell.fxml");
+    URL fxmlURL = getClass().getClassLoader().getResource("layouts/ChatWindow/serverCell/ServerCell.fxml");
 
     // ui elements
     @FXML AnchorPane root;

@@ -2,15 +2,12 @@ package client.ChatWindow;
 
 import client.classes.Server;
 import client.ChatWindow.ListCells.ServerListCellModel;
-import client.managers.DataManager;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
 import javafx.scene.control.MultipleSelectionModel;
-import javafx.stage.WindowEvent;
 
 import java.net.URL;
 import java.util.Map;
@@ -19,7 +16,7 @@ import java.util.UUID;
 public class ChatWindowModel {
 
     // urls
-    URL serverAddDialogueFXMLURL = getClass().getClassLoader().getResource("layouts/MainWindow/ServerAddDialogue.fxml");
+    URL serverAddDialogueFXMLURL = getClass().getClassLoader().getResource("layouts/ChatWindow/ServerAddDialogue.fxml");
 
     // server properties.
     private final SimpleMapProperty<UUID, Server> ServerStore;
