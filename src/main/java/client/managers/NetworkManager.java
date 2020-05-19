@@ -1,15 +1,17 @@
 package client.managers;
 
+import client.ProgramController;
 import client.classes.Server;
 
+import java.net.ServerSocket;
 import java.security.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Iterator;
 import java.util.StringTokenizer;
+import java.util.concurrent.ExecutorService;
 
-import javax.crypto.KeyAgreement;
-
+import static java.util.concurrent.Executors.newFixedThreadPool;
 
 /**
  * Network Manager
@@ -24,26 +26,32 @@ import javax.crypto.KeyAgreement;
 public class NetworkManager extends Thread{
 
 	private final int serverConnectionPort = 6000;
-	private final int clientConnectionPort = 6001;
+	private final int ptpConnectionPort = 6001;
 
-	private final String serverAddress;
-	private final int serverPort;
-	boolean programRunning = true;
+	boolean peerToPeerRunning = true;
+	private Thread ptpServerThread;
+	ServerSocket ptpServer;
+	ExecutorService ptpThreadPool;
 
+
+	/* todo encryption definitions.
 	public final String HashingType = "SHA-256";
-
 	public final String keyAgreementType = "DiffieHellman";
 	public final String keyPairType = "DH";
 	public final String SymetricCipherType = "AES/CBC/PKCS5Padding";
 	public final String SymetricKeyFactoryType = "PBKDF2WithHmacSHA1";
+	*/
 
-	public NetworkManager(){
-		this.serverAddress = "127.0.0.1";
-		this.serverPort = 6001;
+	public NetworkManager() {
+		try {
+			ptpServer = new ServerSocket(ptpConnectionPort);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
-	 * addServer
+	 * getServerDetails
 	 *
 	 * this is the primary way of adding getting new Server instances
 	 * gets the status of the server in question and builds a server object from that.
@@ -64,16 +72,24 @@ public class NetworkManager extends Thread{
 
 			// get data sent from the server.
 			String request = in.readUTF();
+
+			// check the server sent the request key word
 			if (request.equals("?request:")) {
 
+				// writing the command !info:
 				out.writeUTF("!info:");
 				out.flush();
 
+				// getting the response back and iterating over it to get the kvp
 				Iterator<Object> tokenizer = new StringTokenizer(in.readUTF()).asIterator();
+
+				// getting the response code
 				String a = (String) tokenizer.next();
 
+				// check if successful
 				if (a.equals("!success:")) {
 
+					// parse key value pairs.
 					var serverBuilder = new Server.Builder();
 					while (tokenizer.hasNext()) {
 						String[] property = ((String) tokenizer.next()).split(":");
@@ -90,35 +106,35 @@ public class NetworkManager extends Thread{
 								break;
 						}
 					}
+
+					// close the connection
 					connection.close();
+
+					// return the new server object.
 					return serverBuilder.build();
+
+				// if the response code is diffrent then close the connection.
 				} else {
 					connection.close();
 					return null;
 				}
+
+			// if keyword is wrong close the connection
 			} else {
 				connection.close();
 				return null;
 			}
 
+		// required for when the client cannot connect
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	public static void getProviders() {
-		for (Provider provider: Security.getProviders()) {
-			System.out.println(provider.getName());
-			for (String key: provider.stringPropertyNames())
-				System.out.println("\t" + key + "\t" + provider.getProperty(key));
-		}
-	}
-
 	@Override
 	public void run(){
-		/*
-		while(this.programRunning){
+		while(this.peerToPeerRunning){
 			// System.out.println("Please help");
 			Socket clientSocket = this.listenForClientConnection();
 			if(clientSocket !=null){
@@ -126,39 +142,74 @@ public class NetworkManager extends Thread{
 				this.startInboundConnection(clientSocket);
 			}
 		}
-
-		 */
 	}
 
-// --Commented out by Inspection START (17/05/2020, 16:44):
-//	// --Commented out by Inspection (17/05/2020, 16:44):public void doStop(){this.programRunning = false;}
-//
-//	public void sendClientMessage(String message){
-//		Socket clientSocket = this.createClientConnection();
-//		if(clientSocket != null){
-//			System.out.println("Connection Successful!");
-//			this.startOutboundConnection(clientSocket, message);
-// --Commented out by Inspection STOP (17/05/2020, 16:44)
-		//}
-	//}
-	
-// --Commented out by Inspection START (17/05/2020, 16:44):
-//	private Socket listenForClientConnection(){
-//		try{
-// --Commented out by Inspection START (17/05/2020, 16:44):
-////			System.out.println("listening for client connection...");
-////			ServerSocket listenSocket = new ServerSocket(this.tmpPort);
-////			return(listenSocket.accept());
-////		}catch(Exception e){
-////			System.out.println("Could not connect to incoming client!\nException Thrown:\n");
-// --Commented out by Inspection STOP (17/05/2020, 16:44)
-//			e.printStackTrace();
-//			return null;
-//		}
-//	}
-// --Commented out by Inspection STOP (17/05/2020, 16:44)
+	public void shutdownServers() {
+		this.ptpThreadPool.shutdownNow();
+		this.peerToPeerRunning = false;
+	}
 
-	/*
+	/* todo find out what this does
+	public void sendClientMessage(String message) {
+		Socket clientSocket = this.createClientConnection();
+		if(clientSocket != null) {
+			System.out.println("Connection Successful!");
+			this.startOutboundConnection(clientSocket, message);
+		}
+	}
+	*/
+
+	/**
+	 * this listens for a new connection to the client.
+	 * @return a new socket returned from the accept call
+	 */
+	private void ptpThreadFn() {
+		while (peerToPeerRunning) {
+			try {
+				System.out.println("ptp running");
+				sleep(10000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void ptpStartThreads() {
+		// creating a thread pool
+		this.ptpThreadPool = newFixedThreadPool(8);
+
+		// tell server thread wo run.
+		this.peerToPeerRunning = true;
+		this.ptpServerThread.start();
+	}
+
+	public void ptpStopThreads() {
+		this.peerToPeerRunning = false;
+		this.ptpThreadPool = null;
+	}
+
+	public void shutdown() {
+		this.peerToPeerRunning = false;
+
+	}
+
+	/**
+	 * this listens for a new connection to the client.
+	 * @return a new socket returned from the accept call
+	 */
+	private Socket listenForClientConnection() {
+		try{
+			System.out.println("listening for client connection...");
+			ServerSocket listenSocket = new ServerSocket(this.ptpConnectionPort);
+			return(listenSocket.accept());
+		}catch(Exception e){
+			System.out.println("Could not connect to incoming client!\nException Thrown:\n");
+
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	private void startInboundConnection(Socket clientSocket){
 		System.out.println("Inbound Connection Started");
 		Inbound inbound = new Inbound(clientSocket);
@@ -170,8 +221,15 @@ public class NetworkManager extends Thread{
 		outbound.start();
 	}
 
-	public SimpleBooleanProperty loggedInProperty() {
-		return loggedIn;
+	/**
+	 * used to list all crypto providers
+	 * (not used yet as this will a feature to be added later on).
+	 */
+	public static void getProviders() {
+		for (Provider provider: Security.getProviders()) {
+			System.out.println(provider.getName());
+			for (String key: provider.stringPropertyNames())
+				System.out.println("\t" + key + "\t" + provider.getProperty(key));
+		}
 	}
-*/
 }

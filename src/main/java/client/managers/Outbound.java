@@ -4,13 +4,27 @@ import java.io.DataOutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Outbound
+ *
+ * this class is used to handle sending messages to other clients
+ * using the peer to peer model
+ *
+ * @author mitch161
+ */
 public class Outbound extends Thread{
+
 	private final Socket clientSocket;
 //	private PrintWriter clientSocketOutput;
 	//private OutputStream clientSocketOutput;
 	private DataOutputStream clientSocketOutput;
 	private final String message;
 
+	/**
+	 *
+	 * @param clientSocket the socket that will be connected to
+	 * @param message
+	 */
 	public Outbound(Socket clientSocket, String message){
 		this.clientSocket = clientSocket;
 		try{

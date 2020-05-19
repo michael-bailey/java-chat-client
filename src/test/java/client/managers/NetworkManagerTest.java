@@ -15,6 +15,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.security.*;
 
+import javafx.scene.control.Button;
+
 import static org.junit.Assert.assertNotNull;
 
 class Worker implements Runnable {
@@ -130,8 +132,6 @@ class TestServer extends Thread {
     public ArrayList<Worker> getClientList() {
         return clientList;
     }
-
-
 }
 
 public class NetworkManagerTest {
@@ -157,5 +157,24 @@ public class NetworkManagerTest {
         assertNotNull(a);
 
         server.stopServer();
+    }
+
+    @Test
+    public void connectToAndDisconnectFromServer() {
+
+    }
+
+    @Test
+    public void changeServer() {
+
+    }
+
+    @Test
+    public void sendMessage() {
+
+    }
+
+    public void recvMessage() {
+
     }
 }
