@@ -1,6 +1,5 @@
 package client.managers;
 
-import client.ProgramController;
 import client.classes.Server;
 
 import java.net.ServerSocket;
@@ -30,7 +29,7 @@ public class NetworkManager extends Thread{
 
 	boolean peerToPeerRunning = true;
 	private Thread ptpServerThread;
-	ServerSocket ptpServer;
+	ServerSocket ptpServerSocket;
 	ExecutorService ptpThreadPool;
 
 
@@ -43,11 +42,7 @@ public class NetworkManager extends Thread{
 	*/
 
 	public NetworkManager() {
-		try {
-			ptpServer = new ServerSocket(ptpConnectionPort);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 	}
 
 	/**
@@ -149,38 +144,51 @@ public class NetworkManager extends Thread{
 		this.peerToPeerRunning = false;
 	}
 
-	/* todo find out what this does
-	public void sendClientMessage(String message) {
-		Socket clientSocket = this.createClientConnection();
-		if(clientSocket != null) {
-			System.out.println("Connection Successful!");
-			this.startOutboundConnection(clientSocket, message);
-		}
-	}
-	*/
+// MARK: ptp functionality definitions.
 
 	/**
 	 * this listens for a new connection to the client.
 	 * @return a new socket returned from the accept call
 	 */
 	private void ptpThreadFn() {
+
+		for ( int i : new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10} ) {
+			this.ptpThreadPool.execute(() -> {
+				for ( int j : new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10} ) {
+					System.out.println("thread " + Thread.currentThread().getId() + ": printing: " + i);
+				}
+			});
+
+		}
+
 		while (peerToPeerRunning) {
 			try {
-				System.out.println("ptp running");
-				sleep(10000);
+				System.out.println("main ptp thread");
+				sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public void ptpStartThreads() {
-		// creating a thread pool
-		this.ptpThreadPool = newFixedThreadPool(8);
+	public void ptpStart() {
+		try {
+			// create the server socket
+			ptpServerSocket = new ServerSocket(ptpConnectionPort);
 
-		// tell server thread wo run.
-		this.peerToPeerRunning = true;
-		this.ptpServerThread.start();
+			// create the server thread
+			ptpServerThread = new Thread(() -> this.ptpThreadFn());
+
+			// creating a thread pool
+			this.ptpThreadPool = newFixedThreadPool(8);
+
+			// tell server thread wo run.
+			this.peerToPeerRunning = true;
+			this.ptpServerThread.start();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void ptpStopThreads() {
@@ -210,6 +218,16 @@ public class NetworkManager extends Thread{
 		}
 	}
 
+		/* todo find out what this does
+	public void sendClientMessage(String message) {
+		Socket clientSocket = this.createClientConnection();
+		if(clientSocket != null) {
+			System.out.println("Connection Successful!");
+			this.startOutboundConnection(clientSocket, message);
+		}
+	}
+	*/
+
 	private void startInboundConnection(Socket clientSocket){
 		System.out.println("Inbound Connection Started");
 		Inbound inbound = new Inbound(clientSocket);
@@ -220,6 +238,8 @@ public class NetworkManager extends Thread{
 		Outbound outbound = new Outbound(clientSocket, message);
 		outbound.start();
 	}
+
+// MARK: cryptography definitions.
 
 	/**
 	 * used to list all crypto providers

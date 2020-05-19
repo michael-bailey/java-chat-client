@@ -17,6 +17,7 @@ import java.security.*;
 
 import javafx.scene.control.Button;
 
+import static java.lang.Thread.sleep;
 import static org.junit.Assert.assertNotNull;
 
 class Worker implements Runnable {
@@ -157,6 +158,16 @@ public class NetworkManagerTest {
         assertNotNull(a);
 
         server.stopServer();
+    }
+
+    @Test
+    public void threadingTest() throws InterruptedException {
+        var netmgr = new NetworkManager();
+        assertNotNull(netmgr);
+
+        netmgr.ptpStart();
+
+        sleep(10000);
     }
 
     @Test
