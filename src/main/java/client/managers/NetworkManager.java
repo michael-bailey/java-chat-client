@@ -1,13 +1,14 @@
 package client.managers;
 
 import client.classes.Server;
-import javafx.beans.property.SimpleBooleanProperty;
 
+import java.security.*;
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Iterator;
 import java.util.StringTokenizer;
+
+import javax.crypto.KeyAgreement;
 
 
 /**
@@ -27,16 +28,18 @@ public class NetworkManager extends Thread{
 
 	private final String serverAddress;
 	private final int serverPort;
-	private final int tmpPort;
 	boolean programRunning = true;
 
+	public final String HashingType = "SHA-256";
 
-
+	public final String keyAgreementType = "DiffieHellman";
+	public final String keyPairType = "DH";
+	public final String SymetricCipherType = "AES/CBC/PKCS5Padding";
+	public final String SymetricKeyFactoryType = "PBKDF2WithHmacSHA1";
 
 	public NetworkManager(){
 		this.serverAddress = "127.0.0.1";
 		this.serverPort = 6001;
-		this.tmpPort = 6000;
 	}
 
 	/**
@@ -47,20 +50,22 @@ public class NetworkManager extends Thread{
 	 *
 	 * @param ipAddress the address of the server
 	 * @return new Server instance if the connection was successful.
+	 * todo add key exchange and encryption.
 	 */
 	public Server getServerDetails(String ipAddress) {
 		try {
+
+			// setup connection
 			Socket connection = new Socket(ipAddress, 6000);
 
+			// get data streams
 			DataInputStream in = new DataInputStream(connection.getInputStream());
 			DataOutputStream out = new DataOutputStream(connection.getOutputStream());
 
-			char[] inBuffer = new char[1024];
-
+			// get data sent from the server.
 			String request = in.readUTF();
-
-
 			if (request.equals("?request:")) {
+
 				out.writeUTF("!info:");
 				out.flush();
 
@@ -99,6 +104,14 @@ public class NetworkManager extends Thread{
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	public static void getProviders() {
+		for (Provider provider: Security.getProviders()) {
+			System.out.println(provider.getName());
+			for (String key: provider.stringPropertyNames())
+				System.out.println("\t" + key + "\t" + provider.getProperty(key));
 		}
 	}
 

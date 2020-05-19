@@ -6,6 +6,11 @@ this set of protocols will define how data is retrieved from the server
 
 any initial request to the server will make it send ?Request:
 
+### !encrypt:
+this keyword request the server to start a key exchange the new keys will be used to encrypt further messages.
+
+*
+
 ### !info:
 this will retrieve server info.
 * server name
@@ -34,3 +39,4 @@ server will return:
 this will tell the server the client is leaving.
 no data is required because the server will base the request on the current client object.
 
+## interacting with clients

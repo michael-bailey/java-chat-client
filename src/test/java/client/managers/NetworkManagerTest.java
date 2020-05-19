@@ -1,57 +1,80 @@
 package client.managers;
 
 import client.classes.Server;
-import com.google.gson.stream.JsonToken;
 import org.junit.Test;
 
 import java.io.*;
-import java.net.SocketException;
-import java.nio.charset.Charset;
-
+import java.lang.reflect.Parameter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 import java.util.UUID;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.security.*;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 class Worker implements Runnable {
 
-    private final Socket connection;
-    private InputStreamReader in;
-    private OutputStreamWriter out;
+    private Socket connection;
+    private DataInputStream in;
+    private DataOutputStream out;
 
-    @Override
-    public void run() {
+    private UUID uuid = null;
+    private String username = null;
+    private String ipaddress = null;
+
+    public Worker(TestServer parent, Socket connection) {
+        this.connection = connection;
+
         try {
-            while (true) {
-                char[] buffer = new char[512];
-                in.read(buffer);
-                out.write(buffer);
+            in = new DataInputStream(connection.getInputStream());
+            out = new DataOutputStream(connection.getOutputStream());
+
+            out.writeUTF("?details:");
+
+            this.ipaddress = connection.getLocalAddress().getHostAddress();
+
+            Iterator<Object> tokenizer = new StringTokenizer(in.readUTF()).asIterator();
+            String response = (String) tokenizer.next();
+            if (response.equals("!details:")) {
+                while(tokenizer.hasNext()) {
+                    String[] parameter = (String[]) ((String) tokenizer.next()).split(":");
+                    switch (parameter[0]) {
+                        case "username":
+                            this.username = parameter[1];
+                            break;
+
+                        case "uuid":
+                            this.uuid = UUID.fromString(parameter[1]);
+                            break;
+                    }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public Worker(Socket connection) {
-        this.connection = connection;
+    @Override
+    public void run() {
+        while (true) {
 
-        try {
-            in = new InputStreamReader(new BufferedInputStream(connection.getInputStream()));
-            out = new OutputStreamWriter(new BufferedOutputStream(connection.getOutputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
     }
+
+
 }
 
 class TestServer extends Thread {
 
     UUID uuid = UUID.randomUUID();
     String name = "testserver";
+
+    private ArrayList<Worker> clientList = new ArrayList();
 
     private final ServerSocket srvSock;
     private final ExecutorService threadPool;
@@ -83,21 +106,32 @@ class TestServer extends Thread {
                 out.writeUTF("?request:");
                 out.flush();
 
-
                 String response = in.readUTF();
 
-                if ("!info:".equals(response)) {
-                    out.writeUTF("!success: name:testing owner:UNKNOWN");
-                    out.flush();
-                    connection.close();
-                } else {
-                    threadPool.execute(new Worker(connection));
+                switch (response) {
+                    case "!info:":
+                        out.writeUTF("!success: name:testing owner:UNKNOWN");
+                        out.flush();
+                        connection.close();
+                        break;
+
+                    case "!connect:":
+                        Worker worker = new Worker(this, connection);
+                        this.clientList.add(worker);
+                        threadPool.execute(worker);
+
                 }
             } catch (IOException e) {
-
+                e.printStackTrace();
             }
         }
     }
+
+    public ArrayList<Worker> getClientList() {
+        return clientList;
+    }
+
+
 }
 
 public class NetworkManagerTest {
@@ -118,7 +152,6 @@ public class NetworkManagerTest {
 
         var netmgr = new NetworkManager();
         assertNotNull(netmgr);
-
 
         Server a = netmgr.getServerDetails("127.0.0.1");
         assertNotNull(a);
