@@ -139,10 +139,6 @@ public class NetworkManager extends Thread{
 		}
 	}
 
-	public void shutdownServers() {
-		this.ptpThreadPool.shutdownNow();
-		this.peerToPeerRunning = false;
-	}
 
 // MARK: ptp functionality definitions.
 
@@ -196,9 +192,17 @@ public class NetworkManager extends Thread{
 		this.ptpThreadPool = null;
 	}
 
-	public void shutdown() {
-		this.peerToPeerRunning = false;
+// MARK: network manager control functions.
 
+	public void shutdown() {
+		if (peerToPeerRunning)
+		{
+			this.peerToPeerRunning = false;
+			this.ptpThreadPool.shutdownNow();
+		}
+
+		// request garbage collection
+		Runtime.getRuntime().gc();
 	}
 
 	/**
@@ -218,7 +222,7 @@ public class NetworkManager extends Thread{
 		}
 	}
 
-		/* todo find out what this does
+	/* todo find out what this does
 	public void sendClientMessage(String message) {
 		Socket clientSocket = this.createClientConnection();
 		if(clientSocket != null) {
@@ -227,6 +231,10 @@ public class NetworkManager extends Thread{
 		}
 	}
 	*/
+
+	public void ptpSendMessage() {
+		
+	}
 
 	private void startInboundConnection(Socket clientSocket){
 		System.out.println("Inbound Connection Started");
