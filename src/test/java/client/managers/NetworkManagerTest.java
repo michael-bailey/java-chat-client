@@ -1,6 +1,7 @@
 package client.managers;
 
 import client.classes.Contact;
+import client.classes.Message;
 import client.classes.Server;
 import client.managers.Delegates.INetworkManagerDelegate;
 import org.junit.Test;
@@ -9,10 +10,7 @@ import java.io.*;
 import java.lang.reflect.Parameter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.StringTokenizer;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.security.*;
@@ -20,7 +18,7 @@ import java.security.*;
 import javafx.scene.control.Button;
 
 import static java.lang.Thread.sleep;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 class Worker implements Runnable {
 
@@ -165,18 +163,29 @@ public class NetworkManagerTest implements INetworkManagerDelegate {
     }
 
     @Test
-    public void threadingTest() throws InterruptedException, IOException {
+    public void threadingTest() throws InterruptedException, IOException, NoSuchAlgorithmException {
+
+        // setting up test values for a message
+        UUID useruuid = UUID.randomUUID();
+        String username = "mickyb";
+        String message = "hi there, how are you";
+        String checksum = Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-256").digest(message.getBytes()));
+
+
         var netmgr = new NetworkManager(this);
         assertNotNull(netmgr);
 
-        netmgr.ptpStart();
+        assertTrue(netmgr.ptpStart());
 
         var mockClient = new Socket("127.0.0.1", 6001);
         var in = new DataInputStream(mockClient.getInputStream());
         var out = new DataOutputStream(mockClient.getOutputStream());
 
-        if (in.readUTF().equals("?request:")) {
-            out.writeUTF("!message: uuid:\"80945645-4567-4532-876612\" name:\"bob michael\" message:\"hello world\"");
+        String reply = in.readUTF();
+        assertEquals(reply.toString(), "?request:");
+
+        if (reply.equals("?request:")) {
+            out.writeUTF("!message: uuid:\""+useruuid.toString()+"\" name:\""+username+"\" message:\""+message+"\" checksum:"+checksum);
             mockClient.close();
         }
         sleep(10000);

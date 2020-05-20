@@ -193,11 +193,18 @@ public class NetworkManager extends Thread{
 			out.flush();
 
 			String response = in.readUTF();
-			Matcher parser = Pattern.compile("(\\?|\\!)([a-zA-z0-9]*)\\:|([a-zA-z]*):([a-zA-Z\\-\\+\\[\\]{}\\_\\=]+|(\\\"(.*?)\\\")+)").matcher(response);
+			System.out.println("response = " + response);
+			Matcher parser = Pattern.compile("(\\?|\\!)([a-zA-z0-9]*)\\:|([a-zA-z]*):([a-zA-Z0-9\\-\\+\\[\\]{}\\_\\=\\/]+|(\\\"(.*?)\\\")+)").matcher(response);
+
+			String a = "";
+			if (parser.find()) {
+				a = parser.group();
+				System.out.println("a = " + a);
+			}
 
 			// check the server is responsive
-			if (!parser.group().equals("?request")) {
-				System.out.println("error with the server.");
+			if (!a.equals("!message:")) {
+				System.out.println("error with the connected client.");
 				socket.close();
 				return;
 			}
@@ -210,6 +217,7 @@ public class NetworkManager extends Thread{
 				data.put(kvp[0], kvp[1]);
 			}
 			socket.close();
+			System.out.println("data = " + data);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -223,7 +231,7 @@ public class NetworkManager extends Thread{
 	 * then proceds to start the ptp thread.
 	 *
 	 */
-	public void ptpStart() {
+	public boolean ptpStart() {
 		try {
 			// create the server socket
 			ptpServerSocket = new ServerSocket(ptpConnectionPort);
@@ -238,8 +246,10 @@ public class NetworkManager extends Thread{
 			this.peerToPeerRunning = true;
 			this.ptpServerThread.start();
 
+			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 
