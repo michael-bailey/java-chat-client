@@ -1,6 +1,8 @@
 package client.managers;
 
+import client.classes.Contact;
 import client.classes.Server;
+import client.managers.Delegates.INetworkManagerDelegate;
 import org.junit.Test;
 
 import java.io.*;
@@ -135,7 +137,7 @@ class TestServer extends Thread {
     }
 }
 
-public class NetworkManagerTest {
+public class NetworkManagerTest implements INetworkManagerDelegate {
 
     public NetworkManagerTest() {
 
@@ -146,6 +148,8 @@ public class NetworkManagerTest {
         var netmgr = new NetworkManager();
         assertNotNull(netmgr);
     }
+
+// MARK: tests for auxiliary functions.
 
     @Test
     public void getServerDetails() throws IOException {
@@ -161,12 +165,20 @@ public class NetworkManagerTest {
     }
 
     @Test
-    public void threadingTest() throws InterruptedException {
-        var netmgr = new NetworkManager();
+    public void threadingTest() throws InterruptedException, IOException {
+        var netmgr = new NetworkManager(this);
         assertNotNull(netmgr);
 
         netmgr.ptpStart();
 
+        var mockClient = new Socket("127.0.0.1", 6001);
+        var in = new DataInputStream(mockClient.getInputStream());
+        var out = new DataOutputStream(mockClient.getOutputStream());
+
+        if (in.readUTF().equals("?request:")) {
+            out.writeUTF("!message: uuid:\"80945645-4567-4532-876612\" name:\"bob michael\" message:\"hello world\"");
+            mockClient.close();
+        }
         sleep(10000);
     }
 
@@ -185,7 +197,20 @@ public class NetworkManagerTest {
 
     }
 
-    public void recvMessage() {
+// MARK: network delegate methods used for testing
 
+    @Override
+    public void ptpReceivedMessage() {
+
+    }
+
+    @Override
+    public void stdReceivedMessage() {
+
+    }
+
+    @Override
+    public Contact[] updateClientList() {
+        return new Contact[0];
     }
 }

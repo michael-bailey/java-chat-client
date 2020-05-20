@@ -9,9 +9,11 @@ import java.net.ServerSocket;
 import java.security.*;
 import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
@@ -191,15 +193,26 @@ public class NetworkManager extends Thread{
 			out.flush();
 
 			String response = in.readUTF();
+			Matcher parser = Pattern.compile("(\\?|\\!)([a-zA-z0-9]*)\\:|([a-zA-z]*):([a-zA-Z\\-\\+\\[\\]{}\\_\\=]+|(\\\"(.*?)\\\")+)").matcher(response);
 
-			Matcher parser = Pattern.compile("")
+			// check the server is responsive
+			if (!parser.group().equals("?request")) {
+				System.out.println("error with the server.");
+				socket.close();
+				return;
+			}
 
-
-
+			// extract the key value pares to construct a hashmap
+			HashMap<String,String> data = new HashMap<>();
+			while (parser.find()) {
+				String argument = parser.group();
+				String[] kvp = argument.split(":");
+				data.put(kvp[0], kvp[1]);
+			}
+			socket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
