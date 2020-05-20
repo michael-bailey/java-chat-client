@@ -5,7 +5,7 @@ here we will define the protocol used between the client and the server.
 
 this is the regex for pattern matching the protocol.
 
-`(\?|\!)([a-zA-z0-9]*)\:|([a-zA-z]*):([a-zA-Z]+|(\"(.*?)\")+)`
+`(\?|\!)([a-zA-z0-9]*)\:|([a-zA-z]*):([a-zA-Z\-\+\[\]{}\_\=]+|(\"(.*?)\")+)`
 
 ## getting info from the server
 this set of protocols will define how data is retrieved from the server
