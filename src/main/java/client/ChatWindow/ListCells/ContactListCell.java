@@ -40,11 +40,11 @@ public class ContactListCell extends ListCell<Contact> {
                 loader.setController(this);
                 loader.load();
 
-                Username.setText(item.getUsername());
-                UUID.setText(item.getUUID().toString());
+                Username.setText(item.username);
+                UUID.setText(item.UUID.toString());
 
                 Tooltip t = new Tooltip();
-                t.setText(item.getUUID().toString());
+                t.setText(item.UUID.toString());
                 UUID.setTooltip(t);
 
                 setGraphic(root);
