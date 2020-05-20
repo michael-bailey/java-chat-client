@@ -1,6 +1,9 @@
 package client.managers;
 
+import client.classes.Contact;
 import client.classes.Server;
+import client.managers.Delegates.INetworkManagerDelegate;
+import client.managers.Delegates.NetworkManagerDelegate;
 
 import java.net.ServerSocket;
 import java.security.*;
@@ -9,6 +12,7 @@ import java.net.Socket;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
+import java.util.regex.Pattern;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
@@ -23,6 +27,8 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
  */
 
 public class NetworkManager extends Thread{
+
+	INetworkManagerDelegate delegate = new NetworkManagerDelegate();
 
 	private final int serverConnectionPort = 6000;
 	private final int ptpConnectionPort = 6001;
@@ -43,6 +49,10 @@ public class NetworkManager extends Thread{
 
 	public NetworkManager() {
 
+	}
+
+	public NetworkManager(INetworkManagerDelegate delegate) {
+		this.delegate = delegate;
 	}
 
 	/**
@@ -143,30 +153,63 @@ public class NetworkManager extends Thread{
 // MARK: ptp functionality definitions.
 
 	/**
+	 * ptpThreadFn
+	 *
+	 * defines the function that will be called by the ptp thread
+	 *
 	 * this listens for a new connection to the client.
+	 *
 	 * @return a new socket returned from the accept call
 	 */
 	private void ptpThreadFn() {
-
-		for ( int i : new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10} ) {
-			this.ptpThreadPool.execute(() -> {
-				for ( int j : new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10} ) {
-					System.out.println("thread " + Thread.currentThread().getId() + ": printing: " + i);
-				}
-			});
-
-		}
-
-		while (peerToPeerRunning) {
+		while (this.peerToPeerRunning) {
 			try {
-				System.out.println("main ptp thread");
-				sleep(1000);
-			} catch (InterruptedException e) {
+				var ptpConnection = this.ptpServerSocket.accept();
+				this.ptpThreadPool.execute(() -> ptpThreadWorkerFn(ptpConnection));
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
+	/**
+	 * ptpThreadWorkerFn
+	 *
+	 * this is called when a client connects to this process for peer to peer communication
+	 * it first asks for a request (simalar to a server).
+	 * after wich the client should send the data over.
+	 * to which it will respond with success for fail.
+	 *
+	 * @param socket the new connection
+	 */
+	public void ptpThreadWorkerFn(Socket socket) {
+		try {
+			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+			DataInputStream in = new DataInputStream(socket.getInputStream());
+
+			out.writeUTF("?request:");
+			out.flush();
+
+			String response = in.readUTF();
+
+			Matcher parser = Pattern.compile("")
+
+
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * ptpStart
+	 *
+	 * this will create a new server socket and ptp thread
+	 * it the cretes a new thread pool for incoming connection's
+	 * then proceds to start the ptp thread.
+	 *
+	 */
 	public void ptpStart() {
 		try {
 			// create the server socket
@@ -233,8 +276,24 @@ public class NetworkManager extends Thread{
 	*/
 
 	public void ptpSendMessage() {
-		
+
 	}
+
+// MARK: Delegate Methods
+
+	public void ptpReceivedMessage() {
+		delegate.ptpReceivedMessage();
+	}
+
+	public void stdReceivedMessage() {
+		delegate.stdReceivedMessage();
+	}
+
+	public Contact[] updateClientList() {
+		return delegate.updateClientList();
+	}
+
+// MARK: ptp stuff
 
 	private void startInboundConnection(Socket clientSocket){
 		System.out.println("Inbound Connection Started");
