@@ -8,30 +8,29 @@ import java.util.UUID;
 public class Contact implements Serializable {
     private static final long serialVersionUID = 365392247250419493L;
     
-    private final String username;
-    private final UUID UUID;
+    public final String username;
+    public final UUID UUID;
+    public final ArrayList<Message> messages;
 
-    private final ArrayList<Message> messages;
-
-    public Contact(String username) {
-        this.username = username;
+    private Contact(Builder builder) {
+        this.username = builder.username;
         this.UUID = java.util.UUID.randomUUID();
         this.messages = new ArrayList<Message>();
     }
 
-    public ArrayList<Message> getMessages() {
-        return messages;
-    }
+    public static class Builder {
 
-    public void addMessage(Message message) {
-        this.messages.add(message);
-    }
+        private UUID uuid;
+        private String username;
 
-    public String getUsername() {
-        return username;
-    }
 
-    public UUID getUUID() {
-        return UUID;
+        public Contact build() {
+            return new Contact(this);
+        }
+
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
     }
 }
