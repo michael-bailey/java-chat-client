@@ -195,32 +195,59 @@ public class NetworkManager extends Thread{
 			String response = in.readUTF();
 			Matcher parser = Pattern.compile("(\\?|\\!)([a-zA-z0-9]*)\\:|([a-zA-z]*):([a-zA-Z0-9\\-\\+\\[\\]{}\\_\\=\\/]+|(\\\"(.*?)\\\")+)").matcher(response);
 
+			String command = "";
+			if (parser.find()) {
+				command = parser.group();
+				System.out.println("command = " + command);
+			} else {
+				return;
+			}
+
 			HashMap<String,String> data = new HashMap<>();
-			switch(response) {
+			switch(command) {
+
 				case "!message:":
 					System.out.println("message");
 					// extract the key value pares to construct a hashmap
 					while (parser.find()) {
+
+						// get the next arg and split by the colon
 						String argument = parser.group();
 						String[] kvp = argument.split(":");
+
+						// check for quotes
+						if (kvp[1].charAt(0) == '\"') {
+							kvp[1] = kvp[1].substring(0, kvp[1].length()-1);
+						}
+
+						//add the data to the hashmap
 						data.put(kvp[0], kvp[1]);
 					}
+
+					// close the socket and notify the delegate.
 					socket.close();
 					System.out.println("data = " + data);
 					ptpReceivedMessage(data);
 					return;
+
 				case "!test:":
+					// send the test was a success back to the client
 					System.out.println("testString");;
 					out.writeUTF("!success:");
 					socket.close();
 					return;
+
 				default:
+					// close the socket as the data was wrong
 					System.out.println("error with received request.");
 					System.out.println("response = " + response);
 					socket.close();
 					return;
 			}
+
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IllegalThreadStateException e) {
 			e.printStackTrace();
 		}
 	}

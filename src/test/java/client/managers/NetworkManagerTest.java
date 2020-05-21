@@ -10,6 +10,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -70,11 +71,19 @@ class Worker implements Runnable {
             try {
                 String request = in.readUTF();
                 switch (request) {
+                    case "?disconnect:":
+                        this.connected = false;
+                        out.writeUTF("!ending:");
+                        break;
                     default:
                         out.writeUTF("!unknown:");
-                        
+                        break;
                 }
+                sleep(1000);
             } catch (IOException e) {
+                e.printStackTrace();
+                this.connected = false;
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
@@ -94,9 +103,8 @@ class Worker implements Runnable {
 }
 
 class TestServer extends Thread {
-
-    UUID uuid = UUID.randomUUID();
     String name = "testserver";
+    String owner = "michael-bailey";
 
     private ArrayList<Worker> clientList = new ArrayList();
 
@@ -134,7 +142,7 @@ class TestServer extends Thread {
 
                 switch (response) {
                     case "!info:":
-                        out.writeUTF("!success: name:testing owner:UNKNOWN");
+                        out.writeUTF("!success: name:"+this.name+" owner:"+this.owner+"");
                         out.flush();
                         connection.close();
                         break;
@@ -191,23 +199,34 @@ public class NetworkManagerTest implements INetworkManagerDelegate {
     @Test
     public void ptpThreadingTest() {
 
+        // start the network manager and start the ptp functions.
         var netmgr = new NetworkManager(this);
         assertNotNull(netmgr);
-
         assertTrue(netmgr.ptpStart());
 
+        // create thread pool of 128 mock clients.
         Executor clientPool = Executors.newFixedThreadPool(128);
 
+        // create and start all 128 mock clients
         for (int i = 0; i < 128; i++) {
+
+            // execute new mock client
             clientPool.execute(() -> {
                 try {
+                    // connect to the network manager and get streams
                     var mockClient = new Socket("127.0.0.1", 6001);
                     var in = new DataInputStream(mockClient.getInputStream());
                     var out = new DataOutputStream(mockClient.getOutputStream());
+
+                    // read the reply from the network manager
                     String reply = in.readUTF();
                     assertEquals(reply.toString(), "?request:");
+
+                    // ensure the network manager is working and write test
                     if (reply.equals("?request:")) {
                         out.writeUTF("!test:");
+
+                        // assert it was a success. and close
                         assertEquals("!success:", in.readUTF());
                         mockClient.close();
                     }
@@ -216,6 +235,54 @@ public class NetworkManagerTest implements INetworkManagerDelegate {
                 }
             });
         }
+    }
+
+    @Test
+    public void getUUID() {
+        UUID uuid = UUID.randomUUID();
+        System.out.println("uuid = " + uuid);
+    }
+
+    @Test
+    public void ptpMessageSend() throws NoSuchAlgorithmException {
+
+        // defining the message
+        var username = "michael-bailey";
+        var uuid = UUID.fromString("15e54bc0-b82d-4b62-9d4a-ba86a2d55bd4");
+        var message = "this is a test message used, for testing";
+        var checksum = Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-256").digest(message.getBytes()));
+
+        // print the variables
+        System.out.println("username = " + username);
+        System.out.println("uuid = " + uuid);
+        System.out.println("message = " + message);
+        System.out.println("checksum = " + checksum);
+
+        try {
+            // start the network manager and start the ptp functions.
+            var netmgr = new NetworkManager(this);
+            assertNotNull(netmgr);
+            assertTrue(netmgr.ptpStart());
+
+            Socket mockClient = new Socket("127.0.0.1", 6001);
+            var in = new DataInputStream(mockClient.getInputStream());
+            var out = new DataOutputStream(mockClient.getOutputStream());
+
+            // this will have built in checks in the actual client
+            assertEquals("?request:", in.readUTF());
+
+            System.out.println("!message: uuid:"+uuid+" username:\""+username+"\" message:\""+message+"\" checksum:"+checksum);
+            out.writeUTF("!message: uuid:"+uuid+" username:\""+username+"\" message:\""+message+"\" checksum:"+checksum);
+
+
+
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 // MARK: tests for server connections
@@ -240,7 +307,7 @@ public class NetworkManagerTest implements INetworkManagerDelegate {
 
     @Override
     public void ptpReceivedMessage(HashMap<String, String> data) {
-
+        assertEquals("michael-bailey", data.get("username"));
     }
 
     @Override
