@@ -26,11 +26,13 @@ class Worker implements Runnable {
     private DataInputStream in;
     private DataOutputStream out;
 
+    private boolean connected = false;
+
     private UUID uuid = null;
     private String username = null;
     private String ipaddress = null;
 
-    public Worker(TestServer parent, Socket connection) {
+    public Worker(Socket connection) {
         this.connection = connection;
 
         try {
@@ -64,12 +66,31 @@ class Worker implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
-
+        while (connected) {
+            try {
+                String request = in.readUTF();
+                switch (request) {
+                    default:
+                        out.writeUTF("!unknown:");
+                        
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-
+    public void updateClientList(ArrayList<Worker> clientList) {
+        try {
+            out.writeUTF("!clientUpdate:");
+            for (Worker i : clientList) {
+                out.writeUTF("!client: username:" + i.username + "uuid:" + i.uuid + "ipaddress:" + i.ipaddress);
+            }
+            out.writeUTF("!end:");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 class TestServer extends Thread {
@@ -119,10 +140,13 @@ class TestServer extends Thread {
                         break;
 
                     case "!connect:":
-                        Worker worker = new Worker(this, connection);
+                        Worker worker = new Worker(connection);
                         this.clientList.add(worker);
                         threadPool.execute(worker);
 
+                        for (Worker i : this.clientList) {
+                            i.updateClientList(this.clientList);
+                        }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -197,8 +221,9 @@ public class NetworkManagerTest implements INetworkManagerDelegate {
 // MARK: tests for server connections
 
     @Test
-    public void connectToAndDisconnectFromServer() {
-
+    public void connectToAndDisconnectFromServer() throws IOException {
+        TestServer server = new TestServer();
+        server.start();
     }
 
     @Test
