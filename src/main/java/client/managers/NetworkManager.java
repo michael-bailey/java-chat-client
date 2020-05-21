@@ -193,31 +193,33 @@ public class NetworkManager extends Thread{
 			out.flush();
 
 			String response = in.readUTF();
-			System.out.println("response = " + response);
 			Matcher parser = Pattern.compile("(\\?|\\!)([a-zA-z0-9]*)\\:|([a-zA-z]*):([a-zA-Z0-9\\-\\+\\[\\]{}\\_\\=\\/]+|(\\\"(.*?)\\\")+)").matcher(response);
 
-			String a = "";
-			if (parser.find()) {
-				a = parser.group();
-				System.out.println("a = " + a);
-			}
-
-			// check the server is responsive
-			if (!a.equals("!message:")) {
-				System.out.println("error with the connected client.");
-				socket.close();
-				return;
-			}
-
-			// extract the key value pares to construct a hashmap
 			HashMap<String,String> data = new HashMap<>();
-			while (parser.find()) {
-				String argument = parser.group();
-				String[] kvp = argument.split(":");
-				data.put(kvp[0], kvp[1]);
+			switch(response) {
+				case "!message:":
+					System.out.println("message");
+					// extract the key value pares to construct a hashmap
+					while (parser.find()) {
+						String argument = parser.group();
+						String[] kvp = argument.split(":");
+						data.put(kvp[0], kvp[1]);
+					}
+					socket.close();
+					System.out.println("data = " + data);
+					ptpReceivedMessage(data);
+					return;
+				case "!test:":
+					System.out.println("testString");;
+					out.writeUTF("!success:");
+					socket.close();
+					return;
+				default:
+					System.out.println("error with received request.");
+					System.out.println("response = " + response);
+					socket.close();
+					return;
 			}
-			socket.close();
-			System.out.println("data = " + data);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -304,8 +306,8 @@ public class NetworkManager extends Thread{
 
 // MARK: Delegate Methods
 
-	public void ptpReceivedMessage() {
-		delegate.ptpReceivedMessage();
+	public void ptpReceivedMessage(HashMap<String, String> data) {
+		delegate.ptpReceivedMessage(data);
 	}
 
 	public void stdReceivedMessage() {
