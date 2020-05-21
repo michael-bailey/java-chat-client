@@ -162,8 +162,10 @@ public class NetworkManagerTest implements INetworkManagerDelegate {
         server.stopServer();
     }
 
+// MARK: tests for the ptp networking.
+
     @Test
-    public void threadingTest() {
+    public void ptpThreadingTest() {
 
         var netmgr = new NetworkManager(this);
         assertNotNull(netmgr);
@@ -191,6 +193,8 @@ public class NetworkManagerTest implements INetworkManagerDelegate {
             });
         }
     }
+
+// MARK: tests for server connections
 
     @Test
     public void connectToAndDisconnectFromServer() {
