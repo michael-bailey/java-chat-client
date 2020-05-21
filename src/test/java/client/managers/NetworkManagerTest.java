@@ -1,21 +1,21 @@
 package client.managers;
 
 import client.classes.Contact;
-import client.classes.Message;
 import client.classes.Server;
 import client.managers.Delegates.INetworkManagerDelegate;
 import org.junit.Test;
 
-import java.io.*;
-import java.lang.reflect.Parameter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.security.*;
-
-import javafx.scene.control.Button;
 
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.*;
@@ -163,32 +163,33 @@ public class NetworkManagerTest implements INetworkManagerDelegate {
     }
 
     @Test
-    public void threadingTest() throws InterruptedException, IOException, NoSuchAlgorithmException {
-
-        // setting up test values for a message
-        UUID useruuid = UUID.randomUUID();
-        String username = "mickyb";
-        String message = "hi there, how are you";
-        String checksum = Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-256").digest(message.getBytes()));
-
+    public void threadingTest() {
 
         var netmgr = new NetworkManager(this);
         assertNotNull(netmgr);
 
         assertTrue(netmgr.ptpStart());
 
-        var mockClient = new Socket("127.0.0.1", 6001);
-        var in = new DataInputStream(mockClient.getInputStream());
-        var out = new DataOutputStream(mockClient.getOutputStream());
+        Executor clientPool = Executors.newFixedThreadPool(128);
 
-        String reply = in.readUTF();
-        assertEquals(reply.toString(), "?request:");
-
-        if (reply.equals("?request:")) {
-            out.writeUTF("!message: uuid:\""+useruuid.toString()+"\" name:\""+username+"\" message:\""+message+"\" checksum:"+checksum);
-            mockClient.close();
+        for (int i = 0; i < 128; i++) {
+            clientPool.execute(() -> {
+                try {
+                    var mockClient = new Socket("127.0.0.1", 6001);
+                    var in = new DataInputStream(mockClient.getInputStream());
+                    var out = new DataOutputStream(mockClient.getOutputStream());
+                    String reply = in.readUTF();
+                    assertEquals(reply.toString(), "?request:");
+                    if (reply.equals("?request:")) {
+                        out.writeUTF("!test:");
+                        assertEquals("!success:", in.readUTF());
+                        mockClient.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         }
-        sleep(10000);
     }
 
     @Test
@@ -209,7 +210,7 @@ public class NetworkManagerTest implements INetworkManagerDelegate {
 // MARK: network delegate methods used for testing
 
     @Override
-    public void ptpReceivedMessage() {
+    public void ptpReceivedMessage(HashMap<String, String> data) {
 
     }
 
