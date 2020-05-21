@@ -2,10 +2,12 @@ package client.managers.Delegates;
 
 import client.classes.Contact;
 
+import java.util.HashMap;
+
 public class NetworkManagerDelegate implements INetworkManagerDelegate {
 
     @Override
-    public void ptpReceivedMessage() {
+    public void ptpReceivedMessage(HashMap<String, String> data) {
         System.out.println("received message ptp");
     }
 
