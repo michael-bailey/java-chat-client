@@ -235,6 +235,8 @@ public class NetworkManagerTest implements INetworkManagerDelegate {
                 }
             });
         }
+        netmgr.ptpStopThreads();
+        Runtime.getRuntime().gc();
     }
 
     @Test
@@ -274,21 +276,23 @@ public class NetworkManagerTest implements INetworkManagerDelegate {
             System.out.println("!message: uuid:"+uuid+" username:\""+username+"\" message:\""+message+"\" checksum:"+checksum);
             out.writeUTF("!message: uuid:"+uuid+" username:\""+username+"\" message:\""+message+"\" checksum:"+checksum);
 
+            assertEquals("!success:", in.readUTF());
 
-
+            netmgr.ptpStopThreads();
+            Runtime.getRuntime().gc();
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
 // MARK: tests for server connections
 
+    /*
     @Test
-    public void connectToAndDisconnectFromServer() throws IOException {
+    public synchronized void connectToAndDisconnectFromServer() throws IOException {
         TestServer server = new TestServer();
         server.start();
     }
@@ -302,11 +306,13 @@ public class NetworkManagerTest implements INetworkManagerDelegate {
     public void sendMessage() {
 
     }
+    */
 
 // MARK: network delegate methods used for testing
 
     @Override
     public void ptpReceivedMessage(HashMap<String, String> data) {
+        System.out.println(data);
         assertEquals("michael-bailey", data.get("username"));
     }
 

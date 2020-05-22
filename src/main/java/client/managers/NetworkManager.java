@@ -222,8 +222,9 @@ public class NetworkManager extends Thread{
 
 						//add the data to the hashmap
 						data.put(kvp[0], kvp[1]);
-					}
 
+					}
+					out.writeUTF("!success:");
 					// close the socket and notify the delegate.
 					socket.close();
 					System.out.println("data = " + data);
@@ -285,6 +286,7 @@ public class NetworkManager extends Thread{
 	public void ptpStopThreads() {
 		this.peerToPeerRunning = false;
 		this.ptpThreadPool = null;
+		this.ptpServerSocket = null;
 	}
 
 // MARK: network manager control functions.
@@ -345,7 +347,7 @@ public class NetworkManager extends Thread{
 		return delegate.updateClientList();
 	}
 
-// MARK: ptp stuff
+// MARK: ptp stuff (old)
 
 	private void startInboundConnection(Socket clientSocket){
 		System.out.println("Inbound Connection Started");
