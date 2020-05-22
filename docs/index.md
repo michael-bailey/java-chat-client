@@ -1,6 +1,6 @@
 # java-chat-client
 
-![Java CI](https://github.com/michael-bailey/java-chat-client/workflows/Java%20CI/badge.svg)
+![build master](https://github.com/michael-bailey/java-chat-client/workflows/build%20master/badge.svg)
 
 this is a chat client written in java using hte javafx ui library.
 this uses a simple sockets to transfer data between clients
