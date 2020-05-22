@@ -2,6 +2,7 @@ package client.managers;
 
 import client.classes.Contact;
 import client.classes.Server;
+import client.enums.PROTOCOL_MESSAGES;
 import client.managers.Delegates.INetworkManagerDelegate;
 import client.managers.Delegates.NetworkManagerDelegate;
 
@@ -16,6 +17,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static client.enums.PROTOCOL_MESSAGES.SUCCESS;
+import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
 /**
@@ -35,6 +38,8 @@ public class NetworkManager extends Thread{
 	private final int serverConnectionPort = 6000;
 	private final int ptpConnectionPort = 6001;
 
+	Pattern parser = Pattern.compile("(\\?|\\!)([a-zA-z0-9]*)\\:|([a-zA-z]*):([a-zA-Z0-9\\-\\+\\[\\]{}\\_\\=\\/]+|(\\\"(.*?)\\\")+)");
+
 	boolean peerToPeerRunning = true;
 	private Thread ptpServerThread;
 	ServerSocket ptpServerSocket;
@@ -53,6 +58,7 @@ public class NetworkManager extends Thread{
 
 	}
 
+
 	public NetworkManager(INetworkManagerDelegate delegate) {
 		this.delegate = delegate;
 	}
@@ -67,64 +73,61 @@ public class NetworkManager extends Thread{
 	 * @return new Server instance if the connection was successful.
 	 * todo add key exchange and encryption.
 	 */
+
+	//todo change this to use the regex.
 	public Server getServerDetails(String ipAddress) {
 		try {
 
-			// setup connection
+			// setup connection and get data streams
 			Socket connection = new Socket(ipAddress, 6000);
-
-			// get data streams
 			DataInputStream in = new DataInputStream(connection.getInputStream());
 			DataOutputStream out = new DataOutputStream(connection.getOutputStream());
 
 			// get data sent from the server.
 			String request = in.readUTF();
 
+			Matcher matcher = parser.matcher(request);
+
+			if (!matcher.find()) {
+				connection.close();
+				return null;
+			}
+
 			// check the server sent the request key word
-			if (request.equals("?request:")) {
+			if (matcher.group().equals(PROTOCOL_MESSAGES.REQUEST)) {
 
 				// writing the command !info:
-				out.writeUTF("!info:");
+				out.writeUTF(String.valueOf(PROTOCOL_MESSAGES.INFO));
 				out.flush();
 
-				// getting the response back and iterating over it to get the kvp
-				Iterator<Object> tokenizer = new StringTokenizer(in.readUTF()).asIterator();
+				// get the next part of the
+				String response = in.readUTF();
+				Matcher responseMatcher = parser.matcher(response);
+				responseMatcher.reset();
 
-				// getting the response code
-				String a = (String) tokenizer.next();
-
-				// check if successful
-				if (a.equals("!success:")) {
-
-					// parse key value pairs.
-					var serverBuilder = new Server.Builder();
-					while (tokenizer.hasNext()) {
-						String[] property = ((String) tokenizer.next()).split(":");
-						switch (property[0]) {
-							case "name":
-								serverBuilder.name(property[1]);
-								break;
-
-							case "owner":
-								serverBuilder.owner(property[1]);
-								break;
-
-							default:
-								break;
-						}
-					}
-
-					// close the connection
-					connection.close();
-
-					// return the new server object.
-					return serverBuilder.build();
-
-				// if the response code is diffrent then close the connection.
-				} else {
-					connection.close();
+				if (!responseMatcher.find() || !responseMatcher.group().equals(SUCCESS) ) {
 					return null;
 				}
+
+				var serverBuilder = new Server.Builder();
+				while (responseMatcher.find()) {
+					String[] args = responseMatcher.group().split(":");
+					switch (args[0]) {
+						case "name":
+							serverBuilder.name(args[1]);
+							break;
+
+						case "owner":
+							serverBuilder.owner(args[1]);
+							break;
+
+						default:
+							break;
+					}
+				}
+
+				connection.close();
+				return serverBuilder.build();
 
 			// if keyword is wrong close the connection
 			} else {
@@ -167,7 +170,11 @@ public class NetworkManager extends Thread{
 		while (this.peerToPeerRunning) {
 			try {
 				var ptpConnection = this.ptpServerSocket.accept();
-				this.ptpThreadPool.execute(() -> ptpThreadWorkerFn(ptpConnection));
+				System.out.println("ptpConnection = " + ptpConnection);
+				System.out.println("ptpThreadPool = " + ptpThreadPool);
+				Runnable fn = () -> ptpThreadWorkerFn(ptpConnection);
+				System.out.println("fn = " + fn);
+				this.ptpThreadPool.execute(fn);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -193,11 +200,12 @@ public class NetworkManager extends Thread{
 			out.flush();
 
 			String response = in.readUTF();
-			Matcher parser = Pattern.compile("(\\?|\\!)([a-zA-z0-9]*)\\:|([a-zA-z]*):([a-zA-Z0-9\\-\\+\\[\\]{}\\_\\=\\/]+|(\\\"(.*?)\\\")+)").matcher(response);
+
+			Matcher matcher	= parser.matcher(response);
 
 			String command = "";
-			if (parser.find()) {
-				command = parser.group();
+			if (matcher.find()) {
+				command = matcher.group();
 				System.out.println("command = " + command);
 			} else {
 				return;
@@ -209,10 +217,10 @@ public class NetworkManager extends Thread{
 				case "!message:":
 					System.out.println("message");
 					// extract the key value pares to construct a hashmap
-					while (parser.find()) {
+					while (matcher.find()) {
 
 						// get the next arg and split by the colon
-						String argument = parser.group();
+						String argument = matcher.group();
 						String[] kvp = argument.split(":");
 
 						// check for quotes
@@ -270,7 +278,7 @@ public class NetworkManager extends Thread{
 			ptpServerThread = new Thread(() -> this.ptpThreadFn());
 
 			// creating a thread pool
-			this.ptpThreadPool = newFixedThreadPool(8);
+			this.ptpThreadPool = newCachedThreadPool();
 
 			// tell server thread wo run.
 			this.peerToPeerRunning = true;
