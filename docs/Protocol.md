@@ -52,22 +52,22 @@ public class PROTOCOL_MESSAGES {
 
 
 
-## getting info from the server
-this set of protocols will define how data is retrieved from the server
+## Server commands
+| command   | description                                                  |
+| --------- | ------------------------------------------------------------ |
+| ?request: | this is sent by the server to  signal that the connection is working. |
+| !connect: | this is sent by the client along with other infomation to signal that the client wants to stay connected to the server |
+|           |                                                              |
+|           |                                                              |
+|           |                                                              |
+|           |                                                              |
+|           |                                                              |
+|           |                                                              |
+|           |                                                              |
 
-any initial request to the server will make it send ?Request:
 
-### !encrypt:
-this keyword request the server to start a key exchange the new keys will be used to encrypt further messages.
 
-### !info:
-this will retrieve server info.
-* server name
-* server MOTD
 
-possibly
-* owner name
-* owner email
 
 
 ## !Join:
