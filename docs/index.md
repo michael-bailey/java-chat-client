@@ -31,7 +31,7 @@ are to be sent, and permissions for the user on the server
 
 to run this program use the grade wrapper
 
-#### linux
+### linux
 
 ```sh
 # to build the project.
@@ -47,7 +47,7 @@ to run this program use the grade wrapper
 ./gradlew shadowjar
 ```
 
-#### windows
+### windows
 
 ```bat
 # to build the project.
@@ -63,17 +63,13 @@ gradlew.bat run
 gradlew.bat shadowjar
 ```
 
-
-
 ---
 
 ## Documentation Pages
 
 [Network Protocol](https://michael-bailey.github.io/java-chat-client/Protocol)
 
-
-
-*this Documentation is work in progress (feel free to critisise constructively)*
+**this Documentation is work in progress (feel free to critisise constructively)**
 
 #Owners
 [michael-bailey](https://github.com/michael-bailey/)
