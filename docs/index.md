@@ -1,9 +1,10 @@
 # java-chat-client
 
-![Java CI](https://github.com/michael-bailey/java-chat-client/workflows/Java%20CI/badge.svg)
+![Status_Image](https://github.com/michael-bailey/java-chat-client/workflows/Java%20CI/badge.svg)
 
-this is a chat client written in java using hte javafx ui library.
-this uses a simple sockets to transfer data between clients
+This is a chat client written in java using the javafx ui library.
+
+This uses sockets to transfer data between clients.
 
 it will send messages directly to the other user using end to end encryption using pubic- private key cryptography.
 
@@ -14,38 +15,65 @@ later on the messages will be sent via servers due to limitations with other ope
 that will only store details about where messages 
 are to be sent, and permissions for the user on the server
 
+---
+
 ## Dependencies
 
-* java 13 - the jdk we are using
-* JavaFx - used for the User interface
-* gradle - the build system we are using
+* java 13 - the jdk we are using.
 
-# other infomation pages.
-* ![client to server protocol](./docs/Protocol.md)
+* JavaFx - used for the User interface. (installed via cradle)
 
-## Running
+* gradle - the build system we are using. (used with a wrapper)
+
+  ---
+
+## Execution
 
 to run this program use the grade wrapper
 
 #### linux
 
-`./gradlew run`
+```sh
+# to build the project.
+./gradlew build
+
+# to test the build
+./gradlew test
+
+# to run via gradle
+./gradlew run
+
+# to build a full exectuable jar version
+./gradlew shadowjar
+```
 
 #### windows
 
-`gradlew.bat run`
+```bat
+# to build the project.
+gradlew.bat build
 
-## images
+# to test the build
+gradlew.bat test
 
-#### the login window
-![UI Login](.github/images/Screenshot 2020-03-27 at 12.34.33.png)
+# to run via gradle
+gradlew.bat run
+
+# to build a full exectuable jar version
+gradlew.bat shadowjar
+```
 
 
 
-#### the main window with contant
-![UI Main](.github/images/Screenshot%202020-03-29%20at%2015.56.16.png)
+---
 
-*this may not reflect the actual interface at all times as it may be changed in the future*
+## Documentation Pages
+
+[Network Protocol](https://michael-bailey.github.io/java-chat-client/Protocol)
+
+
+
+*this Documentation is work in progress (feel free to critisise constructively)*
 
 #Owners
 [michael-bailey](https://github.com/michael-bailey/)
