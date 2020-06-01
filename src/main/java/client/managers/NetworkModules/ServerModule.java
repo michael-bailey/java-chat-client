@@ -1,7 +1,8 @@
 package client.managers.NetworkModules;
 
+import client.Delegates.Interfaces.IServerModuleDelegate;
+import client.Delegates.ServerModuleDelegate;
 import client.classes.Server;
-import client.managers.NetworkManager;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -16,9 +17,8 @@ import static client.enums.PROTOCOL_MESSAGES.*;
 
 public class ServerModule {
 
-    private final int serverConnectionPort = 6000;
-    private final NetworkManager manager;
-    private final int connectionPort;
+    private static final int serverConnectionPort = 6000;
+    private final IServerModuleDelegate delegate;
 
     // server fields
     private Server currentServer;
@@ -26,20 +26,17 @@ public class ServerModule {
     private Queue<String> sendQueue;
     private boolean serverThreadRunning = false;
 
-    public ServerModule(NetworkManager manager, int port) {
-        this.manager = manager;
-        this.connectionPort = port;
+    public ServerModule(IServerModuleDelegate delegate) {
+        this.delegate = delegate;
     }
 
-    private void EnableEncryption() {
-        if (serverThreadRunning) {
-            return;
-        }
-        return;
+    public ServerModule() {
+        this.delegate = new ServerModuleDelegate();
     }
 
     private void serverThreadFn() {
         try {
+            delegate.serverWillConnect();
             Socket serverConnection = new Socket(this.currentServer.getIpAddress(), this.serverConnectionPort);
             var in = new DataInputStream(serverConnection.getInputStream());
             var out = new DataOutputStream(serverConnection.getOutputStream());
@@ -60,6 +57,8 @@ public class ServerModule {
                 return;
             }
 
+            delegate.serverDidConnect();
+
             // event loop.
             while (serverThreadRunning) {
 
@@ -70,7 +69,7 @@ public class ServerModule {
                     dataMatcher.find();
                     switch (dataMatcher.group()) {
                         case UPDATE_CLIENTS:
-
+                            delegate.serverWillUpdateClients();
                             // get how many clients
                             for (int i = 0; i < in.readInt(); i++) {
 
@@ -79,13 +78,17 @@ public class ServerModule {
                                 clientMatcher.find();
                             }
 
-                            while (in.available() > 1) {
-                                in.readUTF();
-                                manager.serverReceivedMessage();
-                            }
+                            delegate.serverDidUpdateClients();
+                            break;
+
+                        case MESSAGE:
+                            delegate.serverWillSendMessage();
+                            delegate.serverDidSendMessage();
+                            break;
 
                         default:
                             out.writeUTF(ERROR);
+                            delegate.serverDidError();
                             break;
                     }
                 }
