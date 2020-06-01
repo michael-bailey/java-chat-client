@@ -11,58 +11,73 @@ public class Account implements Serializable {
     private static final long serialVersionUID = -7544412400442925489L;
     
     // account details.
-    UUID uuid;
-    String username;
+    public final UUID uuid;
+    public final String username;
+    public final String email;
 
     // encryption keys
-    Key publicKey;
-    Key privateKey;
+    public boolean encryptionAvaliable;
+    public final Key publicKey;
+    public final Key privateKey;
+
+    // builder class
+    public static class Builder {
+
+        // account details.
+        public UUID uuid;
+        public String username;
+
+        // encryption keys
+        public boolean encryptionAvaliable;
+        public Key publicKey;
+        public Key privateKey;
+        public String email;
+
+        public Builder setUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder enableEncryption() {
+            try {
+                // this creates the key pair
+                KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+                kpg.initialize(2048);
+                KeyPair kp = kpg.genKeyPair();
+                publicKey = kp.getPublic();
+                privateKey = kp.getPrivate();
+
+                //creating a uuid
+                this.uuid = UUID.randomUUID();
+                return this;
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                return this;
+            }
+        }
+
+        public Account build() {
+            return new Account(this);
+        }
+    }
 
     /**
      *  this generates account info and encryption keys
-     * @param username the Username of the user
+     * @param builder the Builder used to build the account
      */
-    public Account(String username) {
+    private Account(Builder builder) {
 
-        this.username = username;
-        try {
-            // this creates the key pair
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
-            kpg.initialize(2048);
-            KeyPair kp = kpg.genKeyPair();
-            publicKey = kp.getPublic();
-            privateKey = kp.getPrivate();
-
-            //creating a uuid
-            this.uuid = UUID.randomUUID();
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        this.uuid = UUID.randomUUID();
+        this.username = builder.username;
+        this.privateKey = builder.privateKey;
+        this.publicKey = builder.publicKey;
+        this.email = builder.email;
 
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public boolean setUsername(String username) {
-        if (username.isEmpty() || username.isBlank()) {
-            return false;
-        }
-        this.username = username;
-        return true;
-    }
-
-    public UUID getuuid() {
-        return uuid;
-    }
-
-    public Key getPublicKey() {
-        return publicKey;
-    }
-
-    public Key getPrivateKey() {
-        return privateKey;
-    }
 }

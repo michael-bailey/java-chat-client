@@ -1,6 +1,5 @@
 package client.ChatWindow.ListCells;
 
-import client.classes.Contact;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.net.URL;
 
-public class ContactListCell extends ListCell<Contact> {
+public class ContactListCell extends ListCell<ContactListCellModel> {
 
     URL fxmlURL = getClass().getClassLoader().getResource("layouts/ChatWindow/ContactCell/ContactCell.fxml");
 
@@ -22,12 +21,11 @@ public class ContactListCell extends ListCell<Contact> {
     @FXML Label UUID;
     @FXML ImageView profileImg;
 
-    SimpleObjectProperty<Contact> contact = new SimpleObjectProperty<>();
+    SimpleObjectProperty<ContactListCellModel> contact = new SimpleObjectProperty<>();
 
     @Override
-    protected void updateItem(Contact item, boolean empty) {
+    protected void updateItem(ContactListCellModel item, boolean empty) {
         super.updateItem(item, empty);
-
 
         setText(null);
         setGraphic(null);
@@ -40,11 +38,11 @@ public class ContactListCell extends ListCell<Contact> {
                 loader.setController(this);
                 loader.load();
 
-                Username.setText(item.username);
-                UUID.setText(item.UUID.toString());
+                Username.setText(item.name);
+                UUID.setText(item.uuid.toString());
 
                 Tooltip t = new Tooltip();
-                t.setText(item.UUID.toString());
+                t.setText(item.uuid.toString());
                 UUID.setTooltip(t);
 
                 setGraphic(root);

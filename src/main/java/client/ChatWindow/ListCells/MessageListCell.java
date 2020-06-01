@@ -1,6 +1,5 @@
 package client.ChatWindow.ListCells;
 
-import client.classes.Message;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,16 +11,16 @@ import javafx.scene.layout.HBox;
 import java.io.IOException;
 import java.net.URL;
 
-public class MessageListCell extends ListCell<Message> {
+public class MessageListCell extends ListCell<MessageListCellModel> {
 
     URL fxmlURL = getClass().getClassLoader().getResource("layouts/ChatWindow/messageCell/MessageCell.fxml");
     @FXML HBox root;
     @FXML Label content;
 
-    SimpleObjectProperty<Message> message = new SimpleObjectProperty();
+    SimpleObjectProperty<MessageListCellModel> message = new SimpleObjectProperty();
 
     @Override
-    protected void updateItem(Message item, boolean empty) {
+    protected void updateItem(MessageListCellModel item, boolean empty) {
         super.updateItem(item, empty);
         setText(null);
         setGraphic(null);
@@ -34,9 +33,9 @@ public class MessageListCell extends ListCell<Message> {
                 loader.setController(this);
                 loader.load();
 
-                root.setAlignment(!message.get().isReceived() ? Pos.CENTER_RIGHT : Pos.CENTER_LEFT);
+                root.setAlignment(!message.get().received ? Pos.CENTER_RIGHT : Pos.CENTER_LEFT);
 
-                this.content.setText(item.getMessage());
+                this.content.setText(item.message);
 
                 setGraphic(root);
             } catch (IOException e) {
