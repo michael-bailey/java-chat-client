@@ -30,7 +30,7 @@ public class ApplicationModel {
     private final SimpleObjectProperty<Server> selectedServer = new SimpleObjectProperty<>();
 
     private final DataManager dataManager = new DataManager();
-    private final NetworkManager networkManager = new NetworkManager();
+    private final NetworkManager networkManager = new NetworkManager(null);
 
     ChangeListener<Server> serverChangeListener = (observable, oldValue, newValue) -> {
         // tell the network manager to change the server if not null
