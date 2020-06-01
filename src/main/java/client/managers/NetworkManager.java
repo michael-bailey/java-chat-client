@@ -44,7 +44,7 @@ public class NetworkManager {
 	private final Pattern parser = Pattern.compile("([?!])([a-zA-z0-9]*):|([a-zA-z]*):([a-zA-Z0-9\\-+\\[\\]{}_=/]+|(\"(.*?)\")+)");
 
 	private final PTPModule ptpServer = new PTPModule(this, ptpConnectionPort);
-	private final ServerModule serverConnection = new ServerModule(this, serverConnectionPort);
+	private final ServerModule serverConnection = new ServerModule();
 
 
 
@@ -179,7 +179,7 @@ public class NetworkManager {
 
 	public void stop() {
 		ptpServer.stop();
-		serverConnection.DisconnectFromServer();
+		serverConnection.disconnect();
 	}
 
 	/**
