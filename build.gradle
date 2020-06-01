@@ -26,6 +26,7 @@ dependencies {
     compile "org.openjfx:javafx-graphics:11.0.1:win"
     compile "org.openjfx:javafx-graphics:11.0.1:linux"
     compile "org.openjfx:javafx-graphics:11.0.1:mac"
+    implementation files('libs/java-chat-server.jar')
 }
 
 application {
