@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
  *
  * @author mitch161
  */
-public class Outbound extends Thread{
+public class Outbound extends Thread {
 
 	private final Socket clientSocket;
 //	private PrintWriter clientSocketOutput;
