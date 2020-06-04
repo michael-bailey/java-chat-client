@@ -2,7 +2,8 @@ package client.managers.NetworkModules;
 
 import client.Delegates.Interfaces.IServerModuleDelegate;
 import client.Delegates.ServerModuleDelegate;
-import client.classes.Server;
+import client.Protocol.Command;
+import client.StorageDataTypes.Server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -11,9 +12,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Queue;
-import java.util.regex.Matcher;
 
-import static client.enums.PROTOCOL_MESSAGES.*;
+import static client.Protocol.Command.*;
 
 public class ServerModule {
 
@@ -34,6 +34,76 @@ public class ServerModule {
         this.delegate = new ServerModuleDelegate();
     }
 
+    /**
+     * getServerDetails
+     *
+     * this is the primary way of adding getting new Server instances
+     * gets the status of the server in question and builds a server object from that.
+     *
+     * @param ipAddress the address of the server
+     * @return new Server instance if the connection was successful.
+     * todo add key exchange and encryption.
+     */
+    public Server getServerDetails(String ipAddress) {
+        try {
+
+            // setup connection and get data streams
+            Socket connection = new Socket(ipAddress, 6000);
+            DataInputStream in = new DataInputStream(connection.getInputStream());
+            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+
+            // get data sent from the server.
+            Command command = Command.valueOf(in.readUTF());
+
+            if (!command.command.equals(REQUEST)) {
+                connection.close();
+                return null;
+            }
+
+            // writing the command !info:
+            out.writeUTF(INFO);
+            out.flush();
+
+            // get the next part of the
+            command = Command.valueOf(in.readUTF());
+
+            if (!command.command.equals(SUCCESS) ) {
+                connection.close();
+                return null;
+            }
+
+            var serverBuilder = new Server.Builder();
+
+            command.forEach((key, value) -> {
+                switch (key) {
+                    case "host":
+                        serverBuilder.host(value);
+                        break;
+
+                    case "name":
+                        serverBuilder.name(value);
+                        break;
+
+                    case "owner":
+                        serverBuilder.owner(value);
+                        break;
+
+                    default:
+                        break;
+
+                }
+            });
+
+            connection.close();
+            return serverBuilder.build();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+// MARK: server thread finction.
     private void serverThreadFn() {
         try {
             delegate.serverWillConnect();
@@ -41,18 +111,19 @@ public class ServerModule {
             var in = new DataInputStream(serverConnection.getInputStream());
             var out = new DataOutputStream(serverConnection.getOutputStream());
 
-            Matcher response = parser.matcher(in.readUTF());
+            Command command;
+            command = Command.valueOf(in.readUTF());
 
-            if (!response.find() && !response.group().equals(REQUEST)) {
+            if (command.command.equals(REQUEST)) {
                 this.disconnect();
                 return;
             }
 
-            out.writeUTF(CONNECT);
+            out.writeUTF(new Command(CONNECT).toString());
 
-            response = parser.matcher(in.readUTF());
+            command = Command.valueOf(in.readUTF());
 
-            if (!response.find() || !response.group().equals(SUCCESS)) {
+            if (command.command.equals(SUCCESS)) {
                 disconnect();
                 return;
             }
@@ -62,22 +133,22 @@ public class ServerModule {
             // event loop.
             while (serverThreadRunning) {
 
-                // check for updated list of clients || check queue for messages to send;
+                // check for messages from the server;
                 if (in.available() > 0) {
-                    Matcher dataMatcher = parser.matcher(in.readUTF());
+                    command = Command.valueOf(in.readUTF());
 
-                    dataMatcher.find();
-                    switch (dataMatcher.group()) {
+                    switch (command.command) {
                         case UPDATE_CLIENTS:
                             delegate.serverWillUpdateClients();
                             // get how many clients
-                            for (int i = 0; i < in.readInt(); i++) {
-
-                                // read a new client
-                                var clientMatcher = parser.matcher(in.readUTF());
-                                clientMatcher.find();
+                            for (int i = 0; i < Integer.parseInt(command.getParam("number")); i++) {
+                                Command clientCommand = Command.valueOf(in.readUTF());
+                                if (clientCommand.command.equals(CLIENT)) {
+                                    // todo convert the client data into actual renderable clients
+                                }
                             }
 
+                            // todo use this to update the client list?
                             delegate.serverDidUpdateClients();
                             break;
 
@@ -93,17 +164,20 @@ public class ServerModule {
                     }
                 }
 
-                while (!sendQueue.isEmpty()) {
-                    String messageString = sendQueue.remove();
+                // check for messages to send to the server
+                synchronized (sendQueue) {
+                    while (!sendQueue.isEmpty()) {
+                        String messageString = sendQueue.remove();
 
-                    var message = parser.matcher(messageString);
-                    switch (message.group()) {
-                        case DISCONNECT:
-                            this.disconnect();
-                            break;
+                        var message = parser.matcher(messageString);
+                        switch (message.group()) {
+                            case DISCONNECT:
+                                this.disconnect();
+                                break;
 
-                        case MESSAGE:
+                            case MESSAGE:
 
+                        }
                     }
                 }
             }
@@ -123,6 +197,7 @@ public class ServerModule {
         }
     }
 
+// MARK connection Management.
     public void connect(Server serverDetails) {
         disconnect();
 
