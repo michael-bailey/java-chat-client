@@ -25,4 +25,5 @@ public class PROTOCOL_MESSAGES {
 
     // ptp commands
     public final static String MESSAGE = "!message:";
+
 }
