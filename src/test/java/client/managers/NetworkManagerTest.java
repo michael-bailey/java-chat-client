@@ -1,8 +1,8 @@
 package client.managers;
 
 import client.Delegates.Interfaces.INetworkManagerDelegate;
-import client.classes.Account;
-import client.classes.Contact;
+import client.StorageDataTypes.Account;
+import client.StorageDataTypes.Contact;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

@@ -1,8 +1,8 @@
 package client.models;
 
 import client.ChatWindow.ListCells.ServerListCellModel;
-import client.classes.Contact;
-import client.classes.Server;
+import client.StorageDataTypes.Contact;
+import client.StorageDataTypes.Server;
 import client.managers.DataManager;
 import client.managers.NetworkManager;
 
