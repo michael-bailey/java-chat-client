@@ -1,19 +1,15 @@
-package client.classes;
+package client.StorageDataTypes;
 
-import java.beans.Transient;
 import java.io.Serializable;
-import java.net.InetAddress;
-import java.util.UUID;
 
 public class Server implements Serializable {
 
 
     private static final long serialVersionUID = 7209367093717893717L;
 
-    private final String host;
-    private final String name;
-    private final String owner;
-
+    public final String host;
+    public final String name;
+    public final String owner;
 
     public Server(Builder builder) {
         this.host = builder.host;

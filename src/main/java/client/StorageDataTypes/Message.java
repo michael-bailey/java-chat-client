@@ -1,4 +1,4 @@
-package client.classes;
+package client.StorageDataTypes;
 
 import java.io.Serializable;
 import java.security.*;

@@ -1,4 +1,4 @@
-package client.classes;
+package client.StorageDataTypes;
 
 import java.io.Serializable;
 import java.security.Key;
@@ -26,12 +26,13 @@ public class Account implements Serializable {
         // account details.
         public UUID uuid;
         public String username;
+        public String email;
 
         // encryption keys
         public boolean encryptionAvaliable;
         public Key publicKey;
         public Key privateKey;
-        public String email;
+
 
         public Builder setUsername(String username) {
             this.username = username;

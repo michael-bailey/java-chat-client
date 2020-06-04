@@ -1,7 +1,6 @@
-package client.classes;
+package client.StorageDataTypes;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.UUID;
 
 //TODO implement the UUID as the Contact user id
@@ -11,12 +10,10 @@ public class Contact implements Serializable {
     public final UUID UUID;
     public final String username;
     public final String email;
-    public final ArrayList<Message> messages;
 
     private Contact(Builder builder) {
         this.username = builder.username;
-        this.UUID = java.util.UUID.randomUUID();
-        this.messages = new ArrayList<Message>();
+        this.UUID = builder.uuid;
         this.email = builder.email;
     }
 
