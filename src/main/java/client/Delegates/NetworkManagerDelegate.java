@@ -1,7 +1,7 @@
 package client.Delegates;
 
 import client.Delegates.Interfaces.INetworkManagerDelegate;
-import client.classes.Contact;
+import client.StorageDataTypes.Contact;
 
 import java.util.ArrayList;
 import java.util.HashMap;

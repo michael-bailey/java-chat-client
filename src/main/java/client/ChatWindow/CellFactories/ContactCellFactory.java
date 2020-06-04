@@ -1,7 +1,7 @@
 package client.ChatWindow.CellFactories;
 
 import client.ChatWindow.ListCells.ContactListCell;
-import client.classes.Contact;
+import client.StorageDataTypes.Contact;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
 

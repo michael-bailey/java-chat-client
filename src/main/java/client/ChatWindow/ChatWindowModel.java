@@ -1,6 +1,6 @@
 package client.ChatWindow;
 
-import client.classes.Server;
+import client.StorageDataTypes.Server;
 import client.ChatWindow.ListCells.ServerListCellModel;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleMapProperty;

@@ -1,7 +1,7 @@
 package client.ChatWindow;
 
-import client.classes.Contact;
-import client.classes.Message;
+import client.StorageDataTypes.Contact;
+import client.StorageDataTypes.Message;
 import client.ChatWindow.ListCells.ServerListCellModel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

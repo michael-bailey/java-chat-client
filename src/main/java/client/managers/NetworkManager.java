@@ -2,25 +2,19 @@ package client.managers;
 
 import client.Delegates.Interfaces.INetworkManagerDelegate;
 import client.Delegates.NetworkManagerDelegate;
-import client.classes.Account;
-import client.classes.Contact;
-import client.classes.Server;
+import client.StorageDataTypes.Account;
+import client.StorageDataTypes.Contact;
+import client.StorageDataTypes.Server;
 import client.managers.NetworkModules.PTPModule;
 import client.managers.NetworkModules.ServerModule;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.Provider;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static client.enums.PROTOCOL_MESSAGES.*;
 
 /**
  * Network Manager
@@ -63,83 +57,6 @@ public class NetworkManager {
 	public NetworkManager(Account account, INetworkManagerDelegate delegate) {
 		this.account = account;
 		this.delegate = delegate;
-	}
-
-	/**
-	 * getServerDetails
-	 *
-	 * this is the primary way of adding getting new Server instances
-	 * gets the status of the server in question and builds a server object from that.
-	 *
-	 * @param ipAddress the address of the server
-	 * @return new Server instance if the connection was successful.
-	 * todo add key exchange and encryption.
-	 */
-	public Server getServerDetails(String ipAddress) {
-		try {
-
-			// setup connection and get data streams
-			Socket connection = new Socket(ipAddress, 6000);
-			DataInputStream in = new DataInputStream(connection.getInputStream());
-			DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-
-			// get data sent from the server.
-			String request = in.readUTF();
-
-			Matcher matcher = parser.matcher(request);
-
-			if (!matcher.find()) {
-				connection.close();
-				return null;
-			}
-
-			// check the server sent the request key word
-			if (matcher.group().equals(REQUEST)) {
-
-				// writing the command !info:
-				out.writeUTF(INFO);
-				out.flush();
-
-				// get the next part of the
-				String response = in.readUTF();
-				Matcher responseMatcher = parser.matcher(response);
-				responseMatcher.reset();
-
-				if (!responseMatcher.find() || !responseMatcher.group().equals(SUCCESS) ) {
-					return null;
-				}
-
-				var serverBuilder = new Server.Builder();
-				while (responseMatcher.find()) {
-					String[] args = responseMatcher.group().split(":");
-					switch (args[0]) {
-						case "name":
-							serverBuilder.name(args[1]);
-							break;
-
-						case "owner":
-							serverBuilder.owner(args[1]);
-							break;
-
-						default:
-							break;
-					}
-				}
-
-				connection.close();
-				return serverBuilder.build();
-
-			// if keyword is wrong close the connection
-			} else {
-				connection.close();
-				return null;
-			}
-
-		// required for when the client cannot connect
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 	/*  todo remove and separate

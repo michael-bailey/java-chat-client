@@ -2,7 +2,7 @@ package client.LoginWindow;
 
 import client.ChatWindow.ChatWindowController;
 import client.ChatWindow.ChatWindowModel;
-import client.classes.Server;
+import client.StorageDataTypes.Server;
 import client.managers.DataManager;
 //import client.models.ApplicationModel;
 import javafx.animation.TranslateTransition;
