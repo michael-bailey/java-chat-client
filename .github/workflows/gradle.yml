@@ -21,3 +21,6 @@ jobs:
       
     - name: Build with Gradle
       run: ./gradlew build
+      env: 
+            USERNAME: ${{ secrets.USERNAME }}
+            PASSWORD: ${{ secrets.PASSWORD }}
