@@ -24,3 +24,4 @@ jobs:
       env: 
             USERNAME: ${{ secrets.USERNAME }}
             PASSWORD: ${{ secrets.PASSWORD }}
+            TOKEN: ${{ secrets.PASSWORD}}
