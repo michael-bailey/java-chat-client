@@ -26,7 +26,7 @@ public class ServerModuleTest {
 
         account = new Account.Builder()
                 .setUsername("Michael-bailey")
-                .setEmail("mickyb18@.gmail.com")
+                .setEmail("michael@email.com")
                 .build();
 
         serverModule = new ServerModule();
