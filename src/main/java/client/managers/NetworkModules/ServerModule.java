@@ -3,6 +3,7 @@ package client.managers.NetworkModules;
 import client.Delegates.Interfaces.IServerModuleDelegate;
 import client.Delegates.ServerModuleDelegate;
 import client.Protocol.Command;
+import client.StorageDataTypes.Contact;
 import client.StorageDataTypes.Server;
 
 import java.io.DataInputStream;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Queue;
 
 import static client.Protocol.Command.*;
@@ -134,22 +136,28 @@ public class ServerModule {
             while (serverThreadRunning) {
 
                 // check for messages from the server;
-                if (in.available() > 0) {
+                while (in.available() > 0) {
                     command = Command.valueOf(in.readUTF());
 
                     switch (command.command) {
                         case UPDATE_CLIENTS:
                             delegate.serverWillUpdateClients();
+
                             // get how many clients
+                            ArrayList<Contact> contactList = new ArrayList<>();
                             for (int i = 0; i < Integer.parseInt(command.getParam("number")); i++) {
                                 Command clientCommand = Command.valueOf(in.readUTF());
                                 if (clientCommand.command.equals(CLIENT)) {
-                                    // todo convert the client data into actual renderable clients
+                                    contactList.add(new Contact.Builder().username(clientCommand.getParam("username"))
+                                            .uuid(clientCommand.getParam("uuid"))
+                                            .email(clientCommand.getParam("email"))
+                                            .build());
+
                                 }
                             }
 
                             // todo use this to update the client list?
-                            delegate.serverDidUpdateClients();
+                            delegate.serverDidUpdateClients((Contact[]) contactList.toArray());
                             break;
 
                         case MESSAGE:
@@ -201,11 +209,8 @@ public class ServerModule {
     public void connect(Server serverDetails) {
         disconnect();
 
-        while (serverConnectionThread.isAlive()) {
-        }
-
         serverConnectionThread = new Thread(() -> serverThreadFn());
-        sendQueue = (Queue<String>) new ArrayList<String>();
+        sendQueue = new LinkedList<String>();
         serverConnectionThread.start();
     }
 
