@@ -184,6 +184,7 @@ public class ServerModule {
                                 break;
 
                             case MESSAGE:
+                                break;
 
                         }
                     }
