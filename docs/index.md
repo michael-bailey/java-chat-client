@@ -1,31 +1,25 @@
-# java-chat-client
+# Java Chat Client
 
-![Status_Image](https://github.com/michael-bailey/java-chat-client/workflows/Java%20CI/badge.svg)
+![Build](https://github.com/michael-bailey/java-chat-client/workflows/Build/badge.svg)
 
-This is a chat client written in java using the javafx ui library.
+---
 
-This uses sockets to transfer data between clients.
+This is a chat client written in java using a custom protocol based on key value pairs, paired with javafx as the UI library.
 
-it will send messages directly to the other user using end to end encryption using pubic- private key cryptography.
+It connects to a server to announce it's presence and get the status and info of other users that are connected
 
-messages are stored locally on a file which is encrypted.
-
-later on the messages will be sent via servers due to limitations with other operating systems.
-
-that will only store details about where messages 
-are to be sent, and permissions for the user on the server
+data is stored locally in a file which is encrypted using the java crypto api.
 
 ---
 
 ## Dependencies
 
-* java 13 - the jdk we are using.
+* Java 13
 
-* JavaFx - used for the User interface. (installed via cradle)
-
-* gradle - the build system we are using. (used with a wrapper)
+* JavaFx - used for the User interface. (installed via gradle)
 
   ---
+
 
 ## Execution
 
@@ -67,10 +61,13 @@ gradlew.bat shadowjar
 
 ## Documentation Pages
 
-[Network Protocol](https://michael-bailey.github.io/java-chat-client/Protocol)
+* [Protocol](https://michael-bailey.github.io/java-chat-client/Protocol)
+* [User Interface](https://michael-bailey.github.io/java-chat-server/interface)
+* [Architecture](https://michael-bailey.github.io/java-chat-server/architecture)
 
 **this Documentation is work in progress (feel free to critisise constructively)**
 
 #Owners
 [michael-bailey](https://github.com/michael-bailey/)
 [mitch161](https://github.com/mitch161/)
+
