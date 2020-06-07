@@ -1,20 +1,22 @@
 package client.Delegates.Interfaces;
 
+import client.StorageDataTypes.Contact;
+
 public interface IServerModuleDelegate {
-    void serverReceivedMessage();
-    void serverReceivedClients();
+    default void serverReceivedMessage() {}
+    default void serverReceivedClients() {}
 
-    void serverWillConnect();
-    void serverDidConnect();
-    void serverWillDisconnect();
+    default void serverWillConnect() {}
+    default void serverDidConnect() {}
+    default void serverWillDisconnect() {}
 
-    void serverWillUpdateClients();
+    default void serverWillUpdateClients() {}
 
-    void serverDidUpdateClients();
+    default void serverDidUpdateClients(Contact[] clients) {}
 
-    void serverWillSendMessage();
+    default void serverWillSendMessage() {}
 
-    void serverDidSendMessage();
+    default void serverDidSendMessage() {}
 
-    void serverDidError();
+    default void serverDidError() {}
 }

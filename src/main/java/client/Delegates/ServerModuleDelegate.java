@@ -1,6 +1,7 @@
 package client.Delegates;
 
 import client.Delegates.Interfaces.IServerModuleDelegate;
+import client.StorageDataTypes.Contact;
 
 public class ServerModuleDelegate implements IServerModuleDelegate {
     @Override
@@ -34,8 +35,8 @@ public class ServerModuleDelegate implements IServerModuleDelegate {
     }
 
     @Override
-    public void serverDidUpdateClients() {
-        System.out.println("server did update clients");
+    public void serverDidUpdateClients(Contact[] contacts) {
+        System.out.println("contacts = " + contacts.toString());
     }
 
     @Override
