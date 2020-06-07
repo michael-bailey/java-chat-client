@@ -28,7 +28,7 @@ repositories {
 // defines dependencies
 dependencies {
     testImplementation 'junit:junit:4.12'
-    implementation 'io.github.michael-bailey:java-chat-server:1.0.1'
+    implementation 'io.github.michael-bailey:java-chat-server:1.+'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.guava:guava:28.1-jre'
     compile group: 'javax.jmdns', name: 'jmdns', version: '3.4.1'

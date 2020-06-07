@@ -210,6 +210,8 @@ public class ServerModule {
     public void connect(Server serverDetails) {
         disconnect();
 
+        this.currentServer = serverDetails;
+
         serverConnectionThread = new Thread(() -> serverThreadFn());
         sendQueue = new LinkedList<String>();
         serverConnectionThread.start();

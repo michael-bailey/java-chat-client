@@ -37,7 +37,6 @@ public class ServerModuleTest implements IServerModuleDelegate {
     @Test
     public void testGetServerDetails() {
         Server serverDetails = serverModule.getServerDetails("127.0.0.1");
-        assertEquals("127.0.0.1", serverDetails.host);
         assertEquals("testserver", serverDetails.name);
         assertEquals("michael-bailey", serverDetails.owner);
     }
