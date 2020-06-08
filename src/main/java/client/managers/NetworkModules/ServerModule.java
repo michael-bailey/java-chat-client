@@ -207,7 +207,7 @@ public class ServerModule {
     }
 
 // MARK connection Management.
-    public void connect(Server serverDetails) {
+    public boolean connect(Server serverDetails) {
         disconnect();
 
         this.currentServer = serverDetails;
@@ -215,9 +215,19 @@ public class ServerModule {
         serverConnectionThread = new Thread(() -> serverThreadFn());
         sendQueue = new LinkedList<String>();
         serverConnectionThread.start();
+        return true;
     }
 
-    public void disconnect() {
+    public boolean disconnect() {
         this.serverThreadRunning = false;
+        return true;
+    }
+
+    public boolean isConnected() {
+        if (this.currentServer == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

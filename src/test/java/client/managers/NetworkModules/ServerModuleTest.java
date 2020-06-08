@@ -4,6 +4,9 @@ import client.Delegates.Interfaces.IServerModuleDelegate;
 import client.StorageDataTypes.Account;
 import client.StorageDataTypes.Contact;
 import client.StorageDataTypes.Server;
+
+
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,7 +28,6 @@ public class ServerModuleTest implements IServerModuleDelegate {
         server = new JavaServer();
         assertTrue(server.start());
 
-
         account = new Account.Builder()
                 .setUsername("Michael-bailey")
                 .setEmail("michael@email.com")
@@ -36,18 +38,24 @@ public class ServerModuleTest implements IServerModuleDelegate {
 
     @Test
     public void testGetServerDetails() {
+        System.out.println("getting details");
         Server serverDetails = serverModule.getServerDetails("127.0.0.1");
+        System.out.println("testing details...");
         assertEquals("testserver", serverDetails.name);
+        System.out.println("testing details...");
         assertEquals("michael-bailey", serverDetails.owner);
+        System.out.println("details tested");
     }
 
     @Test
     public void testConnectReceiveClientsAndDisconnect() throws InterruptedException {
         var serverDetails = serverModule.getServerDetails("127.0.0.1");
         serverModule.connect(serverDetails);
-        serverModule = new ServerModule(this);
+        assertTrue(serverModule.isConnected());
         sleep(1000);
         serverModule.disconnect();
+        assertFalse(serverModule.isConnected());
+
     }
 
     @AfterClass
