@@ -13,8 +13,8 @@ repositories {
     jcenter()
     mavenCentral()
     maven {
-        name = "github"
-        url = "https://maven.pkg.github.com/michael-bailey/java-chat-server"
+        name = "githubPackages"
+        url = uri("https://maven.pkg.github.com/michael-bailey/java-chat-server")
         credentials {
             username = System.getenv("USERNAME")
             password = System.getenv("TOKEN")
@@ -28,8 +28,7 @@ repositories {
 // defines dependencies
 dependencies {
     testImplementation 'junit:junit:4.12'
-    implementation 'io.github.michael-bailey:java-chat-server:1.0.+'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    compile 'io.github.michael-bailey:java-chat-server:1.0.10'
     implementation 'com.google.guava:guava:28.1-jre'
     compile group: 'javax.jmdns', name: 'jmdns', version: '3.4.1'
     compile "org.openjfx:javafx-graphics:11.0.1:win"
@@ -38,7 +37,7 @@ dependencies {
 }
 
 application {
-  mainClassName "Main"
+  mainClassName "io.github.michael_bailey.client.Main"
 }
 
 javafx {
