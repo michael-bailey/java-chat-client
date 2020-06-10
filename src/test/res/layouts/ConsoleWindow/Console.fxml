@@ -9,7 +9,7 @@
 <?import javafx.scene.chart.BubbleChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
-<Stage fx:id="stage" title="stage" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.console.Console">
+<Stage fx:id="stage" title="stage" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.michael_bailey.client.controllers.console.Console">
    <scene>
       <Scene>
          <root>

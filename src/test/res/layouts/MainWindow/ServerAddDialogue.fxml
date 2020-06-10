@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.stage.Stage?>
 
-<Stage fx:id="stage" alwaysOnTop="true" height="200.0" minHeight="175.0" minWidth="200.0" resizable="false" width="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.main_window.ServerAddDialogue">
+<Stage fx:id="stage" alwaysOnTop="true" height="200.0" minHeight="175.0" minWidth="200.0" resizable="false" width="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.michael_bailey.client.controllers.main_window.ServerAddDialogue">
     <scene>
         <Scene stylesheets="@../../css/MainWindow/ServerAddDialogueWindow.css">
             <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="210.0" prefWidth="200.0">

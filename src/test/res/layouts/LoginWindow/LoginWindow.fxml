@@ -13,9 +13,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.stage.Stage?>
 
-<Stage fx:id="stage" onCloseRequest="#windowClose" resizable="false" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.client.LoginWindow.LoginWindowController">
+<Stage fx:id="stage" onCloseRequest="#windowClose" resizable="false" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.michael_bailey.client.io.github.michael_bailey.client.LoginWindow.LoginWindowController">
    <scene>
-      <Scene fx:id="scene" stylesheets="@../../css/client.LoginWindow/client.LoginWindow.css">
+      <Scene fx:id="scene" stylesheets="@../../css/io.github.michael_bailey.client.LoginWindow/io.github.michael_bailey.client.LoginWindow.css">
          <root>
             <BorderPane>
                <center>
