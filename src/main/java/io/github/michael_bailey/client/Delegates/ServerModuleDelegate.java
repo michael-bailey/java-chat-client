@@ -30,6 +30,9 @@ public class ServerModuleDelegate implements IServerModuleDelegate {
     }
 
     @Override
+    public void serverDidDisconnect() { System.out.println("server has disconnected"); }
+
+    @Override
     public void serverWillUpdateClients() {
         System.out.println("server will update clients");
     }
