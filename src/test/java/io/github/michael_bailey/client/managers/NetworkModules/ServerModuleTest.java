@@ -53,7 +53,7 @@ public class ServerModuleTest implements IServerModuleDelegate {
         serverModule.connect(serverDetails);
         assertTrue(serverModule.isConnected());
 
-        sleep(5000);
+        sleep(1000);
         serverModule.disconnect();
         assertFalse(serverModule.isConnected());
 
