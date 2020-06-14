@@ -1,0 +1,16 @@
+io.github.michael_bailey.client
+io.github.michael_bailey.client.ChatWindow
+io.github.michael_bailey.client.ChatWindow.CellFactories
+io.github.michael_bailey.client.ChatWindow.ListCells
+io.github.michael_bailey.client.Delegates
+io.github.michael_bailey.client.Delegates.Interfaces
+io.github.michael_bailey.client.managers
+io.github.michael_bailey.client.managers.DataStore
+io.github.michael_bailey.client.managers.NetworkModules
+io.github.michael_bailey.client.managers.NetworkModules.workers
+io.github.michael_bailey.client.managers.NetworkModules.workers.Delegates
+io.github.michael_bailey.client.models
+io.github.michael_bailey.client.StorageDataTypes
+io.github.michael_bailey.client.ui.LoginWindow
+io.github.michael_bailey.client.ui.MenuBar
+io.github.michael_bailey.client.UIDataTypes

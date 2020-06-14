@@ -23,7 +23,7 @@ public class Outbound extends Thread {
 	/**
 	 *
 	 * @param clientSocket the socket that will be connected to
-	 * @param message
+	 * @param message the message to be sent
 	 */
 	public Outbound(Socket clientSocket, String message){
 		this.clientSocket = clientSocket;

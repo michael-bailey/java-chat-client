@@ -142,7 +142,7 @@ public class PTPModule {
      * this will create a new server socket and ptp thread
      * it the cretes a new thread pool for incoming connection's
      * then proceds to start the ptp thread.
-     *
+     * @return a boolean is returned if the ptp module started correctly
      */
     public boolean start() {
         try {

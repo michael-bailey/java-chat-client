@@ -27,8 +27,9 @@ public class Message extends Object implements Serializable {
     String checkSum;
 
     /**
-     *
-     * @param message
+     * this creates a new message object that is to be stored
+     * @param message the message to be stored
+     * @param isReceived a boolean that is used to determine its position
      */
     public Message(String message, boolean isReceived) {
 
