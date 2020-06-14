@@ -15,7 +15,6 @@ import java.security.Provider;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
 /**
  * Network Manager
@@ -35,8 +34,6 @@ public class NetworkManager implements IServerModuleDelegate {
 
 	private final int serverConnectionPort = 6000;
 	private final int ptpConnectionPort = 6001;
-
-	private final Pattern parser = Pattern.compile("([?!])([a-zA-z0-9]*):|([a-zA-z]*):([a-zA-Z0-9\\-+\\[\\]{}_=/]+|(\"(.*?)\")+)");
 
 	private final PTPModule ptpServer = new PTPModule(this, ptpConnectionPort);
 	private final ServerModule serverConnection = new ServerModule(account);
