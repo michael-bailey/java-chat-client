@@ -1,19 +1,18 @@
 package io.github.michael_bailey.client.managers;
 
-import java.io.*;
-import java.util.Base64;
-import java.util.HashMap;
+import com.google.common.annotations.Beta;
+import io.github.michael_bailey.client.managers.DataStore.DataStore;
+
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import io.github.michael_bailey.client.classes.DataStore;
-import com.google.common.annotations.Beta;
-
+import java.io.*;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.util.Base64;
+import java.util.HashMap;
 
 /**
  * Data Manager
@@ -481,6 +480,11 @@ public class DataManager implements Closeable {
         }
     }
 
+    /**
+     * this gets the data from a unlocked data store
+     * @param key the key of where the object is stored
+     * @return returns the new object that is decoded
+     */
     public Object getObject(String key) {
         if (!this.isLocked) {
             return this.dataObject.get(key);
@@ -489,6 +493,12 @@ public class DataManager implements Closeable {
         }
     }
 
+    /**
+     * this adds an object to the unlocked
+     * @param key the key where the object is to be stored
+     * @param object the object thta is to be stored
+     * @return boolean if the function finished correctly
+     */
     public boolean addObject(String key, Object object) {
         if (!this.isLocked) {
             this.dataObject.put(key, object);
@@ -498,6 +508,12 @@ public class DataManager implements Closeable {
         }
     }
 
+    /**
+     * removes the objecto stored at the key provided
+     * technically sets it to null
+     * @param key the key of the object to be removed
+     * @return boolean if the function succeded
+     */
     public Boolean removeObject(String key) {
         if (this.dataObject.containsKey(key)) {
             this.dataObject.remove(key);
@@ -506,8 +522,11 @@ public class DataManager implements Closeable {
         return false;
     }
 
+    /**
+     * used to close the file when it is lost to gc or the program is closing down
+     */
     @Override
-    public void close() throws IOException {
+    public void close() {
         this.lock();
     }
 
