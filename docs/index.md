@@ -61,7 +61,7 @@ gradlew.bat shadowjar
 
 ## Documentation Pages
 
-* [Java Docs](https://michael-bailey.github.io/java-chat-client/)
+* [Java Docs](https://michael-bailey.github.io/java-chat-client/javadoc/index.html)
 
 * [Protocol](https://michael-bailey.github.io/java-chat-client/Protocol)
 * [User Interface](https://michael-bailey.github.io/java-chat-server/interface)
