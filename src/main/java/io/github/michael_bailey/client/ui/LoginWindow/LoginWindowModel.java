@@ -1,4 +1,4 @@
-package io.github.michael_bailey.client.LoginWindow;
+package io.github.michael_bailey.client.ui.LoginWindow;
 
 import io.github.michael_bailey.client.ChatWindow.ChatWindowController;
 import io.github.michael_bailey.client.ChatWindow.ChatWindowModel;

@@ -1,4 +1,4 @@
-package io.github.michael_bailey.client.MenuBar;
+package io.github.michael_bailey.client.ui.MenuBar;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
