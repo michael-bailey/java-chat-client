@@ -1,7 +1,7 @@
 package io.github.michael_bailey.client;
 
-import io.github.michael_bailey.client.LoginWindow.LoginWindowController;
-import io.github.michael_bailey.client.LoginWindow.LoginWindowModel;
+import io.github.michael_bailey.client.ui.LoginWindow.LoginWindowController;
+import io.github.michael_bailey.client.ui.LoginWindow.LoginWindowModel;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
