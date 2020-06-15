@@ -1,4 +1,4 @@
-package io.github.michael_bailey.client.ChatWindow.ListCells;
+package io.github.michael_bailey.client.ui.ChatWindow.ListCells;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;

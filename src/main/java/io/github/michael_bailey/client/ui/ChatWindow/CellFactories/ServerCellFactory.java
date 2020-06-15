@@ -1,6 +1,6 @@
-package io.github.michael_bailey.client.ChatWindow.CellFactories;
+package io.github.michael_bailey.client.ui.ChatWindow.CellFactories;
 
-import io.github.michael_bailey.client.ChatWindow.ListCells.ServerListCellModel;
+import io.github.michael_bailey.client.ui.ChatWindow.ListCells.ServerListCellModel;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;

@@ -1,4 +1,4 @@
-package io.github.michael_bailey.client.ChatWindow.ListCells;
+package io.github.michael_bailey.client.ui.ChatWindow.ListCells;
 
 import javafx.scene.image.Image;
 

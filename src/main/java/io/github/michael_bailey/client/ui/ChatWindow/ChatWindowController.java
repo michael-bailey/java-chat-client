@@ -1,15 +1,15 @@
-package io.github.michael_bailey.client.ChatWindow;
+package io.github.michael_bailey.client.ui.ChatWindow;
 
 import io.github.michael_bailey.client.StorageDataTypes.Contact;
 import io.github.michael_bailey.client.StorageDataTypes.Message;
-import io.github.michael_bailey.client.ChatWindow.ListCells.ServerListCellModel;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import io.github.michael_bailey.client.ui.ChatWindow.ListCells.ServerListCellModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -36,12 +36,10 @@ public class ChatWindowController implements Initializable {
     // other menus
     private final URL addServerDialogueURL = getClass().getClassLoader().getResource("layouts/ChatWindow/ServerAddDialogue.fxml");
 
-    private final ChatWindowModel model;
-    private EventHandler<ActionEvent> onCloseHandler;
+    private ChatWindowModel model = new ChatWindowModel();
 
-    public ChatWindowController(ChatWindowModel model) {
+    public ChatWindowController() {
         System.out.println(this);
-        this.model = model;
     }
 
     @Override
@@ -50,28 +48,11 @@ public class ChatWindowController implements Initializable {
         this.serverListView.itemsProperty().bind(this.model.serverViewListProperty());
     }
 
-    @FXML void addServer(ActionEvent actionEvent) {
-        System.out.println("to be implemented");
+    public void show() {
+        this.stage.show();
     }
 
-    // TODO implement the messageing system to reflect current state.
-    @FXML
-    void sendMessage(ActionEvent event) {
-        System.out.println("to be implemented");
+    public void hide() {
+        this.stage.hide();
     }
-
-    //TODO remove this
-    @Deprecated
-    @FXML void addContact(ActionEvent actionEvent) {
-        System.out.println("to be removed");
-    }
-
-    @FXML void windowClose(WindowEvent event) {
-        stage.hide();
-    }
-
-    @FXML void quitApplication(ActionEvent event) {
-
-    }
-    
 }
