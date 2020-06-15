@@ -1,7 +1,7 @@
 io.github.michael_bailey.client
-io.github.michael_bailey.client.ChatWindow
-io.github.michael_bailey.client.ChatWindow.CellFactories
-io.github.michael_bailey.client.ChatWindow.ListCells
+io.github.michael_bailey.client.ui.ChatWindow
+io.github.michael_bailey.client.ui.ChatWindow.CellFactories
+io.github.michael_bailey.client.ui.ChatWindow.ListCells
 io.github.michael_bailey.client.Delegates
 io.github.michael_bailey.client.Delegates.Interfaces
 io.github.michael_bailey.client.managers
