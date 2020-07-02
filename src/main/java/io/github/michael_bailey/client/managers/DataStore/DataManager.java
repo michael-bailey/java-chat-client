@@ -1,7 +1,6 @@
-package io.github.michael_bailey.client.managers;
+package io.github.michael_bailey.client.managers.DataStore;
 
 import com.google.common.annotations.Beta;
-import io.github.michael_bailey.client.managers.DataStore.DataStore;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -24,6 +23,7 @@ import java.util.HashMap;
  * @since 1.0
  * @author michael-bailey
  */
+@Deprecated
 public class DataManager implements Closeable {
 
     private HashMap<String, Object> dataObject;

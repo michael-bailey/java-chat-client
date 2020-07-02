@@ -1,4 +1,4 @@
-package io.github.michael_bailey.client.managers;
+package io.github.michael_bailey.client.managers.NetworkModules;
 
 import java.io.DataOutputStream;
 import java.net.Socket;
