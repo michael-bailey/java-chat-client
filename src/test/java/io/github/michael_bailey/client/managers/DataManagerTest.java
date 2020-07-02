@@ -1,5 +1,6 @@
 package io.github.michael_bailey.client.managers;
 
+import io.github.michael_bailey.client.managers.DataStore.DataManager;
 import org.junit.Test;
 
 import java.io.File;
