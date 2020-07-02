@@ -1,178 +1,104 @@
 package io.github.michael_bailey.client.managers.NetworkModules;
 
-import io.github.michael_bailey.client.managers.NetworkManager;
+import io.github.michael_bailey.client.Delegates.Interfaces.IPTPModuleDelegate;
+import io.github.michael_bailey.client.Delegates.Interfaces.IPTPWorkerDelegate;
+import io.github.michael_bailey.client.Delegates.PTPModuleDelegate;
+import io.github.michael_bailey.client.models.Account;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.concurrent.Executors;
 
-import static java.util.concurrent.Executors.newCachedThreadPool;
+public class PTPModule implements IPTPWorkerDelegate {
 
-public class PTPModule {
+    private final int listenPort = 6001;
+    private final IPTPModuleDelegate delegate;
+    private final Account account;
 
-    private final Pattern parser = Pattern.compile("([?!])([a-zA-z0-9]*):|([a-zA-z]*):([a-zA-Z0-9\\-+\\[\\]{}_=/]+|(\"(.*?)\")+)");
+    private boolean running = false;
 
-    private final NetworkManager  manager;
-    private final int listenPort;
+    // incoming connection parts
+    ServerSocket incomingSocket;
+    Thread incomingMainThread;
+    ExecutorService incomingConnectionPool;
 
-    // ptp fields
-    boolean peerToPeerRunning = true;
-    private Thread ptpServerThread;
-    private ServerSocket ptpServerSocket;
-    private ExecutorService ptpThreadPool;
 
-    public PTPModule(NetworkManager manager, int port) {
-        this.manager = manager;
-        this.listenPort = port;
+    public PTPModule(Account account, IPTPModuleDelegate delegate) {
+        this.account = account;
+        this.delegate = delegate;
     }
 
-    /**
-     * ptpThreadFn
-     *
-     * defines the function that will be called by the ptp thread
-     *
-     * this listens for a new connection to the io.github.michael_bailey.client.
-     *
-     * @return a new socket returned from the accept call
-     */
-    private void ptpThreadFn() {
-        while (this.peerToPeerRunning) {
+    public PTPModule(Account account) {
+        this.account = account;
+        this.delegate = new PTPModuleDelegate();
+    }
+
+    private void incomingThread() {
+        while (running) {
             try {
-                var ptpConnection = this.ptpServerSocket.accept();
-                System.out.println("ptpConnection = " + ptpConnection);
-                System.out.println("ptpThreadPool = " + ptpThreadPool);
-                Runnable fn = () -> ptpThreadWorkerFn(ptpConnection);
-                System.out.println("fn = " + fn);
-                this.ptpThreadPool.execute(fn);
+                Socket connection = incomingSocket.accept();
+                incomingConnectionPool.execute(new PTPWorker(connection, this));
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("socket closed");
             }
         }
     }
 
-    /**
-     * ptpThreadWorkerFn
-     *
-     * this is called when a io.github.michael_bailey.client connects to this process for peer to peer communication
-     * it first asks for a request (simalar to a server).
-     * after wich the io.github.michael_bailey.client should send the data over.
-     * to which it will respond with success for fail.
-     *
-     * @param socket the new connection
-     */
-    public void ptpThreadWorkerFn(Socket socket) {
+    public boolean startIncoming() {
         try {
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            DataInputStream in = new DataInputStream(socket.getInputStream());
+            incomingConnectionPool = Executors.newCachedThreadPool();
+            incomingMainThread = new Thread(() -> this.incomingThread());
+            incomingSocket = new ServerSocket(listenPort);
 
-            out.writeUTF("?request:");
-            out.flush();
+            running = true;
 
-            String response = in.readUTF();
 
-            Matcher matcher	= parser.matcher(response);
-
-            String command = "";
-            if (matcher.find()) {
-                command = matcher.group();
-                System.out.println("command = " + command);
-            } else {
-                return;
-            }
-
-            HashMap<String,String> data = new HashMap<>();
-            switch(command) {
-
-                case "!message:":
-                    System.out.println("message");
-                    // extract the key value pares to construct a hashmap
-                    while (matcher.find()) {
-
-                        // get the next arg and split by the colon
-                        String argument = matcher.group();
-                        String[] kvp = argument.split(":");
-
-                        // check for quotes
-                        if (kvp[1].charAt(0) == '\"') {
-                            kvp[1] = kvp[1].substring(0, kvp[1].length()-1);
-                        }
-
-                        //add the data to the hashmap
-                        data.put(kvp[0], kvp[1]);
-
-                    }
-                    out.writeUTF("!success:");
-                    // close the socket and notify the delegate.
-                    socket.close();
-                    System.out.println("data = " + data);
-                    manager.ptpReceivedMessage(data);
-                    return;
-
-                case "!test:":
-                    // send the test was a success back to the io.github.michael_bailey.client
-                    System.out.println("testString");;
-                    out.writeUTF("!success:");
-                    socket.close();
-                    return;
-
-                default:
-                    // close the socket as the data was wrong
-                    System.out.println("error with received request.");
-                    System.out.println("response = " + response);
-                    socket.close();
-                    return;
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalThreadStateException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * ptpStart
-     *
-     * this will create a new server socket and ptp thread
-     * it the cretes a new thread pool for incoming connection's
-     * then proceds to start the ptp thread.
-     * @return a boolean is returned if the ptp module started correctly
-     */
-    public boolean start() {
-        try {
-            // create the server socket
-            ptpServerSocket = new ServerSocket(listenPort);
-
-            // create the server thread
-            ptpServerThread = new Thread(() -> this.ptpThreadFn());
-
-            // creating a thread pool
-            this.ptpThreadPool = newCachedThreadPool();
-
-            // tell server thread wo run.
-            this.peerToPeerRunning = true;
-            this.ptpServerThread.start();
-
+            incomingMainThread.start();
             return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            this.peerToPeerRunning = false;
 
+        } catch (IOException e) {
+            System.out.println("PTPModule: Error, " + e.getMessage());
             return false;
         }
     }
 
-    public void stop() {
-        this.peerToPeerRunning = false;
-        this.ptpServerThread.interrupt();
+    public boolean stopIncoming() {
+        try {
+            running = false;
 
-        this.ptpThreadPool = null;
-        this.ptpServerSocket = null;
+            incomingSocket.close();
+
+            incomingMainThread.interrupt();
+            incomingConnectionPool.shutdownNow();
+
+            incomingMainThread = null;
+            incomingConnectionPool = null;
+            incomingSocket = null;
+
+            return true;
+        } catch (IOException e) {
+            System.out.println("PTPModule: Error, " + e.getMessage());
+            return false;
+        }
     }
+
+    public boolean startOutgoing() {
+        return false;
+    }
+
+    public boolean stopOutgoing() {
+        return false;
+    }
+
+    public boolean start() {
+        return startIncoming() && startOutgoing();
+    }
+
+    public boolean stop() {
+        return stopIncoming() && stopOutgoing();
+    }
+
+
 }
