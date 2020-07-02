@@ -2,22 +2,23 @@ package io.github.michael_bailey.client.managers.NetworkModules;
 
 import io.github.michael_bailey.client.Delegates.Interfaces.IServerModuleDelegate;
 import io.github.michael_bailey.client.Delegates.ServerModuleDelegate;
-import io.github.michael_bailey.client.StorageDataTypes.Account;
-import io.github.michael_bailey.client.StorageDataTypes.Contact;
-import io.github.michael_bailey.client.StorageDataTypes.Server;
+import io.github.michael_bailey.client.models.Account;
+import io.github.michael_bailey.client.models.Contact;
+import io.github.michael_bailey.client.models.Server;
 import io.github.michael_bailey.java_server.Protocol.Command;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import static io.github.michael_bailey.java_server.Protocol.Command.*;
+import static java.lang.Thread.sleep;
 
 public class ServerModule {
 
@@ -29,7 +30,7 @@ public class ServerModule {
     // server fields
     private Server currentServer;
     private Thread serverConnectionThread;
-    private Queue<String> sendQueue;
+    private Queue<Command> sendQueue;
     private boolean serverThreadRunning = false;
 
     private Socket serverSocket;
@@ -56,7 +57,7 @@ public class ServerModule {
      * @return new Server instance if the connection was successful.
      * todo add key exchange and encryption.
      */
-    public Server getServerDetails(String ipAddress) {
+    public static Server getServerDetails(String ipAddress) {
         try {
 
             // setup connection and get data streams
@@ -84,31 +85,13 @@ public class ServerModule {
                 return null;
             }
 
-            var serverBuilder = new Server.Builder();
-            serverBuilder.host(ipAddress);
+            var a = new Server();
+            a.address = command.getParam("host");
+            a.displayName = command.getParam("name");
+            a.ownerEmail = command.getParam("owner");
 
-            command.forEach((key, value) -> {
-                switch (key) {
-
-                    case "name":
-                        serverBuilder.name(value);
-                        break;
-
-                    case "owner":
-                        serverBuilder.owner(value);
-                        break;
-
-                    default:
-                        break;
-
-                }
-            });
-
-            connection.close();
-            return serverBuilder.build();
-
+            return a;
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -116,7 +99,7 @@ public class ServerModule {
 // MARK: server thread function.
     private void serverThreadFn() {
         try {
-            Command command;
+            Command command = null;
 
             System.out.println("entering loop");
             while (serverThreadRunning) {
@@ -124,36 +107,39 @@ public class ServerModule {
                 // check for messages from the server;
                 while (in.available() > 0) {
                     command = Command.valueOf(in.readUTF());
-
+                    Contact contact;
                     switch (command.command) {
-                        case UPDATE_CLIENTS:
-                            delegate.serverWillUpdateClients();
-
-                            // get how many clients
-                            ArrayList<Contact> contactList = new ArrayList<>();
-                            for (int i = 0; i < Integer.parseInt(command.getParam("number")); i++) {
-                                Command clientCommand = Command.valueOf(in.readUTF());
-                                if (clientCommand.command.equals(CLIENT)) {
-                                    contactList.add(new Contact.Builder().username(clientCommand.getParam("username"))
-                                            .uuid(clientCommand.getParam("uuid"))
-                                            .email(clientCommand.getParam("email"))
-                                            .build());
-
-                                }
-                            }
-
-                            // todo use this to update the io.github.michael_bailey.client list?
-                            delegate.serverDidUpdateClients((Contact[]) contactList.toArray());
-                            break;
 
                         case MESSAGE:
                             delegate.serverWillSendMessage();
                             delegate.serverDidSendMessage();
                             break;
 
+                        case CLIENT:
+                            if (command.getParam("uuid").equals(this.account.uuid.toString())) {
+                                System.out.println("ignored incoming client");
+                                break;
+                            }
+                            delegate.clientWillAddClient();
+                            System.out.println("client added: " + command);
+
+                            contact = Contact.valueOf(command.toString());
+
+                            out.writeUTF(SUCCESS);
+                            delegate.clientDidAddClient(contact);
+                            break;
+
+                        case CLIENT_REMOVE:
+                            delegate.clientWillRemoveClient();
+                            out.writeUTF(SUCCESS);
+
+                            contact = Contact.valueOf(command.toString());
+
+                            delegate.clientDidRemoveClient(contact);
+
                         default:
-                            out.writeUTF(ERROR);
-                            delegate.serverDidError();
+                            System.out.println("idk here's the command it sent");
+                            System.out.println("command = " + command);
                             break;
                     }
                 }
@@ -161,28 +147,35 @@ public class ServerModule {
                 // check for messages to send to the server
                 synchronized (sendQueue) {
                     while (!sendQueue.isEmpty()) {
-                        String messageString = sendQueue.remove();
+                        command = sendQueue.remove();
+                        switch (command.command) {
 
-                        var message = parser.matcher(messageString);
-                        switch (message.group()) {
-
-                            case MESSAGE:
-                                System.out.println("not implemented");
+                            case UPDATE_CLIENTS:
+                                delegate.clientWillUpdateClients();
+                                out.writeUTF(command.toString());
+                                if (!valueOf(in.readUTF()).command.equals(SUCCESS)) {
+                                    sendQueue.clear();
+                                    out.writeUTF(new Command(ERROR).toString());
+                                }
+                                delegate.clientDidUpdateClients();
                                 break;
 
                             default:
-                                System.out.println("idk heres the message");
-                                System.out.println("messageString = " + messageString);
+                                System.out.println("idk here's the command you sent");
+                                System.out.println("command = " + command);
                                 break;
                         }
                     }
                 }
             }
+            sleep(2000);
         } catch (UnknownHostException e) {
             e.printStackTrace();
             System.out.println("an error occured");
         } catch (IOException e) {
             System.out.println("socket closed");
+        } catch (InterruptedException e) {
+            System.out.println("interupted");
         } finally {
             serverConnectionThread = null;
             currentServer = null;
@@ -192,7 +185,6 @@ public class ServerModule {
 
     // MARK connection Management.
     public boolean connect(Server serverDetails) {
-
         if (this.currentServer != null) {
             System.out.println("other connection active");
             this.disconnect();
@@ -203,7 +195,7 @@ public class ServerModule {
             delegate.serverWillConnect();
 
             System.out.println("creating a new socket");
-            serverSocket = new Socket(serverDetails.getIpAddress(), serverConnectionPort);
+            serverSocket = new Socket(serverDetails.address, serverConnectionPort);
             in = new DataInputStream(serverSocket.getInputStream());
             out = new DataOutputStream(serverSocket.getOutputStream());
 
@@ -221,9 +213,8 @@ public class ServerModule {
 
             System.out.println("sending a connect request");
             var parameters = new HashMap<String, String>();
-            parameters.put("name", account.username);
+            parameters.put("name", account.displayName);
             parameters.put("uuid", account.uuid.toString());
-            parameters.put("email", account.email);
             out.writeUTF(new Command(CONNECT, parameters).toString());
 
 
@@ -238,11 +229,14 @@ public class ServerModule {
             System.out.println("setting up local fields");
             this.currentServer = serverDetails;
             serverConnectionThread = new Thread(this::serverThreadFn);
-            sendQueue = new LinkedList<String>();
+            sendQueue = new LinkedList<>();
 
             System.out.println("starting thread");
             this.serverThreadRunning = true;
             serverConnectionThread.start();
+
+            System.out.println("adding updateClient to the send queue");
+            sendQueue.add(valueOf(UPDATE_CLIENTS));
 
             System.out.println("signaling did connect");
             delegate.serverDidConnect();
@@ -273,6 +267,8 @@ public class ServerModule {
 
             System.out.println("signaling has disconnected");
             delegate.serverDidDisconnect();
+        } catch (SocketException e) {
+            System.out.println("socket closed");
         } catch (UnknownHostException e) {
             e.printStackTrace();
             System.out.println("an error occured");
