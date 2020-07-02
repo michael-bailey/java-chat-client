@@ -1,7 +1,7 @@
 package io.github.michael_bailey.client.Delegates;
 
 import io.github.michael_bailey.client.Delegates.Interfaces.IServerModuleDelegate;
-import io.github.michael_bailey.client.StorageDataTypes.Contact;
+import io.github.michael_bailey.client.models.Contact;
 
 public class ServerModuleDelegate implements IServerModuleDelegate {
     @Override
@@ -33,16 +33,6 @@ public class ServerModuleDelegate implements IServerModuleDelegate {
     public void serverDidDisconnect() { System.out.println("server has disconnected"); }
 
     @Override
-    public void serverWillUpdateClients() {
-        System.out.println("server will update clients");
-    }
-
-    @Override
-    public void serverDidUpdateClients(Contact[] contacts) {
-        System.out.println("contacts = " + contacts.toString());
-    }
-
-    @Override
     public void serverWillSendMessage() {
         System.out.println("server will send message");
     }
@@ -53,7 +43,32 @@ public class ServerModuleDelegate implements IServerModuleDelegate {
     }
 
     @Override
-    public void serverDidError() {
+    public void clientWillAddClient() {
+        System.out.println("expecting a new client");
+    }
 
+    @Override
+    public void clientDidAddClient(Contact contact) {
+        System.out.println("new client received");
+    }
+
+    @Override
+    public void clientWillRemoveClient() {
+        System.out.println("removing a client");
+    }
+
+    @Override
+    public void clientDidRemoveClient(Contact contact) {
+        System.out.println("client removed");
+    }
+
+    @Override
+    public void clientWillUpdateClients() {
+        System.out.println("requesting a update of clients");
+    }
+
+    @Override
+    public void clientDidUpdateClients() {
+        System.out.println("request sent");
     }
 }
