@@ -1,15 +1,15 @@
 package io.github.michael_bailey.client.managers.NetworkModules;
 
 import io.github.michael_bailey.client.Delegates.Interfaces.IServerModuleDelegate;
-import io.github.michael_bailey.client.StorageDataTypes.Account;
-import io.github.michael_bailey.client.StorageDataTypes.Contact;
-import io.github.michael_bailey.client.StorageDataTypes.Server;
+import io.github.michael_bailey.client.models.Account;
+import io.github.michael_bailey.client.models.Server;
 import io.github.michael_bailey.java_server.classes.JavaServer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import static java.lang.Thread.sleep;
 import static org.junit.Assert.*;
@@ -26,10 +26,9 @@ public class ServerModuleTest implements IServerModuleDelegate {
         server = new JavaServer();
         server.start();
 
-        account = new Account.Builder()
-                .setUsername("Michael-bailey")
-                .setEmail("michael@email.com")
-                .build();
+        account = new Account();
+        account.displayName = "bob";
+        account.uuid = UUID.randomUUID();
 
         serverModule = new ServerModule(account);
     }
@@ -41,9 +40,9 @@ public class ServerModuleTest implements IServerModuleDelegate {
 
 
         System.out.println("testing details...");
-        assertEquals("testserver", serverDetails.name);
+        assertEquals("testserver", serverDetails.displayName);
         System.out.println("testing details...");
-        assertEquals("michael-bailey", serverDetails.owner);
+        assertEquals("michael-bailey", serverDetails.ownerEmail);
         System.out.println("details tested");
     }
 
@@ -53,7 +52,8 @@ public class ServerModuleTest implements IServerModuleDelegate {
         serverModule.connect(serverDetails);
         assertTrue(serverModule.isConnected());
 
-        sleep(1000);
+
+        sleep(10000);
         serverModule.disconnect();
         assertFalse(serverModule.isConnected());
 
@@ -70,23 +70,4 @@ public class ServerModuleTest implements IServerModuleDelegate {
 
     // MARK: delegate methods
 
-    @Override
-    public void serverWillConnect() {
-        System.out.println("server is attempting a connection");
-    }
-
-    @Override
-    public void serverDidConnect() {
-        System.out.println("server has connected");
-    }
-
-    @Override
-    public void serverWillUpdateClients() {
-        System.out.println("updating clients");
-    }
-
-    @Override
-    public void serverDidUpdateClients(Contact[] clients) {
-        assertNotNull(clients);
-    }
 }
