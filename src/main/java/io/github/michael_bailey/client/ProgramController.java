@@ -1,11 +1,11 @@
 package io.github.michael_bailey.client;
 
-import io.github.michael_bailey.client.ui.LoginWindow.LoginWindowController;
-import io.github.michael_bailey.client.ui.LoginWindow.LoginWindowModel;
+import io.github.michael_bailey.client.Controllers.ChatWindowController;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+
+import java.net.URL;
 
 /**
  * Program Controller.
@@ -21,9 +21,8 @@ import javafx.stage.Stage;
  */
 public class ProgramController extends Application {
 
-    // this section defines the windows that are in use
-    private LoginWindowController loginWindow;
-
+    URL fxml_url = getClass().getClassLoader().getResource("layouts/ChatWindow/ChatWindow.fxml");
+    ChatWindowController controller;
 
     /**
      * this is called by main
@@ -43,14 +42,8 @@ public class ProgramController extends Application {
     public void start(Stage stage) throws Exception {
         System.out.println(this);
 
-        Platform.setImplicitExit(false);
-
-        FXMLLoader tmpFxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("layouts/LoginWindow/LoginWindow.fxml"));
-        tmpFxmlLoader.load();
-        this.loginWindow = tmpFxmlLoader.getController();
-        this.loginWindow.setModel(new LoginWindowModel());
-
-        // show the login window
-        this.loginWindow.showView();
+        var loader = new FXMLLoader(fxml_url);
+        loader.load();
+        controller = loader.getController();
     }
 }
