@@ -7,11 +7,10 @@ import io.github.michael_bailey.client.models.Contact;
 import io.github.michael_bailey.client.models.Server;
 import io.github.michael_bailey.java_server.Protocol.Command;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -211,10 +210,17 @@ public class ServerModule {
                 return false;
             }
 
+            // get the external ip
+            URL whatismyip = new URL("http://checkip.amazonaws.com");
+            BufferedReader ipIn = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
+
+            String ip = ipIn.readLine(); //you get the IP as a String
+
             System.out.println("sending a connect request");
             var parameters = new HashMap<String, String>();
             parameters.put("name", account.displayName);
             parameters.put("uuid", account.uuid.toString());
+            parameters.put("host", "\"" + ip +"\"");
             out.writeUTF(new Command(CONNECT, parameters).toString());
 
 
