@@ -3,6 +3,7 @@ package io.github.michael_bailey.client.models;
 import io.github.michael_bailey.client.Delegates.Interfaces.IServerModuleDelegate;
 import io.github.michael_bailey.client.managers.NetworkModules.ServerModule;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,21 +23,19 @@ public class ServerChatModel implements IServerModuleDelegate {
     // storage
     ArrayList<Server> serverList;
 
-    transient ObservableList<Server> serverObservableList;
-    transient ObservableList<Contact> contactObservableList;
-    transient ObservableBooleanValue connectionObservable;
+    transient SimpleListProperty<Server> serverObservableList;
+    transient SimpleListProperty<Contact> contactObservableList;
+    transient SimpleBooleanProperty connectionObservable;
 
-    public ServerChatModel(ChatWindowModel model) {
+    public ServerChatModel(Account account) {
+        System.out.println(this);
+
         this.serverList = new ArrayList<>(4);
-        this.serverObservableList = FXCollections.observableList(new ArrayList<>());
-        this.contactObservableList = FXCollections.observableList(new ArrayList<>());
+        this.serverObservableList = new SimpleListProperty<>(FXCollections.observableList(new ArrayList<>()));
+        this.contactObservableList = new SimpleListProperty<>(FXCollections.observableList(new ArrayList<>()));
         this.connectionObservable = new SimpleBooleanProperty();
 
-        Account account = new Account();
-        account.uuid = UUID.randomUUID();
-        account.displayName = "michael-bailey";
-        account.privateKey = null;
-        account.publicKey = null;
+
 
         serverList.add(Server.valueOf("!server: host:\"127.0.0.1\" name:\"michael-server\" owner:\"noreply@email.com\""));
         serverModule = new ServerModule(account, this);
@@ -83,12 +82,15 @@ public class ServerChatModel implements IServerModuleDelegate {
 
     @Override
     public void serverDidConnect() {
-        System.out.println("Connected");
+        System.out.println("ServerModel: server connected");
+        this.connectionObservable.set(true);
     }
 
     @Override
     public void serverDidDisconnect() {
-        System.out.println("Disconnected");
+        System.out.println("ServerModel: server disconnected");
+        this.connectionObservable.set(false);
+        this.contactObservableList.clear();
     }
 
     @Override

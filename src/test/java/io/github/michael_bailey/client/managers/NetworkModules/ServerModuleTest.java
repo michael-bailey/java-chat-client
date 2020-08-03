@@ -36,7 +36,7 @@ public class ServerModuleTest implements IServerModuleDelegate {
     @Test
     public void testGetServerDetails() {
         System.out.println("getting details");
-        Server serverDetails = serverModule.getServerDetails("127.0.0.1");
+        Server serverDetails = serverModule.getServerDetails("176.252.132.88");
 
 
         System.out.println("testing details...");
@@ -48,12 +48,13 @@ public class ServerModuleTest implements IServerModuleDelegate {
 
     @Test
     public void testConnectReceiveClientsAndDisconnect() throws InterruptedException {
-        var serverDetails = serverModule.getServerDetails("127.0.0.1");
+        var serverDetails = serverModule.getServerDetails("176.252.132.88");
         serverModule.connect(serverDetails);
         assertTrue(serverModule.isConnected());
-
+        System.out.println("waiting");
 
         sleep(10000);
+        System.out.println("disconecting");
         serverModule.disconnect();
         assertFalse(serverModule.isConnected());
 
